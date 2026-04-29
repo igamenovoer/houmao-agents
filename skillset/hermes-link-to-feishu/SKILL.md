@@ -50,76 +50,82 @@ Please provide your Feishu/Lark app credentials:
 4. Connection mode — websocket (recommended) or webhook? [default: websocket]
 ```
 
-### 2. Write Config to `~/.hermes/config.yaml`
+### 2. Write Config to `~/.hermes/.env`
 
-Use `patch` tool to insert the `platforms:` block after `credential_pool_strategies:` and before `toolsets:`.
+**CRITICAL**: Feishu/Lark credentials go in `~/.hermes/.env` as environment variables, NOT in `~/.hermes/config.yaml`. The gateway reads them from env vars at startup.
 
-**Minimal config:**
-```yaml
-platforms:
-  feishu:
-    app_id: <app_id>
-    app_secret: <app_secret>
-    domain: <feishu|larksuite>
-    connection_mode: <websocket|webhook>
+Append to `~/.hermes/.env`:
+```bash
+cat >> ~/.hermes/.env << 'EOF'
+
+# Feishu / Lark Configuration
+FEISHU_APP_ID=cli_xxxxx
+FEISHU_APP_SECRET=xxxxx
+FEISHU_DOMAIN=feishu
+FEISHU_CONNECTION_MODE=websocket
+EOF
 ```
 
-**Example patch context:**
-```yaml
-providers: {}
-fallback_providers: []
-credential_pool_strategies: {}
-toolsets:
-- hermes-cli
+**Required env vars:**
+| Variable | Description |
+|----------|-------------|
+| `FEISHU_APP_ID` | App ID from Feishu developer console (starts with `cli_`) |
+| `FEISHU_APP_SECRET` | App Secret from Feishu developer console |
+| `FEISHU_DOMAIN` | `feishu` (China) or `lark` (International). Default: `feishu` |
+| `FEISHU_CONNECTION_MODE` | `websocket` (recommended) or `webhook`. Default: `websocket` |
+
+**Optional env vars:**
+| Variable | Description |
+|----------|-------------|
+| `FEISHU_ALLOWED_USERS` | Comma-separated `ou_xxx` IDs. Restrict bot to specific users. |
+| `FEISHU_HOME_CHANNEL` | `oc_xxx` chat ID for cron delivery and notifications. |
+| `FEISHU_ENCRYPT_KEY` | Encryption key for webhook mode. |
+| `FEISHU_VERIFICATION_TOKEN` | Verification token for webhook mode. |
+| `FEISHU_WEBHOOK_HOST` | Webhook bind host (default: 127.0.0.1). |
+| `FEISHU_WEBHOOK_PORT` | Webhook bind port (default: 8765). |
+| `FEISHU_WEBHOOK_PATH` | Webhook URL path (default: /feishu/webhook). |
+| `GATEWAY_ALLOW_ALL_USERS` | Set `true` to allow all users without allowlist. |
+
+### 3. Allow All Users (Optional but Recommended)
+
+By default, the gateway denies all unauthorized users. To allow anyone to message the bot:
+
+```bash
+echo "GATEWAY_ALLOW_ALL_USERS=true" >> ~/.hermes/.env
 ```
 
-Replace with:
-```yaml
-providers: {}
-fallback_providers: []
-credential_pool_strategies: {}
-platforms:
-  feishu:
-    app_id: cli_xxxxx
-    app_secret: xxxxx
-    domain: feishu
-    connection_mode: websocket
-    # Optional but strongly recommended
-    # allowed_users: ou_xxx,ou_yyy
-    # home_channel: oc_xxx
-toolsets:
-- hermes-cli
+Or set specific allowed users:
+```bash
+echo "FEISHU_ALLOWED_USERS=ou_xxx,ou_yyy" >> ~/.hermes/.env
 ```
-
-### 3. Optional Settings
-
-Ask user if they want to add any of these:
-
-| Setting | Description |
-|---------|-------------|
-| `allowed_users` | Comma-separated `ou_xxx` IDs. Restrict bot to specific users only. |
-| `home_channel` | `oc_xxx` chat ID. Channel where cron job results are sent. |
-| `group_sessions_per_user` | `true` (default) = isolate session history per user in group chats. |
-| `encrypt_key` | For webhook mode with encrypted payloads. |
-| `verification_token` | For webhook mode payload verification. |
 
 ### 4. Verify Config
 
 ```bash
-grep -A 10 "platforms:" ~/.hermes/config.yaml
+grep "FEISHU\|GATEWAY_ALLOW" ~/.hermes/.env
 ```
 
-### 5. Start Gateway (Optional)
+### 5. Start Gateway
 
-Ask user if they want to start the gateway now:
+**CRITICAL**: Do NOT use `hermes gateway restart` — it sends a reload signal that conflicts with systemd auto-restart and causes exit code 75 (TEMPFAIL). Use this sequence instead:
 
 ```bash
-# Option A: Interactive setup wizard
-hermes gateway setup
-
-# Option B: Start directly if already configured
+# Correct sequence
+hermes gateway stop
+sleep 3
 hermes gateway start
+
+# Verify after a few seconds
+sleep 3
+hermes gateway status
 ```
+
+**Expected log output (success):**
+```
+[Lark] [INFO] connected to wss://msg-frontier.feishu.cn/ws/v2?...
+```
+
+**If you see "No messaging platforms enabled"** — the gateway did not pick up the env vars. Check that they are in `~/.hermes/.env` (not `config.yaml`) and that the file is properly formatted (no extra quotes, no spaces around `=`).
 
 ## Connection Modes
 
@@ -141,22 +147,24 @@ hermes gateway start
 
 ## Pitfalls
 
+- **Config location**: Credentials go in `~/.hermes/.env` as env vars, NOT in `~/.hermes/config.yaml` under a `platforms:` block. The gateway does NOT read `config.yaml` for Feishu settings.
+- **Restart bug**: Do NOT use `hermes gateway restart` — it causes exit code 75 (TEMPFAIL) due to reload signal conflicting with systemd auto-restart. Always use `stop` → `start`.
 - Do NOT use `hermes gateway setup` scan-to-create if user already has an app — it creates a new one
-- Always use `patch` tool for config edits, not `sed` or `echo`
-- If `platforms:` block already exists, update it rather than creating a duplicate
 - `app_secret` is sensitive — never log it or include in session summaries
 - Webhook mode requires additional env vars if not using default localhost:8765
 
 ## Verification Checklist
 
 After setup, confirm:
-1. `~/.hermes/config.yaml` contains `platforms.feishu` block
-2. `app_id` starts with `cli_`
-3. `domain` matches the platform where app was created
-4. `hermes gateway start` connects without auth errors
-5. Bot responds in DMs and when @mentioned in groups
+1. `~/.hermes/.env` contains `FEISHU_APP_ID` and `FEISHU_APP_SECRET`
+2. `FEISHU_APP_ID` starts with `cli_`
+3. `FEISHU_DOMAIN` matches the platform where app was created
+4. `hermes gateway stop && sleep 3 && hermes gateway start` connects without auth errors
+5. Gateway logs show: `[Lark] [INFO] connected to wss://msg-frontier.feishu.cn/ws/v2?...`
+6. Bot responds in DMs and when @mentioned in groups
 
 ## References
 
+- `references/feishu-env-vars.md` — Official env var list from Hermes docs
 - https://hermes-agent.nousresearch.com/docs/user-guide/messaging/feishu
 - https://open.feishu.cn/document/home/introduction-to-custom-app-development/self-built-application-development-process
