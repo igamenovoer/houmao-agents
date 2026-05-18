@@ -1,0 +1,4 @@
+interface:
+  display_name: "Gitee Via API"
+  short_description: "Operate Gitee through API v5"
+  default_prompt: "Use $gitee-via-api to operate Gitee repositories through API v5."
