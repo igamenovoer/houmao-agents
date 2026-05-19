@@ -34,12 +34,33 @@ This skill is a master-agent entrypoint. The master agent may be any capable cal
 4. If the operation, target slave, or request body is missing or ambiguous, ask for the smallest clarification needed.
 5. After a request is accepted or delivered to the slave, finish the turn by default.
 
+## Mail Delivery and Notifier Policy
+
+For one-off mail delivery behavior, include the rendered native invocation command at the top of the mail body. The mail body is the right place for request-specific instructions, skill names, OpenSpec commands, target change IDs, and any behavior that should apply only to this single mail.
+
+Houmao gateway mail-notifier appendix text is persistent runtime policy. It is appended to future mail notification prompts and can affect every master or sender that talks to the same slave. Do not use it for one-off calls or single-mail behavior.
+
+Use notifier appendix text only when the master intentionally wants a repeated policy across future mail notifications, such as always routing autodev mail through the slave mega-skill.
+
+Example repeated-policy appendix:
+
+```text
+When notifying this agent about mail from an autodev master, read the mail body in full.
+If the mail body begins with a native skill invocation such as
+$imsight-autodev-slave ... or /imsight-autodev-slave ..., invoke that named skill exactly.
+Do not treat the mail as a generic request before following the named skill command.
+```
+
+Before changing notifier appendix text, inspect current notifier status, consider whether the slave is shared by multiple masters, and preserve or merge compatible existing appendix text. Non-empty appendix updates replace the stored runtime appendix. If the policy is not meant to apply beyond the current mail, put it in the mail body instead.
+
 ## Guardrails
 
 - Do not guess the slave agent selector, tool lane, gateway posture, mailbox posture, or delivery lane.
 - Prefer supported Houmao inspection and messaging surfaces over direct runtime file searches.
 - For Codex-based slaves, render OpenSpec commands with `$openspec-*` and the slave mega-skill command as `$imsight-autodev-slave`.
 - For Claude-based slaves, render OpenSpec commands with `/openspec-*` and the slave mega-skill command as `/imsight-autodev-slave`.
-- For mail-based messaging, include the rendered invocation command in the mail body so it appears in the notification text.
+- For mail-based messaging, include the rendered invocation command in the mail body for one-off behavior.
+- Use mail-notifier appendix text only for intentional repeated policy across future mail notifications; do not use it as a single-mail instruction surface.
+- Do not change existing mail-notifier appendix text without preserving useful existing guidance, considering shared-slave side effects, or explicit user direction.
 - Do not initialize or copy files into the slave workdir directly; dispatch the initialization request to the slave.
 - Do not wait for or inspect the slave's follow-up, gateway state, mailbox state, TUI output, or results unless the user explicitly asks.

@@ -26,7 +26,7 @@ Prefer gateway prompt delivery when the slave has a live gateway:
 houmao-mgr agents gateway prompt --agent-name <slave> --prompt "<rendered command>"
 ```
 
-When mailbox delivery is selected, include the rendered command in the mail body so the slave sees the invocation in the notification text.
+When mailbox delivery is selected, include the rendered command at the top of the mail body. Keep one-off behavior in the mail body; use mail-notifier appendix text only for intentional repeated policy, following the parent skill guidance.
 
 ## Guardrails
 
