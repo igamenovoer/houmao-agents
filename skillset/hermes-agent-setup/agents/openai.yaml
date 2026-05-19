@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hermes Agent Setup"
+  short_description: "Install and configure Hermes Agent"
+  default_prompt: "Use $hermes-agent-setup to install Hermes Agent and configure Kimi, Feishu/Lark, Houmao skills, or Tavily."
