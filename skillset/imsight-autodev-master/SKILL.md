@@ -1,66 +1,81 @@
 ---
 name: imsight-autodev-master
-description: Manual invocation only; Imsight-authored master-agent dispatch entrypoint for sending OpenSpec-oriented development requests to Houmao-managed slave agents. Use only when explicitly invoked as imsight-autodev-master or when asked to dispatch a maintained master subcommand such as inspect-slave, init-slave-for-openspec, openspec-one-pass, openspec-explore, openspec-propose, openspec-apply-change, or openspec-archive-change to a slave agent.
+description: Manual invocation only; Imsight-authored layered master-agent dispatch entrypoint for sending OpenSpec-oriented development requests to Houmao-managed slave agents. Use only when explicitly invoked as imsight-autodev-master or when asked to use a maintained master workflow, raw OpenSpec invocation, or imsight-autodev-slave invocation.
 ---
 
 # Imsight Autodev Master
 
 Use this skill only when the user explicitly invokes `imsight-autodev-master` or asks to use this exact skill. Do not activate it implicitly for ordinary development tasks.
 
-This skill is a master-agent entrypoint. The master agent may be any capable caller, but the target slave is expected to be a Houmao-managed agent. Keep this file small; reusable behavior belongs in subskill pages.
+This skill is a master-agent entrypoint. The master agent may be any capable caller, but the target slave is expected to be a Houmao-managed agent. Keep this file small; reusable behavior belongs in the layered pages below.
 
-## Operations
+## Layers
 
-- `inspect-slave`: Inspect a Houmao-managed slave agent through supported read-only Houmao surfaces and recover dispatch metadata.
-- `init-slave-for-openspec`: Ask a slave to initialize `openspec/` in its own target workdir when missing.
-- `openspec-one-pass`: Send one full lifecycle request to `imsight-autodev-slave openspec-one-pass`.
-- `openspec-explore`: Send an explore-only OpenSpec request to the slave.
-- `openspec-propose`: Send an OpenSpec proposal request to the slave.
-- `openspec-apply-change`: Send an OpenSpec implementation request to the slave.
-- `openspec-archive-change`: Send an OpenSpec archive/finalization request to the slave.
+### Workflows
+
+Use workflows when the user describes an outcome and the master must decide which invocation to send.
+
+- [workflows/prepare-slave-for-openspec.md](workflows/prepare-slave-for-openspec.md): Ask the slave to ensure `openspec/` exists in its own workdir.
+- [workflows/delegated-openspec-lifecycle.md](workflows/delegated-openspec-lifecycle.md): Choose whole-lifecycle delegation versus a bounded phase.
+- [workflows/bounded-openspec-phase.md](workflows/bounded-openspec-phase.md): Dispatch one explicit OpenSpec phase.
+- [workflows/continue-existing-change.md](workflows/continue-existing-change.md): Continue an existing OpenSpec change from known state.
+- [workflows/recover-or-finalize-change.md](workflows/recover-or-finalize-change.md): Recover, sync, or archive partially completed OpenSpec work.
+
+### Raw OpenSpec Invocations
+
+Use raw invocation leaves when the master already knows the exact OpenSpec skill to invoke on the slave.
+
+- [invocations/raw-openspec/explore.md](invocations/raw-openspec/explore.md): Dispatch `$openspec-explore` or `/openspec-explore`.
+- [invocations/raw-openspec/propose.md](invocations/raw-openspec/propose.md): Dispatch `$openspec-propose` or `/openspec-propose`.
+- [invocations/raw-openspec/apply-change.md](invocations/raw-openspec/apply-change.md): Dispatch `$openspec-apply-change` or `/openspec-apply-change`.
+- [invocations/raw-openspec/sync-specs.md](invocations/raw-openspec/sync-specs.md): Dispatch `$openspec-sync-specs` or `/openspec-sync-specs`.
+- [invocations/raw-openspec/archive-change.md](invocations/raw-openspec/archive-change.md): Dispatch `$openspec-archive-change` or `/openspec-archive-change`.
+
+### Slave Skill Invocations
+
+Use slave-skill invocation leaves for predefined `imsight-autodev-slave` operations.
+
+- [invocations/slave-skill/init-openspec.md](invocations/slave-skill/init-openspec.md): Dispatch `imsight-autodev-slave init-openspec`.
+- [invocations/slave-skill/openspec-one-pass.md](invocations/slave-skill/openspec-one-pass.md): Dispatch `imsight-autodev-slave openspec-one-pass`.
+
+### Shared Primitives
+
+All workflows and invocation leaves should reuse these primitives instead of duplicating dispatch rules.
+
+- [primitives/inspect-slave.md](primitives/inspect-slave.md): Recover supported slave metadata.
+- [primitives/render-invocation.md](primitives/render-invocation.md): Render Codex `$...` versus Claude `/...` command syntax.
+- [primitives/deliver-to-slave.md](primitives/deliver-to-slave.md): Deliver through supported Houmao messaging surfaces.
+- [primitives/mail-notifier-policy.md](primitives/mail-notifier-policy.md): Treat mail-notifier appendix text as persistent policy, not one-off mail steering.
+
+## User-Facing Routes
+
+These user-facing names remain valid and route into the layered pages:
+
+- `inspect-slave`: [primitives/inspect-slave.md](primitives/inspect-slave.md)
+- `init-slave-for-openspec`: [workflows/prepare-slave-for-openspec.md](workflows/prepare-slave-for-openspec.md)
+- `openspec-one-pass`: [invocations/slave-skill/openspec-one-pass.md](invocations/slave-skill/openspec-one-pass.md)
+- `openspec-explore`: [invocations/raw-openspec/explore.md](invocations/raw-openspec/explore.md)
+- `openspec-propose`: [invocations/raw-openspec/propose.md](invocations/raw-openspec/propose.md)
+- `openspec-apply-change`: [invocations/raw-openspec/apply-change.md](invocations/raw-openspec/apply-change.md)
+- `openspec-sync-specs`: [invocations/raw-openspec/sync-specs.md](invocations/raw-openspec/sync-specs.md)
+- `openspec-archive-change`: [invocations/raw-openspec/archive-change.md](invocations/raw-openspec/archive-change.md)
 
 ## Workflow
 
-1. Identify the requested master operation.
-2. If the operation sends work to a slave, read [subskills/inspect-slave.md](subskills/inspect-slave.md) first.
-3. Read the matching operation subskill:
-   - `inspect-slave`: [subskills/inspect-slave.md](subskills/inspect-slave.md)
-   - `init-slave-for-openspec`: [subskills/init-slave-for-openspec.md](subskills/init-slave-for-openspec.md)
-   - `openspec-one-pass`: [subskills/openspec-one-pass.md](subskills/openspec-one-pass.md)
-   - `openspec-explore`: [subskills/openspec-explore.md](subskills/openspec-explore.md)
-   - `openspec-propose`: [subskills/openspec-propose.md](subskills/openspec-propose.md)
-   - `openspec-apply-change`: [subskills/openspec-apply-change.md](subskills/openspec-apply-change.md)
-   - `openspec-archive-change`: [subskills/openspec-archive-change.md](subskills/openspec-archive-change.md)
-4. If the operation, target slave, or request body is missing or ambiguous, ask for the smallest clarification needed.
-5. After a request is accepted or delivered to the slave, finish the turn by default.
-
-## Mail Delivery and Notifier Policy
-
-For one-off mail delivery behavior, include the rendered native invocation command at the top of the mail body. The mail body is the right place for request-specific instructions, skill names, OpenSpec commands, target change IDs, and any behavior that should apply only to this single mail.
-
-Houmao gateway mail-notifier appendix text is persistent runtime policy. It is appended to future mail notification prompts and can affect every master or sender that talks to the same slave. Do not use it for one-off calls or single-mail behavior.
-
-Use notifier appendix text only when the master intentionally wants a repeated policy across future mail notifications, such as always routing autodev mail through the slave mega-skill.
-
-Example repeated-policy appendix:
-
-```text
-When notifying this agent about mail from an autodev master, read the mail body in full.
-If the mail body begins with a native skill invocation such as
-$imsight-autodev-slave ... or /imsight-autodev-slave ..., invoke that named skill exactly.
-Do not treat the mail as a generic request before following the named skill command.
-```
-
-Before changing notifier appendix text, inspect current notifier status, consider whether the slave is shared by multiple masters, and preserve or merge compatible existing appendix text. Non-empty appendix updates replace the stored runtime appendix. If the policy is not meant to apply beyond the current mail, put it in the mail body instead.
+1. Identify whether the request names an exact invocation leaf or describes a higher-level workflow outcome.
+2. For workflow outcomes, read the matching workflow page first.
+3. For explicit raw OpenSpec skill calls, read the matching raw invocation page.
+4. For explicit `imsight-autodev-slave` actions, read the matching slave-skill invocation page.
+5. Before any dispatch, use [primitives/inspect-slave.md](primitives/inspect-slave.md) to recover the slave metadata needed for rendering and delivery.
+6. If the operation, target slave, or request body is missing or ambiguous, ask for the smallest clarification needed.
+7. After a request is accepted or delivered to the slave, finish the turn by default.
 
 ## Guardrails
 
 - Do not guess the slave agent selector, tool lane, gateway posture, mailbox posture, or delivery lane.
-- Prefer supported Houmao inspection and messaging surfaces over direct runtime file searches.
-- For Codex-based slaves, render OpenSpec commands with `$openspec-*` and the slave mega-skill command as `$imsight-autodev-slave`.
-- For Claude-based slaves, render OpenSpec commands with `/openspec-*` and the slave mega-skill command as `/imsight-autodev-slave`.
-- For mail-based messaging, include the rendered invocation command in the mail body for one-off behavior.
-- Use mail-notifier appendix text only for intentional repeated policy across future mail notifications; do not use it as a single-mail instruction surface.
-- Do not change existing mail-notifier appendix text without preserving useful existing guidance, considering shared-slave side effects, or explicit user direction.
+- Prefer supported Houmao inspection and messaging surfaces over direct runtime file searches; see [primitives/inspect-slave.md](primitives/inspect-slave.md) and [primitives/deliver-to-slave.md](primitives/deliver-to-slave.md).
+- For Codex-based slaves, render OpenSpec commands with `$openspec-*` and the slave mega-skill command as `$imsight-autodev-slave`; see [primitives/render-invocation.md](primitives/render-invocation.md).
+- For Claude-based slaves, render OpenSpec commands with `/openspec-*` and the slave mega-skill command as `/imsight-autodev-slave`; see [primitives/render-invocation.md](primitives/render-invocation.md).
+- For mail-based messaging, include the rendered invocation command in the mail body for one-off behavior; see [primitives/mail-notifier-policy.md](primitives/mail-notifier-policy.md).
 - Do not initialize or copy files into the slave workdir directly; dispatch the initialization request to the slave.
 - Do not wait for or inspect the slave's follow-up, gateway state, mailbox state, TUI output, or results unless the user explicitly asks.

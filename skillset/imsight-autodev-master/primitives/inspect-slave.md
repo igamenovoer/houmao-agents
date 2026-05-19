@@ -1,6 +1,6 @@
 # Inspect Slave
 
-Use this subskill before any master dispatch that depends on a Houmao-managed slave's metadata. The master agent may be outside Houmao; the target slave must be selected through Houmao-managed agent surfaces.
+Use this primitive before any master dispatch that depends on a Houmao-managed slave's metadata. The master agent may be outside Houmao; the target slave must be selected through supported Houmao-managed agent surfaces.
 
 ## Inputs
 
@@ -29,7 +29,7 @@ Use this subskill before any master dispatch that depends on a Houmao-managed sl
    ```text
    <houmao-mgr> agents mail resolve-live --agent-name <slave>
    ```
-7. Read `manifest.json` only when the managed state output already exposes `manifest_path` or `session_root` and the needed metadata is not available from the read-only command output.
+7. Read `manifest.json` only when the managed state output already exposes `manifest_path` or `session_root` and the needed metadata is not available from read-only command output.
 
 ## Metadata To Recover
 
