@@ -1,4 +1,4 @@
 interface:
   display_name: "Imsight Dev Box Init"
-  short_description: "Preferred development host install guides"
-  default_prompt: "Use $imsight-dev-box-init to set up a development host and choose the relevant installation guide."
+  short_description: "Preferred development host and agent setup guides"
+  default_prompt: "Use $imsight-dev-box-init to set up a development host, Houmao tooling, Tavily, claude-kimi, or a Houmao Claude+Kimi specialist."

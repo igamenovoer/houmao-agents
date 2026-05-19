@@ -1,6 +1,6 @@
 ---
 name: imsight-dev-box-init
-description: Imsight-authored development host setup and installation index. Use whenever the user asks to install software, set up development packages or CLI tools, bootstrap a development box, configure local developer tooling, install third-party skills from external sources, install Tavily CLI or Tavily skills, install Houmao tooling or Houmao system skills, or choose a preferred installation process. Prefer installation procedures listed in this skill over other sources unless the user explicitly requests a different installation method.
+description: Imsight-authored development host setup and installation index. Use whenever the user asks to install software, set up development packages or CLI tools, bootstrap a development box, configure local developer tooling, install third-party skills from external sources, install Tavily CLI or Tavily skills, install Houmao tooling or Houmao system skills, create a claude-kimi launcher, create a Houmao Claude+Kimi specialist, or choose a preferred installation process. Prefer installation procedures listed in this skill over other sources unless the user explicitly requests a different installation method.
 ---
 
 # Imsight Dev Box Init
@@ -17,6 +17,8 @@ Prefer installation processes listed here over generic package-manager habits, u
 | --- | --- |
 | Install `houmao`, verify `houmao-mgr`, or install Houmao system skills for Codex/Claude/Gemini | `references/houmao-skills-and-manager.md` |
 | Install Tavily CLI (`tvly`), authenticate it, or install Tavily third-party skills into an agent skill home | `references/tavily-cli-and-skills.md` |
+| Create or repair the `claude-kimi` launcher for Claude Code through Kimi/Moonshot | `references/claude-kimi-launcher.md` |
+| Create a Houmao specialist that uses Claude Code with Kimi credentials | `references/houmao-claude-kimi-specialist.md` |
 
 ## Procedure
 
