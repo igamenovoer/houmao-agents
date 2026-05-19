@@ -1,6 +1,6 @@
 ---
 name: imsight-dev-box-init
-description: Imsight-authored development host setup and installation index. Use whenever the user asks to install software, set up development packages or CLI tools, bootstrap a development box, configure local developer tooling, install third-party skills from external sources, install Tavily CLI or Tavily skills, install Houmao tooling or Houmao system skills, create a claude-kimi launcher, create a Houmao Claude+Kimi specialist, or choose a preferred installation process. Prefer installation procedures listed in this skill over other sources unless the user explicitly requests a different installation method.
+description: Imsight-authored development host setup and installation index. Use only when the prompt or surrounding context explicitly mentions `imsight` and the user is asking to install software, set up development packages or CLI tools, bootstrap a development box, configure local developer tooling, install Tavily or Houmao tooling, create a claude-kimi launcher, create a Houmao Claude+Kimi specialist, or choose an Imsight-preferred installation process. Do not invoke for generic installation or dev-box setup tasks that do not mention `imsight`.
 ---
 
 # Imsight Dev Box Init

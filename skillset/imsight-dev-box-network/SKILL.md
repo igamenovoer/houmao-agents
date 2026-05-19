@@ -1,6 +1,6 @@
 ---
 name: imsight-dev-box-network
-description: Imsight-authored development box networking setup guide. Use when configuring, auditing, repairing, or documenting dev-box networking services, SSH reverse tunnels, SSH forward tunnels, proxy services, relay access, exposed ports, systemd user tunnel services, or host-to-host access patterns for Imsight development machines.
+description: Imsight-authored development box networking setup guide. Use only when the prompt or surrounding context explicitly mentions `imsight` and the user is configuring, auditing, repairing, or documenting dev-box networking services, SSH reverse tunnels, SSH forward tunnels, proxy services, relay access, exposed ports, systemd user tunnel services, or host-to-host access patterns for Imsight development machines. Do not invoke for generic networking, proxy, tunnel, or dev-box tasks that do not mention `imsight`.
 ---
 
 # Imsight Dev Box Network

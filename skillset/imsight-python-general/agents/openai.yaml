@@ -1,0 +1,4 @@
+interface:
+  display_name: "Imsight Python General"
+  short_description: "Python development workflows and project structure"
+  default_prompt: "Use $imsight-python-general to structure a Pixi-managed Python project or handle general Python development operations."
