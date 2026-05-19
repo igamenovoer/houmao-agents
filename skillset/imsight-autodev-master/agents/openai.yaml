@@ -1,0 +1,6 @@
+interface:
+  display_name: "Imsight Autodev Master"
+  short_description: "Dispatch requests to Houmao slave agents"
+  default_prompt: "Use $imsight-autodev-master to inspect a Houmao-managed slave and dispatch an OpenSpec request."
+policy:
+  allow_implicit_invocation: false

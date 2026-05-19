@@ -1,6 +1,0 @@
-interface:
-  display_name: "Imsight Autodev Worker"
-  short_description: "Worker-side development automation workflows"
-  default_prompt: "Use $imsight-autodev-worker to run a one-pass OpenSpec development workflow for this task."
-policy:
-  allow_implicit_invocation: false

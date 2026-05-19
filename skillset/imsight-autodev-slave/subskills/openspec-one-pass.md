@@ -1,10 +1,10 @@
-# OpenSpec One-Pass Worker
+# OpenSpec One-Pass Slave
 
-Use this subskill when the worker receives one development task and should drive it through the OpenSpec lifecycle in a single focused pass.
+Use this subskill when the slave agent receives one master-provided development request and should drive it through the OpenSpec lifecycle in a single focused pass.
 
 ## Intent
 
-Turn one task description into:
+Turn one master request into:
 
 1. explored requirements and constraints,
 2. a concrete OpenSpec proposal,
@@ -18,20 +18,20 @@ Turn one task description into:
 
 ## Workflow
 
-1. Restate the task briefly and identify the target repository or workspace.
-2. Invoke `openspec-explore` on the task.
+1. Restate the master's request briefly and identify the target repository or workspace.
+2. Invoke `openspec-explore` on the request.
    - Discover relevant existing specs, changes, docs, code paths, and tests.
    - Capture open questions only when they block safe implementation.
-   - In `interactive` mode, stop here and wait for the user's next instruction.
+   - In `interactive` mode, stop here and wait for the master's next instruction.
 3. Invoke `openspec-propose` using the explored task context.
    - Create the proposal, design/spec deltas, and task checklist expected by the local OpenSpec workflow.
    - Prefer one coherent change over several small changes unless the task clearly spans independent features.
-   - In `interactive` mode, stop here and wait for the user's next instruction.
+   - In `interactive` mode, stop here and wait for the master's next instruction.
 4. Invoke `openspec-apply-change` on the created change.
    - Implement the task list.
    - Run focused verification appropriate to the change.
    - Keep unrelated files and unrelated user changes intact.
-   - In `interactive` mode, stop here and wait for the user's next instruction.
+   - In `interactive` mode, stop here and wait for the master's next instruction.
 5. Sync and archive the completed change.
    - Prefer `openspec-archive-change` for finalization, because it assesses delta-spec sync and archives the completed change.
    - If the local workflow or archive prompt requires an explicit sync first, invoke `openspec-sync-specs` on the same change, then invoke `openspec-archive-change`.
@@ -46,10 +46,10 @@ Turn one task description into:
   - `openspec-apply-change`
   - `openspec-archive-change`
   - `openspec-sync-specs` only when explicit pre-archive sync is required.
-- When instructing another Houmao-managed worker by direct prompt, use that agent's required OpenSpec command syntax:
+- When forwarding to another Houmao-managed agent by direct prompt, use that agent's required OpenSpec command syntax:
   - Codex-based agents: `$openspec-* <message>`
   - Claude-based agents: `/openspec-* <message>`
-- For mail-based worker messaging, include the OpenSpec invocation command in the mail body so it appears in the mail notification text.
+- For mail-based messaging, include the OpenSpec invocation command in the mail body so it appears in the mail notification text.
 
 ## Guardrails
 
@@ -58,5 +58,5 @@ Turn one task description into:
 - Do not archive until the implementation is complete and verification has been attempted.
 - Do not use broad destructive git operations.
 - Do not silently ignore failed tests, failed OpenSpec validation, failed sync, or archive errors; report them with the last successful stage.
-- Do not treat this as a planning-only workflow. If the user requested one-pass execution, continue through apply and archive unless blocked.
+- Do not treat this as a planning-only workflow. If the master requested one-pass execution, continue through apply and archive unless blocked.
 - Do not ask routine confirmation questions in `automation` mode; reserve questions for true blockers or externally required confirmations.
