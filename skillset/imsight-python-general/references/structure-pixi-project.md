@@ -36,6 +36,8 @@ Use this subskill when the task is to initialize, scaffold, review, or normalize
 |-- docs/
 |-- context/
 |   `-- archived/
+|-- skillset/
+|   `-- README.md
 `-- tmp/
 ```
 
@@ -52,6 +54,7 @@ Use this subskill when the task is to initialize, scaffold, review, or normalize
 - `docs/`: Markdown documentation source, typically suitable for MkDocs Material.
 - `context/`: AI assistant working context, design notes, plans, and reference material.
 - `context/archived/`: superseded plans and historical notes.
+- `skillset/`: agent skills for project-specific operations.
 - `tmp/`: disposable working files.
 
 ## Standard Files
@@ -72,6 +75,8 @@ tmp/
 
 Do not add `.git/` to `.gitignore` unless matching an existing local standard; Git does not need it ignored inside normal repositories.
 
+Add `skillset/README.md` explaining that project-specific agent skills live in this directory and should be named `<project-slug>-<what>`, where `<project-slug>` is the project identifier and `<what>` describes the operation or capability.
+
 ## Pixi Initialization
 
 For a new project:
@@ -83,7 +88,7 @@ pixi add --pypi scipy mdutils ruff mkdocs-material mypy attrs omegaconf imageio
 pixi install
 ```
 
-Choose a Python version compatible with the project and user requirements. When no constraint exists, use a stable modern Python version rather than chasing the newest release automatically.
+Choose the Python version in this order: first follow any existing project files, docs, or instructions that specify a Python version; otherwise use one minor version behind the latest stable Python release. Do not choose a newer version solely because it is available.
 
 For an existing project, inspect the manifest first and add only missing dependencies. If `python` is already declared, respect that version unless the user asks to change it.
 
@@ -96,3 +101,4 @@ For an existing project, inspect the manifest first and add only missing depende
 - External dependency folders distinguish tracked submodules from local-only clones.
 - `.pixi/`, `tmp/`, and `extern/orphan/*` are ignored.
 - Documentation and AI context have distinct homes.
+- `skillset/README.md` documents the `<project-slug>-<what>` naming convention for project-specific agent skills.
