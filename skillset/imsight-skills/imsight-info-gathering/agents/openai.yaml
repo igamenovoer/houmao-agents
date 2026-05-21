@@ -1,4 +1,6 @@
 interface:
   display_name: "Imsight Info Gathering"
   short_description: "Search, download, and synthesize sourced reports"
-  default_prompt: "Use $imsight-info-gathering to gather online information, download relevant sources, and produce a synthesized report."
+  default_prompt: "Use $imsight-info-gathering use help to see Imsight search, download, source-ledger, and report subcommands."
+policy:
+  allow_implicit_invocation: false

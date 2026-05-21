@@ -8,6 +8,17 @@ Use these skills when a task should follow Imsight-authored workflows rather tha
 
 The skills in this directory are designed to work as a suite. Individual skills may route to, invoke, or rely on other Imsight skills for sub-workflows. Installing only part of the suite can leave some functionality unavailable or incomplete.
 
+## Contracts
+
+- Invocation by Imsight context: `imsight-*` skills are eligible when `imsight` is mentioned in the prompt or surrounding context and the task is relevant to one of the covered workflows. Examples include `use imsight skills`, `in imsight's style`, `follow imsight SOP`, or a request for an Imsight-authored process.
+- Invocation by routing or name: these skills may also be invoked by internal routing from another Imsight skill, or when the user explicitly names the skill.
+- Default triggering posture: outside explicit naming, internal routing, or relevant prompts that mention `imsight`, these skills normally should not trigger automatically for generic tasks.
+- Command shape: organize each `imsight-*` skill like a main command with many subcommands. The preferred invocation style is `$imsight-<what> use <subcommand-name> to do <task>`.
+- Task-only invocation: invoking a skill with a task prompt, such as `$imsight-<what> <task prompt>`, asks the agent to inspect the task and select the applicable subcommand.
+- Universal `help` subcommand: every `imsight-*` skill should support `help`. `help` explains what the skill does and lists available subcommands with short explanations.
+- Default subcommand: invoking an `imsight-*` skill without a subcommand means `help` by default.
+- Implementation style: most Imsight skills use `SKILL.md` as a compact entrypoint, command router, and subcommand index. `SKILL.md` should describe what each subcommand does, and its entrypoint workflow should tell the agent to choose the right subcommand or sequence of subcommands based on the given task. Detailed workflows, subcommands, references, and reusable procedures should live in subskills or reference files linked from that entrypoint.
+
 ## Skill Index
 
 - [`imsight-autodev-master`](imsight-autodev-master/SKILL.md): Master-agent dispatch entrypoint for sending OpenSpec-oriented development requests to Houmao-managed slave agents. It chooses maintained workflows, raw OpenSpec invocations, or slave-skill invocations and then dispatches without taking over the slave's work.
