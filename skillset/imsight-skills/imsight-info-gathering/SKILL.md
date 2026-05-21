@@ -1,6 +1,6 @@
 ---
 name: imsight-info-gathering
-description: Imsight-authored online information gathering command workflow for searching the web, extracting or downloading sources, building source ledgers, and producing synthesized reports from multiple sources. Use when explicitly invoked as imsight-info-gathering, routed from another Imsight skill, when a prompt asks for Imsight-style research or reporting, or when `imsight` context covers online search, source download/extraction, and synthesis into a cited report.
+description: Imsight-authored online information gathering command workflow for searching the web, extracting or downloading sources, finding LibGen mirror download links, building source ledgers, and producing synthesized reports from multiple sources. Use when explicitly invoked as imsight-info-gathering, routed from another Imsight skill, when a prompt asks for Imsight-style research or reporting, or when `imsight` context covers online search, source download/extraction, LibGen link finding, and synthesis into a cited report.
 ---
 
 # Imsight Info Gathering
@@ -37,6 +37,7 @@ When this skill writes hints, downloaded source corpora, source packs, reports, 
 | `source-pack` | Produce a local source pack with raw files, processed notes, and a manifest | `references/source-handling.md` and `references/report-synthesis.md` |
 | `synthesize-report` | Produce a synthesized cited report, comparison, recommendation, market scan, or literature scan | `references/report-synthesis.md` |
 | `find-hint` | Research a problem or topic and create a durable hint guide with source links and concise snippets | `references/find-hint.md` |
+| `find-libgen` | Search a provided LibGen-style mirror and produce direct download links or wget commands using the bundled stdlib script | `subskills/find-libgen.md` |
 
 ## Workflow
 
@@ -48,6 +49,7 @@ When this skill writes hints, downloaded source corpora, source packs, reports, 
 6. Maintain a source ledger while working: URL, title, publisher, date accessed, publish date if available, why it matters, and whether it is primary or secondary.
 7. Download or extract durable source material when the user asks for downloads, when sources are likely to move, or when a report needs an auditable local corpus.
 8. Synthesize across sources. Separate findings, conflicts, uncertainty, and recommendations. Do not pad the report with source-by-source summaries unless the user asked for an annotated bibliography.
+9. If the task asks for LibGen mirror search, direct download links, or wget-ready commands, load `subskills/find-libgen.md` and use that workflow.
 
 ## Routing
 
@@ -67,6 +69,10 @@ Load `references/report-synthesis.md` when producing a synthesized report, compa
 ## Hint Guides
 
 Load `references/find-hint.md` when the user asks to find or create a hint, guide, how-to note, introductory note, or durable problem-solving context from online information.
+
+## LibGen Link Finding
+
+Load `subskills/find-libgen.md` when the user asks to search a LibGen mirror, resolve LibGen result pages into direct download URLs, or produce wget commands from found LibGen entries.
 
 ## Defaults
 
