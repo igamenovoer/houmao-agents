@@ -1,6 +1,6 @@
 ## 1. Skill Structure
 
-- [x] 1.1 Create `skillset/imsight-autodev-master/` with `SKILL.md`, `agents/openai.yaml`, and `subskills/`.
+- [x] 1.1 Create `skillset/imsight-skills/imsight-autodev-master/` with `SKILL.md`, `agents/openai.yaml`, and `subskills/`.
 - [x] 1.2 Define `SKILL.md` as a compact manual-invocation entrypoint that routes to master subskills.
 - [x] 1.3 Add UI metadata for `imsight-autodev-master` with implicit invocation disabled.
 
@@ -27,6 +27,6 @@
 
 ## 5. Validation
 
-- [x] 5.1 Run the skill validator against `skillset/imsight-autodev-master`.
+- [x] 5.1 Run the skill validator against `skillset/imsight-skills/imsight-autodev-master`.
 - [x] 5.2 Search the new skill for stale worker/slave/master naming mistakes and stale references.
 - [x] 5.3 Run OpenSpec validation for `add-imsight-autodev-master`.

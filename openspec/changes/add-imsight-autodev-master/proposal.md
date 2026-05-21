@@ -22,7 +22,7 @@ None.
 
 ## Impact
 
-- Adds `skillset/imsight-autodev-master/` with `SKILL.md`, `agents/openai.yaml`, and subskills.
+- Adds `skillset/imsight-skills/imsight-autodev-master/` with `SKILL.md`, `agents/openai.yaml`, and subskills.
 - Uses existing Houmao managed-agent inspection and messaging conventions; no new runtime dependencies are expected.
 - Documents command syntax differences for Codex (`$openspec-*`) and Claude (`/openspec-*`) slave agents.
 - Aligns with workspace `AGENTS.md` messaging rules for send-and-stop behavior.

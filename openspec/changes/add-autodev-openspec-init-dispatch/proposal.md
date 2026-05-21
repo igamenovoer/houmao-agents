@@ -21,7 +21,7 @@ None.
 
 ## Impact
 
-- Updates `skillset/imsight-autodev-master/` with a new dispatch subcommand.
-- Updates `skillset/imsight-autodev-slave/` with a new local initialization subcommand.
+- Updates `skillset/imsight-skills/imsight-autodev-master/` with a new dispatch subcommand.
+- Updates `skillset/imsight-skills/imsight-autodev-slave/` with a new local initialization subcommand.
 - Uses the existing `openspec` CLI and temporary directories; no new package dependencies are expected.
 - Avoids assuming the master has filesystem access to the slave's workdir.

@@ -1,6 +1,6 @@
 ## 1. Layered Structure
 
-- [x] 1.1 Update `skillset/imsight-autodev-master/SKILL.md` so it acts as a compact layer index and router.
+- [x] 1.1 Update `skillset/imsight-skills/imsight-autodev-master/SKILL.md` so it acts as a compact layer index and router.
 - [x] 1.2 Create shared primitive pages for slave inspection, native command rendering, delivery, and mail-notifier policy.
 - [x] 1.3 Create raw OpenSpec invocation pages for explore, propose, apply-change, archive-change, and sync/finalization guidance.
 - [x] 1.4 Create slave-skill invocation pages for `init-openspec` and `openspec-one-pass`.
@@ -23,6 +23,6 @@
 
 ## 4. Validation
 
-- [x] 4.1 Run the skill validator against `skillset/imsight-autodev-master`.
+- [x] 4.1 Run the skill validator against `skillset/imsight-skills/imsight-autodev-master`.
 - [x] 4.2 Search the master skill for stale links, duplicated contradictory guidance, and old flat-layer terminology.
 - [x] 4.3 Run OpenSpec validation/status checks for `restructure-autodev-master-layers`.
