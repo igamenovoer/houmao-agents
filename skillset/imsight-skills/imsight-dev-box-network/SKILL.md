@@ -14,6 +14,16 @@ Use this skill as the entrypoint for development box networking tasks. Keep `SKI
 - No subcommand and no task means `help`.
 - `help` summarizes this skill and lists the subcommands below.
 
+## Output Contract
+
+When this skill writes networking notes, scan reports, manifests, or other skill-owned artifacts, choose the output directory in this order:
+
+1. Use the output location explicitly provided by the user.
+2. Otherwise, use `IMSIGHT_SKILL_OUTPUT_DIR` when set; relative values are resolved from the current project directory and absolute values are used as-is.
+3. Otherwise, use `<project-dir>/.imsight-arts/dev-box-network/`.
+
+This contract does not replace intentional operational destinations such as copied helper scripts, shell startup files, or user systemd service files required by a networking setup workflow.
+
 ## Subcommands
 
 | Subcommand | Use For | Load |

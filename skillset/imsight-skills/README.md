@@ -17,6 +17,7 @@ The skills in this directory are designed to work as a suite. Individual skills 
 - Task-only invocation: invoking a skill with a task prompt, such as `$imsight-<what> <task prompt>`, asks the agent to inspect the task and select the applicable subcommand.
 - Universal `help` subcommand: every `imsight-*` skill should support `help`. `help` explains what the skill does and lists available subcommands with short explanations.
 - Default subcommand: invoking an `imsight-*` skill without a subcommand means `help` by default.
+- Output directory discovery: when an `imsight-*` skill writes artifacts, first respect an output location explicitly provided by the user. If none is provided, check `IMSIGHT_SKILL_OUTPUT_DIR` and use the relative or absolute directory named there. If that variable is unset, write under `<project-dir>/.imsight-arts/<subdir>`, where `<subdir>` is chosen by the skill or subcommand.
 - Implementation style: most Imsight skills use `SKILL.md` as a compact entrypoint, command router, and subcommand index. `SKILL.md` should describe what each subcommand does, and its entrypoint workflow should tell the agent to choose the right subcommand or sequence of subcommands based on the given task. Detailed workflows, subcommands, references, and reusable procedures should live in subskills or reference files linked from that entrypoint.
 
 ## Skill Index

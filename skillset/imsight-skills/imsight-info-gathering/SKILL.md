@@ -18,6 +18,14 @@ This skill can route to other Imsight skills in the same suite. If the task need
 - No subcommand and no task means `help`.
 - `help` summarizes this skill and lists the subcommands below.
 
+## Output Contract
+
+When this skill writes hints, downloaded source corpora, source packs, reports, ledgers, or other skill-owned artifacts, choose the output directory in this order:
+
+1. Use the output location explicitly provided by the user.
+2. Otherwise, use `IMSIGHT_SKILL_OUTPUT_DIR` when set; relative values are resolved from the current project directory and absolute values are used as-is.
+3. Otherwise, use `<project-dir>/.imsight-arts/info-gather/`.
+
 ## Subcommands
 
 | Subcommand | Use For | Load |
@@ -28,12 +36,13 @@ This skill can route to other Imsight skills in the same suite. If the task need
 | `source-ledger` | Build or maintain a source ledger with source metadata, use, and reliability notes | `references/source-handling.md` |
 | `source-pack` | Produce a local source pack with raw files, processed notes, and a manifest | `references/source-handling.md` and `references/report-synthesis.md` |
 | `synthesize-report` | Produce a synthesized cited report, comparison, recommendation, market scan, or literature scan | `references/report-synthesis.md` |
+| `find-hint` | Research a problem or topic and create a durable hint guide with source links and concise snippets | `references/find-hint.md` |
 
 ## Workflow
 
 1. If no subcommand or actionable task is present, handle `help`: summarize this skill and list the subcommands.
 2. If the request names a subcommand, load the matching reference file and follow that subcommand.
-3. If the request is task-only, identify the deliverable and choose the applicable subcommand or sequence: quick answer, source pack, literature scan, market map, technical comparison, or full report.
+3. If the request is task-only, identify the deliverable and choose the applicable subcommand or sequence: quick answer, source pack, hint guide, literature scan, market map, technical comparison, or full report.
 4. Decide the evidence bar: primary sources for technical, legal, financial, medical, standards, product docs, and company facts; corroborated reputable sources for news or market context.
 5. Search broad, then narrow. Prefer dedicated search/extract/crawl/research tools when available; otherwise use normal web browsing and command-line downloads.
 6. Maintain a source ledger while working: URL, title, publisher, date accessed, publish date if available, why it matters, and whether it is primary or secondary.
@@ -55,9 +64,13 @@ Load `references/source-handling.md` when the task involves downloads, local cor
 
 Load `references/report-synthesis.md` when producing a synthesized report, comparison, recommendation, market/literature scan, or any answer that must reconcile multiple sources.
 
+## Hint Guides
+
+Load `references/find-hint.md` when the user asks to find or create a hint, guide, how-to note, introductory note, or durable problem-solving context from online information.
+
 ## Defaults
 
-- Save working material under a task-specific scratch directory only when local artifacts are useful; otherwise avoid clutter.
+- Save working material under the output directory selected by the Output Contract when local artifacts are useful; otherwise avoid clutter.
 - Use stable, descriptive filenames: `<date>-<publisher-or-domain>-<slug>.<ext>`.
 - Cite sources with links in the final answer whenever external information shaped the conclusion.
 - State uncertainty directly when sources disagree, are stale, or are not authoritative enough.

@@ -18,6 +18,16 @@ This skill is an entrypoint for a slave agent that receives a master's request, 
 - No subcommand and no task means `help`.
 - `help` summarizes this skill and lists the subcommands below.
 
+## Output Contract
+
+When this skill writes slave-side notes, reports, manifests, or other skill-owned auxiliary artifacts, choose the output directory in this order:
+
+1. Use the output location explicitly provided by the user or master request.
+2. Otherwise, use `IMSIGHT_SKILL_OUTPUT_DIR` when set; relative values are resolved from the current project directory and absolute values are used as-is.
+3. Otherwise, use `<project-dir>/.imsight-arts/autodev-slave/`.
+
+This contract does not relocate OpenSpec changes, implementation edits, or initialized `openspec/` trees; those stay in the target workdir required by the selected OpenSpec workflow.
+
 ## Subcommands
 
 - `help`: Explain this slave request-processing skill and list available subcommands.

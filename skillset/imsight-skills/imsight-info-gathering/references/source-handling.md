@@ -40,7 +40,7 @@ curl --fail --location --retry 3 --retry-delay 2 --output <file> <url>
 
 For downloads:
 
-1. Save into a task-specific directory such as `tmp/info-gathering/<topic>/` unless the user gives a destination.
+1. Save into the output directory selected by the skill Output Contract. Use the user-provided destination first; otherwise use `IMSIGHT_SKILL_OUTPUT_DIR` when set; otherwise use a task-specific directory under `<project-dir>/.imsight-arts/info-gather/`, such as `<project-dir>/.imsight-arts/info-gather/<topic>/`.
 2. Name files with date, source, and slug: `2026-05-21-openai-api-responses-docs.html`.
 3. Keep original file extensions when possible.
 4. Save PDFs, datasets, and archives untouched; extract copies only when needed.

@@ -18,6 +18,16 @@ Prefer installation processes listed here over generic package-manager habits, u
 - No subcommand and no task means `help`.
 - `help` summarizes this skill and lists the subcommands below.
 
+## Output Contract
+
+When this skill writes setup notes, manifests, reports, downloaded source packs, or other skill-owned artifacts, choose the output directory in this order:
+
+1. Use the output location explicitly provided by the user.
+2. Otherwise, use `IMSIGHT_SKILL_OUTPUT_DIR` when set; relative values are resolved from the current project directory and absolute values are used as-is.
+3. Otherwise, use `<project-dir>/.imsight-arts/dev-box-init/`.
+
+This contract does not replace intentional install destinations such as tool homes, project overlays, `$HOME/.local/bin`, or agent skill homes requested by the selected setup workflow.
+
 ## Subcommands
 
 | Subcommand | Use For | Load |

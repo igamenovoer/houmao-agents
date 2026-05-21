@@ -16,6 +16,16 @@ This skill is a master-agent entrypoint. The master agent may be any capable cal
 - No subcommand and no task means `help`.
 - `help` summarizes this skill and lists the subcommands below.
 
+## Output Contract
+
+When this skill writes master-side notes, reports, manifests, or other skill-owned artifacts, choose the output directory in this order:
+
+1. Use the output location explicitly provided by the user.
+2. Otherwise, use `IMSIGHT_SKILL_OUTPUT_DIR` when set; relative values are resolved from the current project directory and absolute values are used as-is.
+3. Otherwise, use `<project-dir>/.imsight-arts/autodev-master/`.
+
+This contract does not move slave-owned OpenSpec artifacts or target-workdir mutations; those remain in the target slave workspace selected by the dispatched workflow.
+
 ## Layers
 
 ### Workflows
