@@ -7,9 +7,11 @@ import argparse
 import json
 import re
 import sys
+import tomllib
 from dataclasses import asdict, dataclass
 from html import unescape
 from html.parser import HTMLParser
+from pathlib import Path
 from typing import Iterable, List, Optional
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urljoin
@@ -24,6 +26,9 @@ USER_AGENT = "Mozilla/5.0 libgen-stdlib-links/0.1"
 LIBGEN_HOST_RE = re.compile(r"https?://([^/]*libgen\.[^/]+)", re.IGNORECASE)
 GET_LINK_RE = re.compile(r"(?:^|/)get\.php\?md5=", re.IGNORECASE)
 MD5_RE = re.compile(r"md5=([a-f0-9]{32})", re.IGNORECASE)
+DEFAULT_CONFIG_PATH = (
+    Path(__file__).resolve().parent.parent / "find-libgen.defaults.toml"
+)
 
 
 @dataclass
@@ -68,7 +73,9 @@ class TableParser(HTMLParser):
         self._in_cell = False
         self._in_row = False
 
-    def handle_starttag(self, tag: str, attrs: List[tuple[str, Optional[str]]]) -> None:
+    def handle_starttag(
+        self, tag: str, attrs: List[tuple[str, Optional[str]]]
+    ) -> None:
         attrs_dict = dict(attrs)
         if tag == "table":
             if self._table_depth == 0:
@@ -135,6 +142,23 @@ def build_http_opener(proxy: Optional[str], no_proxy: bool):
     if proxy:
         return build_opener(ProxyHandler({"http": proxy, "https": proxy}))
     return build_opener()
+
+
+def load_defaults(config_path: str) -> dict[str, str]:
+    path = Path(config_path).expanduser()
+    if not path.exists():
+        return {}
+    with path.open("rb") as handle:
+        config = tomllib.load(handle)
+    defaults = config.get("defaults", {})
+    if not isinstance(defaults, dict):
+        return {}
+    resolved: dict[str, str] = {}
+    for key in ("mirror", "proxy"):
+        value = defaults.get(key)
+        if isinstance(value, str) and value.strip():
+            resolved[key] = value.strip()
+    return resolved
 
 
 def fetch_text(url: str, opener, timeout: int) -> str:
@@ -302,15 +326,32 @@ def parse_args(argv: List[str]) -> argparse.Namespace:
             "Uses only Python's standard library."
         )
     )
-    parser.add_argument("query", help="Search keywords, title, author, ISBN, or other info")
-    parser.add_argument("--mirror", required=True, help="LibGen mirror, e.g. https://libgen.vg/")
-    parser.add_argument("--proxy", help="HTTP/HTTPS proxy URL, e.g. http://127.0.0.1:7990")
-    parser.add_argument("--no-proxy", action="store_true", help="Ignore proxy environment variables")
+    parser.add_argument(
+        "query", help="Search keywords, title, author, ISBN, or other info"
+    )
+    parser.add_argument(
+        "--config",
+        default=str(DEFAULT_CONFIG_PATH),
+        help="TOML defaults file for optional mirror/proxy values",
+    )
+    parser.add_argument(
+        "--mirror", help="LibGen mirror URL; defaults to config when omitted"
+    )
+    parser.add_argument(
+        "--proxy", help="HTTP/HTTPS proxy URL; defaults to config when omitted"
+    )
+    parser.add_argument(
+        "--no-proxy", action="store_true", help="Ignore proxy environment variables"
+    )
     parser.add_argument("--timeout", type=int, default=30, help="HTTP timeout in seconds")
     parser.add_argument("--results", type=int, default=25, help="Results per page")
     parser.add_argument("--page", type=int, default=1, help="Search result page")
-    parser.add_argument("--limit", type=int, default=5, help="Maximum matched books to inspect")
-    parser.add_argument("--max-mirrors", type=int, default=1, help="Mirror pages to inspect per book")
+    parser.add_argument(
+        "--limit", type=int, default=5, help="Maximum matched books to inspect"
+    )
+    parser.add_argument(
+        "--max-mirrors", type=int, default=1, help="Mirror pages to inspect per book"
+    )
     parser.add_argument("--title", help="Keep results whose title contains this text")
     parser.add_argument("--author", help="Keep results whose author text contains this text")
     parser.add_argument("--year", help="Keep results from this year")
@@ -326,11 +367,22 @@ def parse_args(argv: List[str]) -> argparse.Namespace:
 
 def main(argv: List[str]) -> int:
     args = parse_args(argv)
-    opener = build_http_opener(args.proxy, args.no_proxy)
+    defaults = load_defaults(args.config)
+    mirror = args.mirror or defaults.get("mirror")
+    proxy = args.proxy if args.proxy is not None else defaults.get("proxy")
+
+    if not mirror:
+        print(
+            "missing mirror: pass --mirror or set defaults.mirror in the config",
+            file=sys.stderr,
+        )
+        return 2
+
+    opener = build_http_opener(proxy, args.no_proxy)
     try:
         books = search_books(
             args.query,
-            args.mirror,
+            mirror,
             opener,
             args.timeout,
             args.results,
