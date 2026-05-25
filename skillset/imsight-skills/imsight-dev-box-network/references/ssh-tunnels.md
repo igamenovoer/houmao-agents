@@ -12,7 +12,7 @@ Use this reference to set up, inspect, repair, or remove SSH reverse and forward
   - Tmux mode: run tunnels as foreground processes in a persistent tmux session.
   - Systemd mode: run each tunnel as a user systemd service.
 - When multiple tunnels are opened in tmux mode, put them in different windows of the same tmux session.
-- User systemd tunnel services must not delay boot, shutdown, or reboot. For every systemd tunnel unit this skill creates, run the tunnel script in foreground `--block` mode under `Type=simple`, do not use `--background`/`nohup`, do not wait for network readiness, and allow systemd to kill the whole service control group quickly on stop.
+- User systemd tunnel services must not delay boot, shutdown, or reboot. For every systemd tunnel unit this skill creates, run the tunnel script in foreground `--block` mode under `Type=simple`, do not use `--background`/`nohup`, do not wait for network readiness or tunnel readiness, and allow systemd to kill the whole service control group quickly on stop.
 
 ## Bundled Scripts
 
@@ -143,9 +143,9 @@ The bundled scripts also support their own `--tmux` mode, but that creates per-t
 
 Use systemd mode when the tunnel should survive logout and restart automatically.
 
-Keep tunnel units reboot-friendly. For systemd, do not start the tunnel script with `--background`: systemd would track the short-lived wrapper instead of the real tunnel process, which weakens restart, logging, and cleanup. Use `Type=simple` with foreground `--block`; systemd treats the service as started when the script process is launched, not when the SSH tunnel becomes reachable.
+Keep tunnel units reboot-friendly. For systemd, do not start the tunnel script with `--background`: systemd would track the short-lived wrapper instead of the real tunnel process, which weakens restart, logging, and cleanup. Use `Type=simple` with foreground `--block`; systemd treats the service as started when the script process is launched, not when the SSH tunnel becomes reachable. That immediate "started" state is intentional because the tunnel can recover in its own reconnect loop after the relay or network appears.
 
-Do not make units wait on `network-online.target`; a missing or slow relay should not slow login, shutdown, or reboot. Use `After=network.target`, foreground `ExecStart`, and immediate stop behavior:
+Do not make units wait on `network-online.target`, `ExecStartPre` SSH checks, remote listener probes, or custom readiness loops. A missing or slow relay should not slow login, shutdown, or reboot. Use `After=network.target`, foreground `ExecStart`, and immediate stop behavior:
 
 ```ini
 After=network.target
@@ -155,7 +155,7 @@ KillSignal=SIGKILL
 SendSIGKILL=yes
 ```
 
-For bundled tunnel scripts in systemd units, omit readiness/status checks unless the user explicitly wants fast failure reporting. The reconnect loop should handle slow or unreachable remotes without making systemd wait.
+For bundled tunnel scripts in systemd units, omit readiness/status checks. The reconnect loop should handle slow or unreachable remotes without making systemd wait. If the user explicitly asks for health reporting, put it in inspection commands, logs, or a separate monitor rather than in service startup or shutdown.
 
 Create the unit under:
 

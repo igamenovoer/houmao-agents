@@ -54,7 +54,7 @@ Copy them to the target dev box when missing or stale, make them executable, the
 5. If the user asks vaguely, such as "setup ssh tunnel", ask for the required tunnel details before changing anything.
 6. Inspect existing services and ports before changing anything.
 7. Prefer user systemd services for persistent tunnels unless the user wants tmux/foreground operation.
-8. For systemd tunnel services, keep startup non-blocking by using foreground `--block` under `Type=simple` without `network-online.target` or background wrappers; keep shutdown fast with `TimeoutStopSec=1` and control-group kill behavior.
+8. For systemd tunnel services, keep both startup and shutdown non-blocking: use foreground `--block` under `Type=simple`, do not use `network-online.target`, `ExecStartPre` connectivity checks, readiness waits, `--background`, or `nohup`; keep shutdown fast with `TimeoutStopSec=1`, `KillMode=control-group`, `KillSignal=SIGKILL`, and `SendSIGKILL=yes`.
 9. For destructive cleanup, remove only the stale service/process requested and verify the intended reverse SSH access tunnel remains healthy.
 
 ## Safety Rules

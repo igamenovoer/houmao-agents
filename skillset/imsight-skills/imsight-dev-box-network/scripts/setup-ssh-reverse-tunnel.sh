@@ -35,6 +35,7 @@ usage() {
     echo "  --retry-delay   Seconds to wait before reconnecting after ssh exits (default: 10)"
     echo "  --status-timeout Seconds to wait for initial tunnel status (default: 10)"
     echo "  --background    Start a single background ssh process with nohup"
+    echo "                  Convenience mode only; do not use from systemd units"
     echo "                  Requires passwordless SSH and no host-key prompt"
     echo "  --tmux          Run the reconnect loop inside tmux session ssh-tunnel-<remote-port>"
     echo "  --attach        Attach or switch into the tmux session after it is created"
