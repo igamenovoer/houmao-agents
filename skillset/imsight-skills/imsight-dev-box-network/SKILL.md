@@ -1,6 +1,6 @@
 ---
 name: imsight-dev-box-network
-description: Imsight-authored development box networking command guide. Use when explicitly invoked as imsight-dev-box-network, routed from another Imsight skill, or when the prompt or context mentions `imsight` and the user is configuring, auditing, repairing, or documenting dev-box networking services, SSH reverse tunnels, SSH forward tunnels, proxy services, relay access, exposed ports, systemd user tunnel services, or host-to-host access patterns for Imsight development machines. Do not invoke for generic networking, proxy, tunnel, or dev-box tasks that do not mention `imsight`.
+description: Imsight-authored development box networking command guide. Use when explicitly invoked as imsight-dev-box-network, routed from another Imsight skill, or when the prompt or context mentions `imsight` and the user is configuring, auditing, repairing, or documenting dev-box networking services, SSH reverse tunnels, SSH forward tunnels, SSH-based proxy access, proxy services, relay access, exposed ports, systemd user tunnel services, or host-to-host access patterns for Imsight development machines. Do not invoke for generic networking, proxy, tunnel, or dev-box tasks that do not mention `imsight`.
 ---
 
 # Imsight Dev Box Network
@@ -30,6 +30,7 @@ This contract does not replace intentional operational destinations such as copi
 | --- | --- |
 | `help` | Explain this dev-box networking skill and list available subcommands | This entrypoint |
 | `ssh-tunnels` | Set up, inspect, repair, or remove SSH reverse/forward tunnels | `references/ssh-tunnels.md` |
+| `proxy-via-ssh` | Use an SSH host as a middle host for proxy access, including SOCKS5 dynamic forwarding and local forwarding of remote proxy ports | `references/proxy-via-ssh.md` |
 | `proxy-setup` | Install proxy environment scripts and populate grouped proxy candidates from local, remote, or tunneled proxy ports | `references/install-proxy-script.md` |
 | `scan-proxy` | Discover candidate proxy ports, then optionally update the managed shell startup proxy candidate block | `references/install-proxy-script.md` and `scripts/scan-proxy-candidates.py` |
 
@@ -51,11 +52,12 @@ Copy them to the target dev box when missing or stale, make them executable, the
 2. If the request names a subcommand, load that subcommand's reference or script guidance.
 3. If the request is task-only, choose the applicable networking subcommand or sequence from the task.
 4. If the selected subcommand is `scan-proxy`, ask for the port or port range when the user has not provided one, run `scripts/scan-proxy-candidates.py` on the target host, then update the managed shell startup proxy candidate block when the user wants persisted proxy discovery.
-5. If the user asks vaguely, such as "setup ssh tunnel", ask for the required tunnel details before changing anything.
-6. Inspect existing services and ports before changing anything.
-7. Prefer user systemd services for persistent tunnels unless the user wants tmux/foreground operation.
-8. For systemd tunnel services, keep both startup and shutdown non-blocking: use foreground `--block` under `Type=simple`, do not use `network-online.target`, `ExecStartPre` connectivity checks, readiness waits, `--background`, or `nohup`; keep shutdown fast with `TimeoutStopSec=1`, `KillMode=control-group`, `KillSignal=SIGKILL`, and `SendSIGKILL=yes`.
-9. For destructive cleanup, remove only the stale service/process requested and verify the intended reverse SSH access tunnel remains healthy.
+5. If the selected subcommand is `proxy-via-ssh`, distinguish SSH dynamic SOCKS5 forwarding from forwarding an existing proxy service before choosing commands or service units.
+6. If the user asks vaguely, such as "setup ssh tunnel", ask for the required tunnel details before changing anything.
+7. Inspect existing services and ports before changing anything.
+8. Prefer user systemd services for persistent tunnels unless the user wants tmux/foreground operation.
+9. For systemd tunnel services, keep both startup and shutdown non-blocking: use foreground `--block` under `Type=simple`, do not use `network-online.target`, `ExecStartPre` connectivity checks, readiness waits, `--background`, or `nohup`; keep shutdown fast with `TimeoutStopSec=1`, `KillMode=control-group`, `KillSignal=SIGKILL`, and `SendSIGKILL=yes`.
+10. For destructive cleanup, remove only the stale service/process requested and verify the intended reverse SSH access tunnel remains healthy.
 
 ## Safety Rules
 
