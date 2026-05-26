@@ -27,7 +27,7 @@ This contract does not replace intentional operational destinations such as copi
 ## Subcommands
 
 | Subcommand | Use For | Load |
-| --- | --- |
+| --- | --- | --- |
 | `help` | Explain this dev-box networking skill and list available subcommands | This entrypoint |
 | `ssh-tunnels` | Set up, inspect, repair, or remove SSH reverse/forward tunnels | `references/ssh-tunnels.md` |
 | `proxy-via-ssh` | Use an SSH host as a middle host for proxy access, including SOCKS5 dynamic forwarding and local forwarding of remote proxy ports | `references/proxy-via-ssh.md` |
