@@ -1,6 +1,6 @@
 ---
 name: imsight-python-general
-description: Imsight-authored general Python development command skill. Use when explicitly invoked as imsight-python-general, routed from another Imsight skill, or when the prompt or context mentions `imsight` and asks for Python project setup, Python repo conventions, Pixi-managed Python project structure, packaging layout, source/test/docs/context organization, dependency workflow, lint/type/test operations, or a reusable Imsight Python development standard. Do not invoke for generic Python development tasks that do not mention `imsight`.
+description: Imsight-authored general Python development command skill. Use when explicitly invoked as imsight-python-general, routed from another Imsight skill, or when the prompt or context mentions `imsight` and asks for Python project setup, Python repo conventions, Pixi-managed Python project structure, packaging layout, source/test/docs/context organization, dependency workflow, lint/type/test operations, native coding-agent context rules, or a reusable Imsight Python development standard. Do not invoke for generic Python development tasks that do not mention `imsight`.
 ---
 
 # Imsight Python General
@@ -31,6 +31,7 @@ This contract does not replace intentional project-structure edits in the target
 | Subcommand | Use For | Load |
 | --- | --- | --- |
 | `help` | Explain this Python development skill and list available subcommands | This entrypoint |
+| `declare-universal-rules` | Add Imsight universal project rules to a coding-agent native project context file such as `AGENTS.md`, `CLAUDE.md`, or `GEMINI.md` | `references/declare-universal-rules.md` |
 | `structure-pixi-project` | Structure or review a Pixi-managed Python project, especially a new src-layout project with tests, docs, context, scripts, and external dependency folders | `references/structure-pixi-project.md` |
 
 ## Procedure

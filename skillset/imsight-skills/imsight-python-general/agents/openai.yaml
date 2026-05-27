@@ -1,6 +1,6 @@
 interface:
   display_name: "Imsight Python General"
-  short_description: "Python development workflows and project structure"
+  short_description: "Python workflows, project structure, and universal rules"
   default_prompt: "Use $imsight-python-general use help to see Imsight Python development subcommands."
 policy:
   allow_implicit_invocation: false
