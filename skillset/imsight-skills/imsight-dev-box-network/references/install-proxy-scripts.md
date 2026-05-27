@@ -1,4 +1,4 @@
-# Install Proxy Script
+# Install Proxy Scripts
 
 Use this reference to install the bundled proxy environment scripts onto a new host and configure proxy candidate groups in the user's shell startup file.
 
@@ -7,7 +7,7 @@ Do not record real proxy inventory from the current host in this skill. Discover
 ## Install Workflow
 
 1. Copy `scan-proxy-candidates.py`, `setup-proxy.sh`, and `unset-proxy.sh` into the target user's home directory unless the user specifies another install location.
-2. Ask the user for the proxy port or port range to scan. Do not assume a range. Run `scan-proxy` over the user-provided range, classify verified proxies into `local`, `remote`, or `tunnel`, and write the grouped env vars to the shell startup file selected from the user's shell type.
+2. Ask the user for the proxy port or port range to scan. Do not assume a range. Run `proxy-scan` over the user-provided range, classify verified proxies into `local`, `remote`, or `tunnel`, and write the grouped env vars to the shell startup file selected from the user's shell type.
 3. If the user gives manual proxy addresses, write them to `PROXY_MANUAL_CANDIDATE_LIST` in the same managed startup block so they are tried before scanned groups.
 
 ## Bundled Scripts
@@ -71,9 +71,9 @@ HTTPS behavior:
 - If no `https://` proxy is found, the selected HTTP/SOCKS proxy is also used for HTTPS by default.
 - If the user forbids HTTP/SOCKS fallback for HTTPS, set `SETUP_PROXY_FORBID_HTTP_FOR_HTTPS=1` before sourcing `setup-proxy.sh` or add it to the managed startup block.
 
-## Action: scan-proxy
+## Subcommand: proxy-scan
 
-Use this action when the user asks to scan proxy ports, discover local proxies, classify SSH-tunnel proxies, find normal remote proxies, add manual proxy addresses, or update shell startup proxy candidate variables.
+Use this subcommand when the user asks to scan proxy ports, discover local proxies, classify SSH-tunnel proxies, find normal remote proxies, add manual proxy addresses, or update shell startup proxy candidate variables.
 
 Run the bundled scanner:
 
