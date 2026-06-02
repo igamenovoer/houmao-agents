@@ -9,8 +9,6 @@ description: Imsight-authored agent-assisted exploration workflow for developmen
 
 Use this skill to explore a development project before planning or building. Treat the user's proposal, issue, feature idea, or spec as a hypothesis to test against the repository's existing docs, code, tests, terminology, and product boundaries.
 
-This skill adapts the `grill-with-docs` style: inspect the repo before asking, challenge fuzzy language, ask one unresolved question at a time, recommend an answer, and capture resolved knowledge in the right project artifact.
-
 ## Invocation Contract
 
 - Preferred explicit form: `$imsight-project-explore <task prompt>`.
@@ -23,96 +21,56 @@ This skill adapts the `grill-with-docs` style: inspect the repo before asking, c
 
 Use the project directory explicitly provided by the user. If none is provided, use the current working directory. Before creating or updating files, confirm the current directory looks like the intended project root unless the user already made that explicit.
 
+## First Step: Establish Domain Language
+
+Before entering any exploration mode, scan the project to establish a shared domain language baseline.
+
+1. Inspect the codebase for project-specific terms: identifiers in code, schema fields, UI labels, test names, documentation headings, and any existing glossary (such as `CONTEXT.md`).
+2. Build a candidate vocabulary of canonical terms and their definitions.
+3. Ask the user to confirm, correct, or extend the candidate terms. Do not proceed to mode-specific exploration until the baseline vocabulary is accepted.
+4. Write the established domain language to `docs/design/domain-language/<topic-name>.md` by default. If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Only write to `.imsight-arts/project-explore/` when the user explicitly says the docs are untracked.
+
+If the project already has an established domain language document that the user accepts as authoritative, skip this step and load it instead.
+
 ## Exploration Modes
 
-| Mode | Use For | Artifact Bias |
+| Mode | Use For | Detail |
 | --- | --- | --- |
-| `auto` | Let the agent decide what to explore from the prompt, repo evidence, and highest-risk unknowns | State the chosen focus before proceeding |
-| `feature-scope` | Clarify a feature's target users, behaviors, boundaries, non-goals, and acceptance criteria | Existing spec/issue, or exploration summary |
-| `domain-language` | Resolve project-specific terms and terminology conflicts | `CONTEXT.md` using `references/CONTEXT-FORMAT.md` |
-| `review-decision` | Review existing decisions for logical consistency, conflict with code/docs/tests, stale assumptions, missing trade-offs, or implementation drift | Existing ADRs, specs, architecture notes, and code evidence |
+| `auto` | Let the agent decide what to explore from the prompt, repo evidence, and highest-risk unknowns | [modes/auto.md](modes/auto.md) |
+| `feature-scope` | Clarify a feature's target users, behaviors, boundaries, non-goals, and acceptance criteria | [modes/feature-scope.md](modes/feature-scope.md) |
+| `domain-language` | Resolve project-specific terms and terminology conflicts | [modes/domain-language.md](modes/domain-language.md) |
+| `review-decision` | Review existing decisions for consistency, drift, stale assumptions, and missing trade-offs | [modes/review-decision.md](modes/review-decision.md) |
 
 Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose what to explore, state the chosen focus, and continue. Choose another mode only from the user's prompt: explicit mode names, direct requests about feature scope, terminology, or decision review, or wording that clearly maps to one focused mode. Combine modes only when the request naturally spans them.
 
-## Evidence First
+## Core Principles
+
+### 1. Read the project context first
 
 If a question can be answered by exploring the codebase, inspect the codebase instead of asking the user.
 
-Start by looking for:
+Look for coding agent context files (such as `AGENTS.md` or `.cursor/`), project documentation, domain memory (such as `CONTEXT.md`, architecture docs, or ADRs), and behavior surfaces (routes, schemas, tests, migrations, UI labels, CLI commands). Also look for similar existing features that imply naming, permissions, lifecycle states, error handling, or acceptance criteria.
 
-- Project guidance: `AGENTS.md`, `CLAUDE.md`, `.agents/`, `.cursor/`, `.github/copilot-instructions.md`.
-- Product/spec material: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files, roadmap notes.
-- Domain memory: `CONTEXT.md`, `docs/adr/`, architecture docs, design docs.
-- Behavior surfaces: routes, controllers, API schemas, UI pages, CLI commands, migrations, test names, fixtures.
-- Similar existing features that imply naming, permissions, lifecycle states, error handling, or acceptance criteria.
+Use targeted search and file reads before broad exploration. Cite file paths and line numbers when reporting evidence or contradictions.
 
-Use `rg` and targeted file reads before broad exploration. Cite file paths and line numbers when reporting evidence or contradictions.
+### 2. Pay attention to domain language
 
-## Exploration Loop
+Watch for discrepancies between the user's terms and the terms used in the codebase. Challenge the user when:
 
-1. Restate the exploration target in one or two concrete sentences.
-2. Identify the current evidence set: docs read, code areas inspected, tests or schemas checked.
-3. Build a decision tree covering goal, user, entry point, states, data ownership, permissions, edge cases, out-of-scope behavior, rollout, and tests.
-4. Resolve every branch that the repo already answers.
-5. Ask exactly one unresolved question at a time.
-6. For each question, include:
-   - `Question`: the specific decision needed.
-   - `Recommended answer`: the answer you would choose from the evidence.
-   - `Why it matters`: the downstream implementation, UX, data, or testing consequence.
-   - `Evidence`: file references or documented facts that shaped the recommendation.
-   - `Unlocks`: what can be decided after this.
-7. After the user answers, update the exploration state and continue to the next highest-leverage question.
-8. Stop when the remaining unknowns are either deliberately out of scope or not blocking the user's next action.
+- Their term conflicts with the existing glossary (such as `CONTEXT.md`) or the dominant usage in code.
+- The same concept has multiple names across docs, tests, and code.
+- A term is overloaded or ambiguous in a way that affects implementation or tests.
 
-## Challenge Rules
-
-Call out contradictions immediately:
-
-- The user's term conflicts with `CONTEXT.md`.
-- The requested behavior disagrees with existing code, tests, docs, routes, schemas, or UI affordances.
-- An existing decision contradicts another decision, current code, current tests, or current docs.
-- The plan assumes a capability that the project does not appear to have.
-- The scope mixes product goals, implementation details, and unrelated cleanup.
-- The spec says "simple", "basic", "support", "handle", "manage", or "integrate" without observable behavior.
-
-State the conflict, give the evidence, recommend a resolution, and ask for the smallest needed decision.
-
-## Scope Discipline
-
-Separate findings into:
-
-- `In scope`: behavior the feature or spec must include.
-- `Out of scope`: tempting work that should not block the requested outcome.
-- `Open questions`: decisions that still need the user.
-- `Assumptions`: decisions made provisionally from repo evidence.
-- `Risks`: uncertainty that could break implementation, testing, migration, or user expectations.
-
-When a feature can be sliced vertically, prefer a narrow end-to-end slice over broad partial infrastructure. Name the slice in terms of user-visible behavior.
+Only change domain language terms with explicit user consent. The default place to write them is `docs/design/domain-language/<topic-name>.md`; only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Surface the conflict, give the evidence, recommend a resolution, and ask for the smallest needed decision.
 
 ## Capturing Knowledge
 
 Update durable project artifacts inline when the session resolves durable knowledge.
 
-- Use `CONTEXT.md` only for project-specific domain terms. Do not put specs, implementation choices, tasks, or scratch notes there. Load `references/CONTEXT-FORMAT.md` before editing it.
-- Use ADRs sparingly for hard-to-reverse, surprising, trade-off-driven decisions. Load `references/ADR-FORMAT.md` before creating or updating one.
+- Domain language docs are tracked project content by default. Write them to `docs/design/domain-language/<topic-name>.md`. If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Load `references/DOMAIN-LANGUAGE-FORMAT.md` before creating or editing domain language docs. Do not put specs, implementation choices, tasks, or scratch notes there.
+- ADRs are tracked project content by default. Write them to `docs/design/adrs/<topic-name>/<index>-<what>.md`. Load `references/ADR-FORMAT.md` before creating or updating one.
 - In `review-decision`, review existing ADRs, decision sections, architecture notes, and code behavior before proposing any new decision. Report inconsistencies first; update durable artifacts only after the inconsistency has a resolved answer.
 - Use an existing spec, issue, PRD, or design doc when the exploration resolves feature behavior, acceptance criteria, scope, or non-goals.
-- If no durable artifact exists and the user asked for a written result, write an exploration summary under the output directory.
-
-When writing skill-owned exploration summaries, choose the output directory in this order:
-
-1. Use the output location explicitly provided by the user.
-2. Otherwise, use `IMSIGHT_SKILL_OUTPUT_DIR` when set; relative values are resolved from the project directory and absolute values are used as-is.
-3. Otherwise, use `<project-dir>/.imsight-arts/project-explore/`.
-
-## Final Output
-
-When the exploration is complete or paused, summarize:
-
-- Scope decision: what is in and out.
-- Resolved behavior: concrete feature/spec decisions.
-- Open questions: only unresolved blockers.
-- Evidence: most important docs/code references.
-- Suggested next action: spec update, decision review report, ADR update, issue breakdown, implementation plan, or handoff to another Imsight skill.
+- If no durable artifact exists and the user asked for a written result, ask whether the output should be tracked or untracked. By default, write tracked exploration summaries to `docs/design/exploration/<topic-name>.md`. Only write to `.imsight-arts/project-explore/` when the user explicitly says the exploration docs are untracked.
 
 Do not start implementation unless the user explicitly asks to switch from exploration to implementation.
