@@ -59,27 +59,39 @@ Present **exactly one question at a time**.
 
 ### For Multiple-Choice Questions
 
-Analyze all options and determine the **most suitable option** based on:
+Before presenting the options, provide:
+
+1. **Motivation** — state the question clearly and explain why the answer materially impacts architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, or compliance validation.
+2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows how each option would play out in practice.
+
+Then analyze all options and determine the **most suitable option** based on:
 
 - Best practices for the project type
 - Common patterns in similar implementations
 - Risk reduction (security, performance, maintainability)
 - Alignment with any explicit project goals or constraints visible in the spec
 
-Present your **recommended option prominently** at the top with clear reasoning (1–2 sentences explaining why this is the best choice). Format as:
+Present your **recommended option prominently** at the top with:
+- The recommendation itself.
+- **Why it is recommended** (1–2 sentences).
+- **Implication** — what happens downstream if this option is chosen (e.g., which files change, which assumptions hold, which risks are accepted).
+
+Format as:
 
 ```
-**Recommended:** Option [X] - <reasoning>
+**Recommended:** Option [X] - <why recommended>
+
+**Implication:** <downstream consequence>
 ```
 
-Then render all options as a Markdown table:
+Then render all options as a Markdown table that includes a **Pros/Cons** column:
 
-| Option | Description |
-| --- | --- |
-| A | ... |
-| B | ... |
-| C | ... |
-| Short | Provide a different answer (any length) |
+| Option | Description | Pros/Cons |
+| --- | --- | --- |
+| A | ... | Pros: ... Cons: ... |
+| B | ... | Pros: ... Cons: ... |
+| C | ... | Pros: ... Cons: ... |
+| Short | Provide a different answer (any length) | — |
 
 After the table, add:
 
@@ -89,10 +101,22 @@ You can reply with the option letter (e.g., "A"), accept the recommendation by s
 
 ### For Short-Answer Questions
 
-Provide your **suggested answer** based on best practices and context. Format as:
+Before presenting the suggested answer, provide:
+
+1. **Motivation** — state the question clearly and explain why the answer materially impacts architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, or compliance validation.
+2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows why the answer matters.
+
+Then provide your **suggested answer** with:
+- The suggestion itself.
+- **Brief reasoning**.
+- **Implication** — what happens downstream if this answer is chosen.
+
+Format as:
 
 ```
 **Suggested:** <your proposed answer> - <brief reasoning>
+
+**Implication:** <downstream consequence>
 ```
 
 Then output:

@@ -60,27 +60,39 @@ Present **exactly one question at a time**.
 
 ### For Multiple-Choice Questions
 
-Analyze all options and determine the **most suitable option** based on:
+Before presenting the options, provide:
+
+1. **Motivation** — state the question clearly and explain why the answer materially impacts how the team communicates about the domain, how new code should be named, or whether the glossary needs an update.
+2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows how each option would play out in practice (e.g., a code review comment, a user-facing error message, or a schema field name).
+
+Then analyze all options and determine the **most suitable option** based on:
 
 - Domain expert usage over implementation jargon
 - Consistency with existing glossary entries
 - Prevalence in the current codebase
 - Clarity and lack of overload (same word meaning multiple things)
 
-Present your **recommended option prominently** at the top with clear reasoning (1–2 sentences explaining why this is the best choice). Format as:
+Present your **recommended option prominently** at the top with:
+- The recommendation itself.
+- **Why it is recommended** (1–2 sentences).
+- **Implication** — what happens downstream if this option is chosen (e.g., which files need renaming, which glossary entries change, which synonyms become avoided).
+
+Format as:
 
 ```
-**Recommended:** Option [X] - <reasoning>
+**Recommended:** Option [X] - <why recommended>
+
+**Implication:** <downstream consequence>
 ```
 
-Then render all options as a Markdown table:
+Then render all options as a Markdown table that includes a **Pros/Cons** column:
 
-| Option | Description |
-| --- | --- |
-| A | ... |
-| B | ... |
-| C | ... |
-| Short | Provide a different answer (any length) |
+| Option | Description | Pros/Cons |
+| --- | --- | --- |
+| A | ... | Pros: ... Cons: ... |
+| B | ... | Pros: ... Cons: ... |
+| C | ... | Pros: ... Cons: ... |
+| Short | Provide a different answer (any length) | — |
 
 After the table, add:
 
@@ -90,10 +102,22 @@ You can reply with the option letter (e.g., "A"), accept the recommendation by s
 
 ### For Short-Answer Questions
 
-Provide your **suggested answer** based on best practices and context. Format as:
+Before presenting the suggested answer, provide:
+
+1. **Motivation** — state the question clearly and explain why the answer materially impacts how the team communicates about the domain, how new code should be named, or whether the glossary needs an update.
+2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows why the answer matters.
+
+Then provide your **suggested answer** with:
+- The suggestion itself.
+- **Brief reasoning**.
+- **Implication** — what happens downstream if this answer is chosen.
+
+Format as:
 
 ```
 **Suggested:** <your proposed answer> - <brief reasoning>
+
+**Implication:** <downstream consequence>
 ```
 
 Then output:
