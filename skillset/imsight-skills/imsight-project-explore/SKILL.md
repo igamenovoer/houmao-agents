@@ -21,6 +21,16 @@ Use this skill to explore a development project before planning or building. Tre
 
 Use the project directory explicitly provided by the user. If none is provided, use the current working directory. Before creating or updating files, confirm the current directory looks like the intended project root unless the user already made that explicit.
 
+## Output Directory Discovery
+
+When this skill writes artifacts, resolve `<output-dir>` in this priority:
+
+1. An output location explicitly provided by the user.
+2. The directory named in the `IMSIGHT_SKILL_OUTPUT_DIR` environment variable (relative or absolute).
+3. `<project-dir>/.imsight-arts/project-explore/` by default.
+
+Only write to `docs/design/` if the user explicitly requests tracked project docs.
+
 ## First Step: Establish Domain Language
 
 Before entering any exploration mode, scan the project to establish a shared domain language baseline.
@@ -28,7 +38,7 @@ Before entering any exploration mode, scan the project to establish a shared dom
 1. Inspect the codebase for project-specific terms: identifiers in code, schema fields, UI labels, test names, documentation headings, and any existing glossary (such as `CONTEXT.md`).
 2. Build a candidate vocabulary of canonical terms and their definitions.
 3. Ask the user to confirm, correct, or extend the candidate terms. Do not proceed to mode-specific exploration until the baseline vocabulary is accepted.
-4. Write the established domain language to `docs/design/domain-language/<topic-name>.md` by default. If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Only write to `.imsight-arts/project-explore/` when the user explicitly says the docs are untracked.
+4. Write the established domain language to `<output-dir>/domain-language/<topic-name>.md`, where `<output-dir>` is resolved by the output directory discovery contract (user-provided location, `IMSIGHT_SKILL_OUTPUT_DIR`, or `<project-dir>/.imsight-arts/project-explore/` by default). If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Only write to `docs/design/domain-language/` if the user explicitly requests tracked project docs.
 
 If the project already has an established domain language document that the user accepts as authoritative, skip this step and load it instead.
 
@@ -61,16 +71,16 @@ Watch for discrepancies between the user's terms and the terms used in the codeb
 - The same concept has multiple names across docs, tests, and code.
 - A term is overloaded or ambiguous in a way that affects implementation or tests.
 
-Only change domain language terms with explicit user consent. The default place to write them is `docs/design/domain-language/<topic-name>.md`; only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Surface the conflict, give the evidence, recommend a resolution, and ask for the smallest needed decision.
+Only change domain language terms with explicit user consent. The default place to write them is `<output-dir>/domain-language/<topic-name>.md`, where `<output-dir>` follows the output directory discovery contract; only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Surface the conflict, give the evidence, recommend a resolution, and ask for the smallest needed decision.
 
 ## Capturing Knowledge
 
 Update durable project artifacts inline when the session resolves durable knowledge.
 
-- Domain language docs are tracked project content by default. Write them to `docs/design/domain-language/<topic-name>.md`. If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Load `references/DOMAIN-LANGUAGE-FORMAT.md` before creating or editing domain language docs. Do not put specs, implementation choices, tasks, or scratch notes there.
+- Domain language docs are written to `<output-dir>/domain-language/<topic-name>.md` by default, following the output directory discovery contract. If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Load `references/DOMAIN-LANGUAGE-FORMAT.md` before creating or editing domain language docs. Do not put specs, implementation choices, tasks, or scratch notes there.
 - ADRs are tracked project content by default. Write them to `docs/design/adrs/<topic-name>/<index>-<what>.md`. Load `references/ADR-FORMAT.md` before creating or updating one.
 - In `review-decision`, review existing ADRs, decision sections, architecture notes, and code behavior before proposing any new decision. Report inconsistencies first; update durable artifacts only after the inconsistency has a resolved answer.
 - Use an existing spec, issue, PRD, or design doc when the exploration resolves feature behavior, acceptance criteria, scope, or non-goals.
-- If no durable artifact exists and the user asked for a written result, ask whether the output should be tracked or untracked. By default, write tracked exploration summaries to `docs/design/exploration/<topic-name>.md`. Only write to `.imsight-arts/project-explore/` when the user explicitly says the exploration docs are untracked.
+- If no durable artifact exists and the user asked for a written result, write exploration summaries to `<output-dir>/exploration/<topic-name>.md` by default, following the output directory discovery contract. Only write to `docs/design/exploration/` if the user explicitly requests tracked project docs.
 
 Do not start implementation unless the user explicitly asks to switch from exploration to implementation.

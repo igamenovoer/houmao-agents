@@ -151,7 +151,7 @@ If no valid questions exist at the start, immediately report: "No critical ambig
   - Terminology conflict → Normalize term across notes
 - If the clarification invalidates an earlier ambiguous statement, replace that statement instead of duplicating; leave no obsolete contradictory text.
 - If an existing spec, issue, PRD, or design doc is the target artifact, update it incrementally after each answer (atomic overwrite). Preserve formatting and heading hierarchy.
-- If no durable artifact exists and the user asked for a written result, write an exploration summary. Default to a tracked doc at `docs/design/exploration/<topic-name>.md`; use `.imsight-arts/project-explore/` only when the user explicitly says untracked.
+- If no durable artifact exists and the user asked for a written result, write an exploration summary to `<output-dir>/exploration/<topic-name>.md`, following the output directory discovery contract.
 
 ## Completion Report
 

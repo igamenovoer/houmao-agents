@@ -132,7 +132,7 @@ If no valid questions exist at the start, immediately report: "No critical ambig
 - Maintain an in-memory exploration state plus the raw evidence set.
 - After each accepted answer, update the coverage map and re-prioritize remaining questions.
 - If the answer reveals the request is actually about a focused mode (feature-scope, domain-language, review-decision), state the pivot explicitly and hand off to that mode's page.
-- Do not write to disk in `auto` unless the user explicitly requests an exploration summary. If they do, default to a tracked doc at `docs/design/exploration/<topic-name>.md`; use `.imsight-arts/project-explore/` only when the user explicitly says untracked.
+- Do not write to disk in `auto` unless the user explicitly requests an exploration summary. If they do, write it to `<output-dir>/exploration/<topic-name>.md`, following the output directory discovery contract.
 
 ## Completion Report
 
