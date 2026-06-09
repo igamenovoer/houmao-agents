@@ -1,6 +1,6 @@
 # Houmao Claude-Kimi Specialist Setup
 
-Use this reference when the user wants a Houmao specialist that launches Claude Code with Kimi/Moonshot credentials.
+Use this reference when the user wants a Houmao specialist that launches Claude Code with Kimi Code credentials.
 
 ## Required Input
 
@@ -34,7 +34,8 @@ Explain that this copies only currently set proxy env records such as `HTTP_PROX
 - Tool lane: `claude`
 - Credential name: `<specialist-name>-creds`
 - Base URL: `https://api.kimi.com/coding/`
-- Model: `kimi-k2.6`
+- Model: `kimi-for-coding`
+- Compact window: `CLAUDE_CODE_AUTO_COMPACT_WINDOW=262144`
 - System prompt: omit unless the user requests one.
 
 These defaults align the Houmao specialist with the official Kimi Code Claude Code setup while keeping the Kimi key in Houmao's Claude credential bundle.
@@ -42,11 +43,13 @@ These defaults align the Houmao specialist with the official Kimi Code Claude Co
 ## Official Kimi References
 
 - Kimi Code official third-party coding-agent guide: `https://www.kimi.com/code/docs/en/third-party-tools/other-coding-agents.html`
-  - Relevant Claude Code settings: `ANTHROPIC_BASE_URL=https://api.kimi.com/coding/` and `ANTHROPIC_API_KEY=<key>`.
+  - Relevant Claude Code settings: `ANTHROPIC_BASE_URL=https://api.kimi.com/coding/`, `ANTHROPIC_API_KEY=<key>`, and `CLAUDE_CODE_AUTO_COMPACT_WINDOW=262144`.
   - The guide says `/status` should show the Kimi base URL after launch; model names may still appear Claude-like even though calls go to Kimi.
+- Kimi Code overview: `https://www.kimi.com/code/docs/en/`
+  - When calling the Kimi Code API from third-party tools, use model ID `kimi-for-coding`.
 - Kimi API Platform integration guide: `https://platform.kimi.ai/docs/guide/agent-support`
-  - Older K2.5-oriented Claude Code guide showing model override variables: `ANTHROPIC_MODEL`, `ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL`, `ANTHROPIC_DEFAULT_HAIKU_MODEL`, `CLAUDE_CODE_SUBAGENT_MODEL`, and `ENABLE_TOOL_SEARCH=false`.
-- Kimi Code provider docs: `https://www.kimi.com/code/docs/en/kimi-code-cli/configuration/providers-and-models.html`
+  - Older K2.5-oriented API-platform guide. Do not use its `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_MODEL`, Claude default model vars, `CLAUDE_CODE_SUBAGENT_MODEL`, or `ENABLE_TOOL_SEARCH=false` pattern for the current Kimi Code membership endpoint unless the user explicitly asks for that older lane.
+- Kimi Code provider docs: `https://www.kimi.com/code/docs/en/kimi-code-cli/configuration/providers.html`
   - Confirms the Kimi-native provider endpoint `https://api.kimi.com/coding/v1`; for Claude Code, use the Anthropic-compatible endpoint from the third-party coding-agent guide instead.
 
 ## Preconditions
@@ -111,17 +114,17 @@ set -a
 set +a
 ```
 
-Then create the specialist. Start with the fixed Kimi launcher flags:
+Then create the specialist. Start with the current Kimi Code Claude settings:
 
 ```bash
-houmao-mgr project easy specialist create \
+houmao-mgr project specialist create \
   --name "$SPECIALIST_NAME" \
   --tool claude \
   --credential "$SPECIALIST_NAME-creds" \
   --api-key "$ANTHROPIC_API_KEY" \
   --base-url 'https://api.kimi.com/coding/' \
-  --model 'kimi-k2.6' \
-  --env-set ENABLE_TOOL_SEARCH=false \
+  --model 'kimi-for-coding' \
+  --env-set CLAUDE_CODE_AUTO_COMPACT_WINDOW=262144 \
   --env-set CLAUDE_CODE_SKIP_BEDROCK_AUTH=1 \
   --env-set CLAUDE_CODE_SKIP_VERTEX_AUTH=1 \
   --env-set DISABLE_TELEMETRY=1 \
@@ -132,14 +135,14 @@ If the user opted into proxy envs, append every currently set proxy variable to 
 
 ```bash
 args=(
-  houmao-mgr project easy specialist create
+  houmao-mgr project specialist create
   --name "$SPECIALIST_NAME"
   --tool claude
   --credential "$SPECIALIST_NAME-creds"
   --api-key "$ANTHROPIC_API_KEY"
   --base-url 'https://api.kimi.com/coding/'
-  --model 'kimi-k2.6'
-  --env-set ENABLE_TOOL_SEARCH=false
+  --model 'kimi-for-coding'
+  --env-set CLAUDE_CODE_AUTO_COMPACT_WINDOW=262144
   --env-set CLAUDE_CODE_SKIP_BEDROCK_AUTH=1
   --env-set CLAUDE_CODE_SKIP_VERTEX_AUTH=1
   --env-set DISABLE_TELEMETRY=1
@@ -160,14 +163,14 @@ When replacing an existing specialist intentionally, add `--yes` to the create c
 Check the specialist and Claude credential registration:
 
 ```bash
-houmao-mgr project easy specialist get --name "$SPECIALIST_NAME"
+houmao-mgr project specialist get --name "$SPECIALIST_NAME"
 houmao-mgr project credentials claude list
 ```
 
 Check materialized non-secret launcher settings without revealing the key:
 
 ```bash
-rg -n 'kimi-k2\.6|ENABLE_TOOL_SEARCH|CLAUDE_CODE_SKIP|DISABLE_TELEMETRY|DISABLE_ERROR_REPORTING|ANTHROPIC_BASE_URL' .houmao
+rg -n 'kimi-for-coding|CLAUDE_CODE_AUTO_COMPACT_WINDOW|CLAUDE_CODE_SKIP|DISABLE_TELEMETRY|DISABLE_ERROR_REPORTING|ANTHROPIC_BASE_URL' .houmao
 rg -n 'ANTHROPIC_API_KEY' .houmao | sed -E 's/(ANTHROPIC_API_KEY[=:] ?).*/\1<redacted>/'
 ```
 
@@ -189,7 +192,7 @@ node --eval "
 ## Notes
 
 - Store `ANTHROPIC_API_KEY` and `ANTHROPIC_BASE_URL` in the Houmao credential bundle, not as specialist `--env-set` records.
-- Store launcher behavior flags as specialist env records so launched agents inherit the same Kimi-oriented Claude Code posture.
+- Store launcher behavior flags such as `CLAUDE_CODE_AUTO_COMPACT_WINDOW=262144` as specialist env records so launched agents inherit the same Kimi-oriented Claude Code posture.
 - Claude's global `hasCompletedOnboarding` setting is host-user state, not Houmao specialist metadata. Configure it before launch for the same account that starts Houmao agents.
 - Use the same model value as the `claude-kimi` launcher unless the user explicitly asks for a different Kimi model.
 - Prefer the official Kimi Code `api.kimi.com/coding/` Anthropic-compatible endpoint for Claude Code. Use the older `platform.kimi.ai` Moonshot endpoint pattern only when the user explicitly asks for that API-platform lane.
