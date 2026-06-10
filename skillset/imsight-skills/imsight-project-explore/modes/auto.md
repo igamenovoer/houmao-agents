@@ -12,10 +12,11 @@ Use `auto` as the default when the user does not explicitly request a focused mo
 
 Before asking any user-facing question, perform a 2-minute repo scan. Load evidence in this order:
 
-1. **Project guidance**: `AGENTS.md`, `CLAUDE.md`, `.agents/`, `.cursor/`, `.github/copilot-instructions.md`
-2. **Product/spec material**: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files, roadmap notes
-3. **Domain memory**: `CONTEXT.md`, `<output-dir>/adrs/`, architecture docs, design docs
-4. **Behavior surfaces**: routes, controllers, API schemas, UI pages, CLI commands, migrations, test names, fixtures
+1. **Previous exploration**: `<output-dir>/domain-concepts/`, `<output-dir>/adrs/`, `<output-dir>/feature-scope/`. Load any relevant prior artifacts and incorporate them into your evidence set.
+2. **Project guidance**: `AGENTS.md`, `CLAUDE.md`, `.agents/`, `.cursor/`, `.github/copilot-instructions.md`
+3. **Product/spec material**: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files, roadmap notes
+4. **Domain memory**: `CONTEXT.md`, architecture docs, design docs
+5. **Behavior surfaces**: routes, controllers, API schemas, UI pages, CLI commands, migrations, test names, fixtures
 
 Cite file paths and line numbers when reporting evidence.
 

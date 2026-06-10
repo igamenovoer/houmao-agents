@@ -35,10 +35,11 @@ Only write to `docs/design/` if the user explicitly requests tracked project doc
 
 Before entering any exploration mode, scan the project to establish a shared domain language baseline.
 
-1. Inspect the codebase for project-specific terms: identifiers in code, schema fields, UI labels, test names, documentation headings, and any existing glossary (such as `CONTEXT.md`).
-2. Build a candidate vocabulary of canonical terms and their definitions.
-3. Ask the user to confirm, correct, or extend the candidate terms. Do not proceed to mode-specific exploration until the baseline vocabulary is accepted.
-4. Write the established domain language following the artifact rules in **Capturing Knowledge** below.
+1. Check `<output-dir>/domain-concepts/` for previously established domain language. If it exists, load it and treat it as the starting baseline instead of building from scratch.
+2. Inspect the codebase for project-specific terms: identifiers in code, schema fields, UI labels, test names, documentation headings, and any existing glossary (such as `CONTEXT.md`).
+3. Build a candidate vocabulary of canonical terms and their definitions, extending or correcting the previous baseline if one exists.
+4. Ask the user to confirm, correct, or extend the candidate terms. Do not proceed to mode-specific exploration until the baseline vocabulary is accepted.
+5. Write the established domain language following the artifact rules in **Capturing Knowledge** below.
 
 If the project already has an established domain language document that the user accepts as authoritative, skip this step and load it instead.
 
@@ -60,6 +61,8 @@ Use `auto` as the default exploration mode. In `auto`, inspect the prompt and ea
 If a question can be answered by exploring the codebase, inspect the codebase instead of asking the user.
 
 Look for coding agent context files (such as `AGENTS.md` or `.cursor/`), project documentation, domain memory (such as `CONTEXT.md`, architecture docs, or ADRs), and behavior surfaces (routes, schemas, tests, migrations, UI labels, CLI commands). Also look for similar existing features that imply naming, permissions, lifecycle states, error handling, or acceptance criteria.
+
+Before creating any new artifact, check `<output-dir>/` for previous exploration results. Load existing `domain-concepts/`, `adrs/`, and `feature-scope/` files and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
 
 Use targeted search and file reads before broad exploration. Cite file paths and line numbers when reporting evidence or contradictions.
 

@@ -12,10 +12,11 @@ Use `feature-scope` when the user's prompt is about a feature, user story, or be
 
 Before asking any user-facing question, inspect the repo for:
 
+- **Previous exploration**: `<output-dir>/feature-scope/`, `<output-dir>/domain-concepts/`, `<output-dir>/adrs/`. Load any relevant prior artifacts and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
 - **Similar existing features**: How are they named, tested, and scoped? What permissions and error patterns do they use?
 - **Behavior surfaces**: Routes, controllers, API schemas, UI pages, CLI commands, migrations, test names, fixtures.
 - **Product material**: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files.
-- **Domain memory**: `CONTEXT.md`, `<output-dir>/adrs/`, architecture docs that constrain the feature.
+- **Domain memory**: `CONTEXT.md`, architecture docs that constrain the feature.
 
 Cite file paths and line numbers when reporting evidence.
 

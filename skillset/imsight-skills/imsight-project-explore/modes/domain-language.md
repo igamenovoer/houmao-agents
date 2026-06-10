@@ -12,6 +12,7 @@ Use `domain-language` when the user's prompt involves terminology, naming, or wh
 
 Before asking any user-facing question, inspect the repo for:
 
+- **Previous exploration**: `<output-dir>/domain-concepts/` and `<output-dir>/adrs/`. Load any relevant prior artifacts and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
 - **Existing glossary** (such as `CONTEXT.md`): canonical terms and avoided synonyms.
 - **Code identifiers**: class names, function names, variable names, database tables/columns.
 - **API schemas**: field names, type names, enum values.
