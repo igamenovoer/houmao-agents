@@ -2,6 +2,19 @@
 
 Use `review-decision` when the user's prompt asks to review, validate, or audit existing project decisions. Check for logical consistency, conflicts with current code/docs/tests, stale assumptions, missing trade-offs, and implementation drift. Ask up to 5 highly targeted clarification questions.
 
+## Workflow
+
+When `review-decision` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
+
+1. **Perform a Pre-Exploration Scan**. Gather existing decision artifacts and current evidence from the repo. See **Pre-Exploration Scan**.
+2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
+3. **Build up to 5 questions**. See **Question Constraints**.
+4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
+5. **After each answer, integrate**. Note drift resolution, update ADRs, and maintain consistency across documents. See **Integration After Each Answer**.
+6. **When complete, produce a Completion Report**. Summarize consistent decisions, drift detected, stale assumptions, and next actions. See **Completion Report**.
+
+If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
+
 ## When to Use
 
 - The prompt asks to "review ADRs", "audit decisions", "check for drift", or "validate architecture".
@@ -146,7 +159,7 @@ If no valid questions exist at the start, immediately report: "No critical ambig
   - If the answer resolves a drift, note whether to update the ADR, amend code to match, deprecate the decision, or document the drift as accepted.
   - If the answer invalidates an earlier ambiguous statement, replace that statement instead of duplicating; leave no obsolete contradictory text.
   - Update durable artifacts only after the inconsistency has a resolved answer. After updating an ADR, scan all other documents under `<output-dir>/` for references to the same decision. Update affected domain-concepts and feature-scope docs to restore consistency.
-- When working with an OpenSpec change, also scan the OpenSpec change artifacts (`proposal.md`, `design.md`, `tasks.md`, and specs under `specs/`) for references to the same decisions. Update the relevant OpenSpec documents or flag the inconsistency to the user.
+  - When working with an OpenSpec change, also scan the OpenSpec change artifacts (`proposal.md`, `design.md`, `tasks.md`, and specs under `specs/`) for references to the same decisions. Update the relevant OpenSpec documents or flag the inconsistency to the user.
 - Do not write new ADRs during review unless the user explicitly requests one and the decision meets the three criteria from `ADR-FORMAT.md`.
 
 ## Completion Report
@@ -161,5 +174,3 @@ When the exploration is complete or paused, summarize:
 - **Evidence**: most important docs/code references.
 - **Coverage summary**: for each taxonomy category, state Resolved / Deferred / Clear / Outstanding.
 - **Suggested next action**: update ADRs, amend code, create deprecation notes, handoff to [feature-scope](feature-scope.md), or proceed to implementation planning.
-
-

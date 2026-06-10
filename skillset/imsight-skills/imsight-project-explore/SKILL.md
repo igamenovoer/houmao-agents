@@ -9,6 +9,24 @@ description: Imsight-authored agent-assisted exploration workflow for developmen
 
 Use this skill to explore a development project before planning or building. Treat the user's proposal, issue, feature idea, or spec as a hypothesis to test against the repository's existing docs, code, tests, terminology, and product boundaries.
 
+## Workflow
+
+When this skill is invoked, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
+
+1. **Determine the project directory**. See **Project Directory**.
+2. **Resolve `<output-dir>`**. See **Output Directory Discovery**.
+3. **Load previous exploration artifacts**. Check `<output-dir>/` for existing `domain-concepts/`, `adrs/`, and `feature-scope/` files. Load any relevant prior artifacts and incorporate them into your evidence set. See Core Principles §1.
+4. **Establish domain language baseline**. See **First Step: Establish Domain Language**.
+5. **Select exploration mode**. Inspect the user's prompt against the **Exploration Modes** table:
+   - If the prompt explicitly names a mode (`feature-scope`, `domain-language`, `review-decision`) or clearly asks for that kind of work, use that mode.
+   - Otherwise, default to `auto`.
+   - If the prompt spans multiple modes naturally, combine them sequentially.
+6. **Execute the selected mode's workflow**. Load the mode's page (linked in the **Exploration Modes** table) and follow its **Workflow** section step by step.
+7. **Capture durable knowledge**. Follow the **Capturing Knowledge** rules when writing or updating artifacts.
+8. **Do not start implementation** unless the user explicitly asks to switch from exploration to implementation.
+
+If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the available modes, constraints above, and the user's specific goal, then execute the plan.
+
 ## Invocation Contract
 
 - Preferred explicit form: `$imsight-project-explore <task prompt>`.

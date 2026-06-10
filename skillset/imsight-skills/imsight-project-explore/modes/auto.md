@@ -2,6 +2,20 @@
 
 Use `auto` as the default when the user does not explicitly request a focused mode. The agent inspects the prompt and early repo evidence, chooses what to explore, states the chosen focus, and proceeds with up to 5 targeted clarification questions.
 
+## Workflow
+
+When `auto` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
+
+1. **Perform a Pre-Exploration Scan**. Spend ~2 minutes gathering evidence from the repo. See **Pre-Exploration Scan** for the ordered checklist.
+2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
+3. **Choose a focus**. Based on the scan, decide which mode or topic is most relevant and state it explicitly to the user.
+4. **Build up to 5 questions**. See **Question Constraints**.
+5. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
+6. **After each answer, integrate**. Update the coverage map, re-prioritize remaining questions, and pivot to a focused mode if the answer reveals one is needed. See **Integration After Each Answer**.
+7. **When complete, produce a Completion Report**. Summarize what was explored, what remains open, and what to do next. See **Completion Report**.
+
+If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
+
 ## When to Use
 
 - The user asks a broad question such as "explore this project" or "what should we build?"

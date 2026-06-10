@@ -2,6 +2,19 @@
 
 Use `domain-language` when the user's prompt involves terminology, naming, or when you detect conflicts between the user's words and the codebase's words. Resolve project-specific terms and write durable definitions to `<output-dir>/domain-concepts/dc-<what>.md`, following the output directory discovery contract. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Ask up to 5 highly targeted clarification questions.
 
+## Workflow
+
+When `domain-language` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
+
+1. **Perform a Pre-Exploration Scan**. Gather repo evidence about existing glossaries, code identifiers, API schemas, UI labels, and test/docs terminology. See **Pre-Exploration Scan**.
+2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
+3. **Build up to 5 questions**. See **Question Constraints**.
+4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
+5. **After each answer, integrate**. Update the terminology state and write domain-concepts docs immediately. See **Integration After Each Answer**.
+6. **When complete, produce a Completion Report**. Summarize resolved terms, open questions, and next actions. See **Completion Report**.
+
+If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
+
 ## When to Use
 
 - The user uses a term that does not appear in the codebase or appears with a different meaning.

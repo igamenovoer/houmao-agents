@@ -2,6 +2,19 @@
 
 Use `feature-scope` when the user's prompt is about a feature, user story, or behavior change. Clarify who it is for, what it does, what it explicitly does not do, and how to know it is done. Ask up to 5 highly targeted clarification questions.
 
+## Workflow
+
+When `feature-scope` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
+
+1. **Perform a Pre-Exploration Scan**. Gather repo evidence about similar features, behavior surfaces, product material, and domain memory. See **Pre-Exploration Scan**.
+2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
+3. **Build up to 5 questions**. See **Question Constraints**.
+4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
+5. **After each answer, integrate**. Update scope notes, write ADRs for hard decisions, and update the feature-scope doc. See **Integration After Each Answer**.
+6. **When complete, produce a Completion Report**. Summarize scope, resolved behavior, open questions, and next actions. See **Completion Report**.
+
+If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
+
 ## When to Use
 
 - The user describes a new feature, enhancement, or change in behavior.
