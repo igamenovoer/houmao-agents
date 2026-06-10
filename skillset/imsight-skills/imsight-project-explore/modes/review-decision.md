@@ -12,7 +12,7 @@ Use `review-decision` when the user's prompt asks to review, validate, or audit 
 
 Before asking any user-facing question, inspect the repo for:
 
-- **Decision artifacts**: `docs/design/adrs/`, architecture docs, design docs, decision sections in specs, inline code comments recording intent.
+- **Decision artifacts**: `<output-dir>/adrs/`, `docs/design/adrs/`, architecture docs, design docs, decision sections in specs, inline code comments recording intent.
 - **Current evidence**: code, tests, schemas, configs, routes, UI behavior, deployment manifests.
 - **Product constraints**: `README.md`, `AGENTS.md`, compliance or partner contract references.
 

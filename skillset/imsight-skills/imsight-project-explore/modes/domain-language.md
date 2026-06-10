@@ -1,6 +1,6 @@
 # Domain Language Exploration Mode
 
-Use `domain-language` when the user's prompt involves terminology, naming, or when you detect conflicts between the user's words and the codebase's words. Resolve project-specific terms and write durable definitions to `<output-dir>/domain-language/<topic-name>.md`, following the output directory discovery contract. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Ask up to 5 highly targeted clarification questions.
+Use `domain-language` when the user's prompt involves terminology, naming, or when you detect conflicts between the user's words and the codebase's words. Resolve project-specific terms and write durable definitions to `<output-dir>/domain-concepts.md` when exploring an OpenSpec change, or to `<output-dir>/domain-concepts/<topic-name>.md` otherwise, following the output directory discovery contract. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Ask up to 5 highly targeted clarification questions.
 
 ## When to Use
 
@@ -29,7 +29,7 @@ Perform a structured ambiguity & coverage scan across this taxonomy. For each ca
 | **Term inventory** | Which terms in the prompt are project-specific domain words (not generic programming words)? |
 | **Usage mapping** | Where does each term appear in code, tests, schemas, UI, and docs? |
 | **Synonym detection** | Is one concept named with multiple words (e.g., "customer" vs "account" vs "user")? |
-| **Glossary alignment** | Does the user's term conflict with an existing canonical term or _Avoid_ entry (in `CONTEXT.md` or `<output-dir>/domain-language/`)? |
+| **Glossary alignment** | Does the user's term conflict with an existing canonical term or _Avoid_ entry (in `CONTEXT.md` or `<output-dir>/domain-concepts/`)? |
 | **Code consistency** | Does the codebase use one term inconsistently (e.g., column `status` mapped to enum `State`)? |
 | **Expert language** | Which term do domain experts (not programmers) use for this concept? |
 | **Definition precision** | Can the term be defined in 1–2 sentences as what the thing is, not every operation on it? |
@@ -143,9 +143,9 @@ If no valid questions exist at the start, immediately report: "No critical ambig
 ## Integration After Each Answer
 
 - Maintain an in-memory representation of the terminology state plus the raw evidence set.
-- Load `references/DOMAIN-LANGUAGE-FORMAT.md` before creating or editing domain language docs.
+- Load `references/DOMAIN-CONCEPTS-FORMAT.md` before creating or editing domain concepts docs.
 - After each accepted answer, apply the clarification:
-  - If the answer selects or defines a canonical term, write it to `<output-dir>/domain-language/<topic-name>.md` immediately (atomic overwrite), following the output directory discovery contract. If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Include definition, _Avoid_ synonyms, and relationships.
+  - If the answer selects or defines a canonical term, write it to `<output-dir>/domain-concepts.md` for OpenSpec changes, or to `<output-dir>/domain-concepts/<topic-name>.md` otherwise (atomic overwrite), following the output directory discovery contract. If the `domain-concepts/` directory does not yet contain a `README.md`, create one as an index. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Include definition, _Avoid_ synonyms, and relationships.
   - If the answer resolves a naming conflict, normalize the term across any in-memory notes; retain the original only once with `(formerly referred to as "X")` if necessary.
   - If the term is not durable or project-specific, record it in an exploration summary instead.
 - Do not batch inferred terms; update immediately.
@@ -160,6 +160,6 @@ When the exploration is complete or paused, summarize:
 - **Open questions**: only unresolved terminology blockers.
 - **Evidence**: most important docs/code references.
 - **Coverage summary**: for each taxonomy category, state Resolved / Deferred / Clear / Outstanding.
-- **Suggested next action**: update `<output-dir>/domain-language/<topic-name>.md` (only update `CONTEXT.md` if the user explicitly says that is their glossary), propose code renames, handoff to [feature-scope](feature-scope.md), or proceed to implementation planning.
+- **Suggested next action**: update `<output-dir>/domain-concepts.md` for OpenSpec changes, or `<output-dir>/domain-concepts/<topic-name>.md` otherwise (only update `CONTEXT.md` if the user explicitly says that is their glossary), propose code renames, handoff to [feature-scope](feature-scope.md), or proceed to implementation planning.
 
 

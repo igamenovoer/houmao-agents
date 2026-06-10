@@ -15,7 +15,6 @@ Use this skill to explore a development project before planning or building. Tre
 - Task-only form uses `auto` exploration by default.
 - Select `feature-scope`, `domain-language`, or `review-decision` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration.
 - No actionable task means `help`.
-- `help` summarizes this skill, the exploration loop, and the artifacts it may update.
 
 ## Project Directory
 
@@ -26,8 +25,9 @@ Use the project directory explicitly provided by the user. If none is provided, 
 When this skill writes artifacts, resolve `<output-dir>` in this priority:
 
 1. An output location explicitly provided by the user.
-2. The directory named in the `IMSIGHT_SKILL_OUTPUT_DIR` environment variable (relative or absolute).
-3. `<project-dir>/.imsight-arts/project-explore/` by default.
+2. If the user is targeting an OpenSpec change, use `<openspec-change-dir>/explore` (e.g., `openspec/changes/<change-name>/explore`). [OpenSpec](https://github.com/Fission-AI/OpenSpec) is a structured, artifact-driven spec workflow; when the prompt names a change directory or references a change-specific artifact, treat that change as the exploration scope.
+3. The directory named in the `IMSIGHT_SKILL_OUTPUT_DIR` environment variable (relative or absolute).
+4. `<project-dir>/.imsight-arts/project-explore/` by default.
 
 Only write to `docs/design/` if the user explicitly requests tracked project docs.
 
@@ -38,7 +38,7 @@ Before entering any exploration mode, scan the project to establish a shared dom
 1. Inspect the codebase for project-specific terms: identifiers in code, schema fields, UI labels, test names, documentation headings, and any existing glossary (such as `CONTEXT.md`).
 2. Build a candidate vocabulary of canonical terms and their definitions.
 3. Ask the user to confirm, correct, or extend the candidate terms. Do not proceed to mode-specific exploration until the baseline vocabulary is accepted.
-4. Write the established domain language to `<output-dir>/domain-language/<topic-name>.md`, where `<output-dir>` is resolved by the output directory discovery contract (user-provided location, `IMSIGHT_SKILL_OUTPUT_DIR`, or `<project-dir>/.imsight-arts/project-explore/` by default). If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Only write to `docs/design/domain-language/` if the user explicitly requests tracked project docs.
+4. Write the established domain language following the artifact rules in **Capturing Knowledge** below.
 
 If the project already has an established domain language document that the user accepts as authoritative, skip this step and load it instead.
 
@@ -71,16 +71,21 @@ Watch for discrepancies between the user's terms and the terms used in the codeb
 - The same concept has multiple names across docs, tests, and code.
 - A term is overloaded or ambiguous in a way that affects implementation or tests.
 
-Only change domain language terms with explicit user consent. The default place to write them is `<output-dir>/domain-language/<topic-name>.md`, where `<output-dir>` follows the output directory discovery contract; only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Surface the conflict, give the evidence, recommend a resolution, and ask for the smallest needed decision.
+Only change domain language terms with explicit user consent. Write them following the artifact rules in **Capturing Knowledge** below; only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Surface the conflict, give the evidence, recommend a resolution, and ask for the smallest needed decision.
 
 ## Capturing Knowledge
 
-Update durable project artifacts inline when the session resolves durable knowledge.
+Update durable project artifacts inline when the session resolves durable knowledge. All paths below are relative to `<output-dir>`, resolved by the **Output Directory Discovery** rules above.
 
-- Domain language docs are written to `<output-dir>/domain-language/<topic-name>.md` by default, following the output directory discovery contract. If the directory does not yet contain a `README.md`, create one as an index of the domain language files. Load `references/DOMAIN-LANGUAGE-FORMAT.md` before creating or editing domain language docs. Do not put specs, implementation choices, tasks, or scratch notes there.
-- ADRs are tracked project content by default. Write them to `docs/design/adrs/<topic-name>/<index>-<what>.md`. Load `references/ADR-FORMAT.md` before creating or updating one.
-- In `review-decision`, review existing ADRs, decision sections, architecture notes, and code behavior before proposing any new decision. Report inconsistencies first; update durable artifacts only after the inconsistency has a resolved answer.
+| Artifact | OpenSpec change | General exploration | Reference |
+| --- | --- | --- | --- |
+| Domain concepts | `domain-concepts.md` | `domain-concepts/<topic-name>.md` | `references/DOMAIN-CONCEPTS-FORMAT.md` |
+| ADRs | `adrs/<index>-<what>.md` | `adrs/<index>-<what>.md` | `references/ADR-FORMAT.md` |
+| Exploration summaries | `exploration/<topic-name>.md` | `exploration/<topic-name>.md` | — |
+
+When writing to `domain-concepts/`, create a `README.md` index if one does not yet exist. ADRs are durable project content; whether they are version-controlled depends on whether `<output-dir>` itself is tracked. Only write to `docs/design/` if the user explicitly requests tracked project docs.
+
 - Use an existing spec, issue, PRD, or design doc when the exploration resolves feature behavior, acceptance criteria, scope, or non-goals.
-- If no durable artifact exists and the user asked for a written result, write exploration summaries to `<output-dir>/exploration/<topic-name>.md` by default, following the output directory discovery contract. Only write to `docs/design/exploration/` if the user explicitly requests tracked project docs.
+- In `review-decision`, review existing ADRs, decision sections, architecture notes, and code behavior before proposing any new decision. Report inconsistencies first; update durable artifacts only after the inconsistency has a resolved answer.
 
 Do not start implementation unless the user explicitly asks to switch from exploration to implementation.
