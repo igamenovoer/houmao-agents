@@ -1,5 +1,9 @@
 # Imsight Skill Style Guide
 
+## Overview
+
+This guide specifies a small set of structural rules that every skill must follow. It is intentionally minimal — it does not prescribe a fixed section order, dictate writing style, or prevent skill writers from adding additional sections as they see fit. Writers may include any other sections (references, examples, configuration notes, etc.) in whatever order and style works best for their skill, as long as the four rules below are satisfied.
+
 ## Workflow section (required)
 
 Every skill and subskill must have a `## Workflow` section near the top. This is the agent's entrypoint.
