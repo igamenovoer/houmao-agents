@@ -77,13 +77,21 @@ Only change domain language terms with explicit user consent. Write them followi
 
 Update durable project artifacts inline when the session resolves durable knowledge. All paths below are relative to `<output-dir>`, resolved by the **Output Directory Discovery** rules above.
 
-| Artifact | OpenSpec change | General exploration | Reference |
-| --- | --- | --- | --- |
-| Domain concepts | `domain-concepts.md` | `domain-concepts/<topic-name>.md` | `references/DOMAIN-CONCEPTS-FORMAT.md` |
-| ADRs | `adrs/<index>-<what>.md` | `adrs/<index>-<what>.md` | `references/ADR-FORMAT.md` |
-| Exploration summaries | `exploration/<topic-name>.md` | `exploration/<topic-name>.md` | — |
+| Artifact | Path | Reference |
+| --- | --- | --- |
+| Domain concepts | `domain-concepts/dc-<what>.md` | `references/DOMAIN-CONCEPTS-FORMAT.md` |
+| ADRs | `adrs/<index>-<what>.md` | `references/ADR-FORMAT.md` |
+| Feature scope | `feature-scope/feat-<what>.md` | — |
 
-When writing to `domain-concepts/`, create a `README.md` index if one does not yet exist. ADRs are durable project content; whether they are version-controlled depends on whether `<output-dir>` itself is tracked. Only write to `docs/design/` if the user explicitly requests tracked project docs.
+When creating the first file in `domain-concepts/` or `feature-scope/`, also create a `README.md` index in that directory. ADRs are durable project content; whether they are version-controlled depends on whether `<output-dir>` itself is tracked. Only write to `docs/design/` if the user explicitly requests tracked project docs.
+
+### Consistency discipline
+
+After writing or updating any artifact, scan all other documents under `<output-dir>/` for references to the same concepts, decisions, or terms. If the new content invalidates, contradicts, or extends an existing document, update the affected document to restore consistency. Do not leave stale definitions or outdated decisions across artifacts.
+
+### OpenSpec synchronization
+
+When `<output-dir>` is inside an OpenSpec change (i.e., `<openspec-change-dir>/explore`), also scan the OpenSpec change artifacts themselves — `proposal.md`, `design.md`, `tasks.md`, and specs under `specs/` — for references to the same topics. If a new decision or domain concept contradicts or extends the OpenSpec artifacts, update the relevant OpenSpec documents or flag the inconsistency to the user before proceeding.
 
 - Use an existing spec, issue, PRD, or design doc when the exploration resolves feature behavior, acceptance criteria, scope, or non-goals.
 - In `review-decision`, review existing ADRs, decision sections, architecture notes, and code behavior before proposing any new decision. Report inconsistencies first; update durable artifacts only after the inconsistency has a resolved answer.

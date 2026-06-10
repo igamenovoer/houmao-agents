@@ -14,7 +14,7 @@ Before asking any user-facing question, perform a 2-minute repo scan. Load evide
 
 1. **Project guidance**: `AGENTS.md`, `CLAUDE.md`, `.agents/`, `.cursor/`, `.github/copilot-instructions.md`
 2. **Product/spec material**: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files, roadmap notes
-3. **Domain memory**: `CONTEXT.md`, `docs/design/adrs/`, architecture docs, design docs
+3. **Domain memory**: `CONTEXT.md`, `<output-dir>/adrs/`, architecture docs, design docs
 4. **Behavior surfaces**: routes, controllers, API schemas, UI pages, CLI commands, migrations, test names, fixtures
 
 Cite file paths and line numbers when reporting evidence.
@@ -132,7 +132,9 @@ If no valid questions exist at the start, immediately report: "No critical ambig
 - Maintain an in-memory exploration state plus the raw evidence set.
 - After each accepted answer, update the coverage map and re-prioritize remaining questions.
 - If the answer reveals the request is actually about a focused mode (feature-scope, domain-language, review-decision), state the pivot explicitly and hand off to that mode's page.
-- Do not write to disk in `auto` unless the user explicitly requests an exploration summary. If they do, write it to `<output-dir>/exploration/<topic-name>.md`, following the output directory discovery contract.
+- Do not write to disk in `auto` unless the user explicitly requests a written result. If they do, write it to `<output-dir>/feature-scope/feat-<what>.md` or `<output-dir>/domain-concepts/dc-<what>.md` depending on the dominant concern, following the output directory discovery contract. If the target directory does not yet contain a `README.md`, create one as an index.
+- After writing any artifact, scan all other documents under `<output-dir>/` for references to the same concepts or decisions. Update affected documents to restore consistency.
+- When working with an OpenSpec change, also scan the OpenSpec change artifacts for contradictions or extensions, and update or flag them.
 
 ## Completion Report
 
@@ -144,5 +146,3 @@ When the exploration is complete or paused, summarize:
 - **Coverage summary**: for each category, state Resolved / Deferred / Clear / Outstanding.
 - **Open questions**: only unresolved blockers.
 - **Suggested next action**: spec update, decision review report, ADR update, issue breakdown, implementation plan, or handoff to another mode or Imsight skill.
-
-

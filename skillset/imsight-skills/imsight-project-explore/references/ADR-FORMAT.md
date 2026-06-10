@@ -1,8 +1,8 @@
 # ADR Format
 
-ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, and so on.
+ADRs live in `<output-dir>/adrs/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, and so on.
 
-Create `docs/adr/` lazily, only when the first ADR is needed.
+Create `<output-dir>/adrs/` lazily, only when the first ADR is needed.
 
 ## Template
 
@@ -24,7 +24,7 @@ Only include these when they add genuine value:
 
 ## Numbering
 
-Scan `docs/adr/` for the highest existing number and increment by one.
+Scan `<output-dir>/adrs/` for the highest existing number and increment by one.
 
 ## When To Offer An ADR
 

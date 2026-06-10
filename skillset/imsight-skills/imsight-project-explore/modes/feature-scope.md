@@ -15,7 +15,7 @@ Before asking any user-facing question, inspect the repo for:
 - **Similar existing features**: How are they named, tested, and scoped? What permissions and error patterns do they use?
 - **Behavior surfaces**: Routes, controllers, API schemas, UI pages, CLI commands, migrations, test names, fixtures.
 - **Product material**: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files.
-- **Domain memory**: `CONTEXT.md`, `docs/design/adrs/`, architecture docs that constrain the feature.
+- **Domain memory**: `CONTEXT.md`, `<output-dir>/adrs/`, architecture docs that constrain the feature.
 
 Cite file paths and line numbers when reporting evidence.
 
@@ -148,11 +148,13 @@ If no valid questions exist at the start, immediately report: "No critical ambig
   - Data shape / entities → Update data model notes
   - Non-functional constraint → Add measurable criteria
   - Edge case / negative flow → Add error-handling notes
-  - Terminology conflict → Normalize term across notes
+  - Terminology conflict → Normalize term across notes; if the conflict is durable, also update `<output-dir>/domain-concepts/dc-<what>.md`
 - If the clarification invalidates an earlier ambiguous statement, replace that statement instead of duplicating; leave no obsolete contradictory text.
 - If an existing spec, issue, PRD, or design doc is the target artifact, update it incrementally after each answer (atomic overwrite). Preserve formatting and heading hierarchy.
 - If the answer resolves a decision that is hard to reverse, surprising without context, or involves a real trade-off, write an ADR immediately to `<output-dir>/adrs/<index>-<what>.md`. Load `references/ADR-FORMAT.md` before creating it. Do not batch ADRs; create them as decisions are made.
-- If no durable artifact exists and the user asked for a written result, write an exploration summary to `<output-dir>/exploration/<topic-name>.md`, following the output directory discovery contract.
+- If the user asked for a written result or the session is pausing, write the accumulated scope notes to `<output-dir>/feature-scope/feat-<what>.md`. If the `feature-scope/` directory does not yet contain a `README.md`, create one as an index.
+- After writing or updating any artifact, scan all other documents under `<output-dir>/` for references to the same concepts, decisions, or terms. Update affected documents to restore consistency.
+- When working with an OpenSpec change, also scan the OpenSpec change artifacts (`proposal.md`, `design.md`, `tasks.md`, and specs under `specs/`) for references to the same topics. Update the relevant OpenSpec documents or flag the inconsistency to the user.
 
 ## Completion Report
 
@@ -167,5 +169,3 @@ When the exploration is complete or paused, summarize:
 - **Suggested next action**: spec update, decision review report, ADR update, issue breakdown, implementation plan, or handoff to another Imsight skill.
 
 Prefer a narrow end-to-end slice over broad partial infrastructure. Name the slice in terms of user-visible behavior.
-
-

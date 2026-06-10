@@ -1,6 +1,6 @@
 # Domain Language Exploration Mode
 
-Use `domain-language` when the user's prompt involves terminology, naming, or when you detect conflicts between the user's words and the codebase's words. Resolve project-specific terms and write durable definitions to `<output-dir>/domain-concepts.md` when exploring an OpenSpec change, or to `<output-dir>/domain-concepts/<topic-name>.md` otherwise, following the output directory discovery contract. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Ask up to 5 highly targeted clarification questions.
+Use `domain-language` when the user's prompt involves terminology, naming, or when you detect conflicts between the user's words and the codebase's words. Resolve project-specific terms and write durable definitions to `<output-dir>/domain-concepts/dc-<what>.md`, following the output directory discovery contract. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Ask up to 5 highly targeted clarification questions.
 
 ## When to Use
 
@@ -145,11 +145,13 @@ If no valid questions exist at the start, immediately report: "No critical ambig
 - Maintain an in-memory representation of the terminology state plus the raw evidence set.
 - Load `references/DOMAIN-CONCEPTS-FORMAT.md` before creating or editing domain concepts docs.
 - After each accepted answer, apply the clarification:
-  - If the answer selects or defines a canonical term, write it to `<output-dir>/domain-concepts.md` for OpenSpec changes, or to `<output-dir>/domain-concepts/<topic-name>.md` otherwise (atomic overwrite), following the output directory discovery contract. If the `domain-concepts/` directory does not yet contain a `README.md`, create one as an index. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Include definition, _Avoid_ synonyms, and relationships.
+  - If the answer selects or defines a canonical term, write it to `<output-dir>/domain-concepts/dc-<what>.md` immediately (atomic overwrite), following the output directory discovery contract. If the `domain-concepts/` directory does not yet contain a `README.md`, create one as an index. Only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Include definition, _Avoid_ synonyms, and relationships.
   - If the answer resolves a naming conflict, normalize the term across any in-memory notes; retain the original only once with `(formerly referred to as "X")` if necessary.
-  - If the term is not durable or project-specific, record it in an exploration summary instead.
+  - If the term is not durable or project-specific, record it in a feature-scope doc instead.
+- After writing or updating any domain-concepts file, scan all other documents under `<output-dir>/` for references to the same terms. Update affected ADRs or feature-scope docs to restore consistency.
+- When working with an OpenSpec change, also scan the OpenSpec change artifacts (`proposal.md`, `design.md`, `tasks.md`, and specs under `specs/`) for references to the same terms. Update the relevant OpenSpec documents or flag the inconsistency to the user.
 - Do not batch inferred terms; update immediately.
-- Do not use domain language docs as a spec, implementation plan, issue list, or scratchpad.
+- Do not use domain concepts docs as a spec, implementation plan, issue list, or scratchpad.
 
 ## Completion Report
 
@@ -160,6 +162,4 @@ When the exploration is complete or paused, summarize:
 - **Open questions**: only unresolved terminology blockers.
 - **Evidence**: most important docs/code references.
 - **Coverage summary**: for each taxonomy category, state Resolved / Deferred / Clear / Outstanding.
-- **Suggested next action**: update `<output-dir>/domain-concepts.md` for OpenSpec changes, or `<output-dir>/domain-concepts/<topic-name>.md` otherwise (only update `CONTEXT.md` if the user explicitly says that is their glossary), propose code renames, handoff to [feature-scope](feature-scope.md), or proceed to implementation planning.
-
-
+- **Suggested next action**: update `<output-dir>/domain-concepts/dc-<what>.md` (only update `CONTEXT.md` if the user explicitly says that is their glossary), propose code renames, handoff to [feature-scope](feature-scope.md), or proceed to implementation planning.

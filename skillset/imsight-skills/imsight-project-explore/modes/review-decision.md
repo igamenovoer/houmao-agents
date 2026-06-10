@@ -12,7 +12,7 @@ Use `review-decision` when the user's prompt asks to review, validate, or audit 
 
 Before asking any user-facing question, inspect the repo for:
 
-- **Decision artifacts**: `<output-dir>/adrs/`, `docs/design/adrs/`, architecture docs, design docs, decision sections in specs, inline code comments recording intent.
+- **Decision artifacts**: `<output-dir>/adrs/`, `<output-dir>/domain-concepts/`, `<output-dir>/feature-scope/`, architecture docs, design docs, decision sections in specs, inline code comments recording intent.
 - **Current evidence**: code, tests, schemas, configs, routes, UI behavior, deployment manifests.
 - **Product constraints**: `README.md`, `AGENTS.md`, compliance or partner contract references.
 
@@ -145,7 +145,8 @@ If no valid questions exist at the start, immediately report: "No critical ambig
 - After each accepted answer, apply the clarification:
   - If the answer resolves a drift, note whether to update the ADR, amend code to match, deprecate the decision, or document the drift as accepted.
   - If the answer invalidates an earlier ambiguous statement, replace that statement instead of duplicating; leave no obsolete contradictory text.
-  - Update durable artifacts only after the inconsistency has a resolved answer.
+  - Update durable artifacts only after the inconsistency has a resolved answer. After updating an ADR, scan all other documents under `<output-dir>/` for references to the same decision. Update affected domain-concepts and feature-scope docs to restore consistency.
+- When working with an OpenSpec change, also scan the OpenSpec change artifacts (`proposal.md`, `design.md`, `tasks.md`, and specs under `specs/`) for references to the same decisions. Update the relevant OpenSpec documents or flag the inconsistency to the user.
 - Do not write new ADRs during review unless the user explicitly requests one and the decision meets the three criteria from `ADR-FORMAT.md`.
 
 ## Completion Report
