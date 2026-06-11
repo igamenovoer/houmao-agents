@@ -9,6 +9,8 @@ description: Imsight-authored agent-assisted exploration workflow for developmen
 
 Use this skill to explore a development project before planning or building. Treat the user's proposal, issue, feature idea, or spec as a hypothesis to test against the repository's existing docs, code, tests, terminology, and product boundaries.
 
+Exploration is interactive by default. In `auto` mode, the agent may inspect repository evidence and choose the exploration type itself, such as `feature-scope`, `domain-language`, or `review-decision`. After that routing choice, the agent must ask the user at least one decision-bearing question before choosing a durable project direction, writing artifacts, or producing a final proposed direction. Use zero questions only when the user explicitly requests a non-interactive audit, explicitly asks the agent to make reasonable assumptions, or provides all required decisions in the prompt.
+
 ## Workflow
 
 When this skill is invoked, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
@@ -16,8 +18,8 @@ When this skill is invoked, execute the following steps in order. Detailed rules
 1. **Determine the project directory**. See **Project Directory**.
 2. **Resolve `<output-dir>`**. See **Output Directory Discovery**.
 3. **Load previous exploration artifacts**. Check `<output-dir>/` for existing `domain-concepts/`, `adrs/`, and `feature-scope/` files. Load any relevant prior artifacts and incorporate them into your evidence set. See Core Principles §1.
-4. **Establish domain language baseline**. See **First Step: Establish Domain Language**.
-5. **Select exploration mode**. Inspect the user's prompt against the **Exploration Modes** table:
+4. **Prepare domain language baseline**. See **First Step: Establish Domain Language**. If accepting or changing domain language requires a project decision, ask the user before treating it as established.
+5. **Select exploration mode**. Inspect the user's prompt and early repository evidence against the **Exploration Modes** table:
    - If the prompt explicitly names a mode (`feature-scope`, `domain-language`, `review-decision`) or clearly asks for that kind of work, use that mode.
    - Otherwise, default to `auto`.
    - If the prompt spans multiple modes naturally, combine them sequentially.
@@ -31,7 +33,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 - Preferred explicit form: `$imsight-project-explore <task prompt>`.
 - Task-only form uses `auto` exploration by default.
-- Select `feature-scope`, `domain-language`, or `review-decision` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration.
+- Outside `auto`, select `feature-scope`, `domain-language`, or `review-decision` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration. Inside `auto`, the agent may choose the focused exploration type after inspecting the prompt and repository evidence.
 - No actionable task means `help`.
 
 ## Project Directory
@@ -49,15 +51,15 @@ When this skill writes artifacts, resolve `<output-dir>` in this priority:
 
 Only write to `docs/design/` if the user explicitly requests tracked project docs.
 
-## First Step: Establish Domain Language
+## First Step: Prepare Domain Language
 
-Before entering any exploration mode, scan the project to establish a shared domain language baseline.
+Before entering any exploration mode, scan the project for domain language that may affect the exploration. This scan informs mode selection and question quality; it does not authorize the agent to make terminology decisions without user consent.
 
 1. Check `<output-dir>/domain-concepts/` for previously established domain language. If it exists, load it and treat it as the starting baseline instead of building from scratch.
 2. Inspect the codebase for project-specific terms: identifiers in code, schema fields, UI labels, test names, documentation headings, and any existing glossary (such as `CONTEXT.md`).
 3. Build a candidate vocabulary of canonical terms and their definitions, extending or correcting the previous baseline if one exists.
-4. Ask the user to confirm, correct, or extend the candidate terms. Do not proceed to mode-specific exploration until the baseline vocabulary is accepted.
-5. Write the established domain language following the artifact rules in **Capturing Knowledge** below.
+4. If the vocabulary affects the selected exploration type, artifact content, naming, or downstream implementation, ask the user to confirm, correct, or extend the candidate terms before treating them as established.
+5. Write established domain language following the artifact rules in **Capturing Knowledge** below only after user consent.
 
 If the project already has an established domain language document that the user accepts as authoritative, skip this step and load it instead.
 
@@ -65,18 +67,20 @@ If the project already has an established domain language document that the user
 
 | Mode | Use For | Detail |
 | --- | --- | --- |
-| `auto` | Let the agent decide what to explore from the prompt, repo evidence, and highest-risk unknowns | [modes/auto.md](modes/auto.md) |
+| `auto` | Let the agent choose the exploration type from the prompt, repo evidence, and highest-risk uncertainty | [modes/auto.md](modes/auto.md) |
 | `feature-scope` | Clarify a feature's target users, behaviors, boundaries, non-goals, and acceptance criteria | [modes/feature-scope.md](modes/feature-scope.md) |
 | `domain-language` | Resolve project-specific terms and terminology conflicts | [modes/domain-language.md](modes/domain-language.md) |
 | `review-decision` | Review existing decisions for consistency, drift, stale assumptions, and missing trade-offs | [modes/review-decision.md](modes/review-decision.md) |
 
-Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose what to explore, state the chosen focus, and continue. Choose another mode only from the user's prompt: explicit mode names, direct requests about feature scope, terminology, or decision review, or wording that clearly maps to one focused mode. Combine modes only when the request naturally spans them.
+Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose the most relevant exploration type, state that routing choice, and proceed into that mode's questioning loop. The routing choice itself does not require user confirmation. Any substantive product, terminology, scope, ADR, artifact, or implementation-impacting decision after routing requires user consent. Choose another mode from the user's prompt, explicit mode names, direct requests about feature scope, terminology, or decision review, wording that clearly maps to one focused mode, or the agent's evidence-based routing judgment in `auto`. Combine modes only when the request naturally spans them.
 
 ## Core Principles
 
 ### 1. Read the project context first
 
 If a question can be answered by exploring the codebase, inspect the codebase instead of asking the user.
+
+Do not treat repository evidence as a substitute for product intent, priority, risk tolerance, domain terminology ownership, or acceptance criteria. When evidence suggests a direction but user intent is not explicit, present it as a proposal inside a question and wait for confirmation.
 
 Look for coding agent context files (such as `AGENTS.md` or `.cursor/`), project documentation, domain memory (such as `CONTEXT.md`, architecture docs, or ADRs), and behavior surfaces (routes, schemas, tests, migrations, UI labels, CLI commands). Also look for similar existing features that imply naming, permissions, lifecycle states, error handling, or acceptance criteria.
 
@@ -92,7 +96,7 @@ Watch for discrepancies between the user's terms and the terms used in the codeb
 - The same concept has multiple names across docs, tests, and code.
 - A term is overloaded or ambiguous in a way that affects implementation or tests.
 
-Only change domain language terms with explicit user consent. Write them following the artifact rules in **Capturing Knowledge** below; only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Surface the conflict, give the evidence, recommend a resolution, and ask for the smallest needed decision.
+Only change domain language terms with explicit user consent. Write them following the artifact rules in **Capturing Knowledge** below; only update `CONTEXT.md` if the user explicitly says that is their project's glossary. Surface the conflict, give the evidence, propose a resolution, and ask for the smallest needed decision.
 
 ## Capturing Knowledge
 

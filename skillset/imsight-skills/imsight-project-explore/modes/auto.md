@@ -1,6 +1,6 @@
 # Auto Exploration Mode
 
-Use `auto` as the default when the user does not explicitly request a focused mode. The agent inspects the prompt and early repo evidence, chooses what to explore, states the chosen focus, and proceeds with up to 5 targeted clarification questions.
+Use `auto` as the default when the user does not explicitly request a focused mode. The agent inspects the prompt and early repo evidence, chooses the most relevant exploration type, states that routing choice, and then asks the first decision-bearing question inside the selected exploration path.
 
 ## Workflow
 
@@ -8,8 +8,8 @@ When `auto` mode is selected, execute the following steps in order. Detailed rul
 
 1. **Perform a Pre-Exploration Scan**. Spend ~2 minutes gathering evidence from the repo. See **Pre-Exploration Scan** for the ordered checklist.
 2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
-3. **Choose a focus**. Based on the scan, decide which mode or topic is most relevant and state it explicitly to the user.
-4. **Build up to 5 questions**. See **Question Constraints**.
+3. **Choose the exploration type**. Based on the scan, select the most relevant mode or topic and state the routing choice to the user. This routing choice does not require user confirmation.
+4. **Build 1-5 questions**. See **Question Constraints**.
 5. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
 6. **After each answer, integrate**. Update the coverage map, re-prioritize remaining questions, and pivot to a focused mode if the answer reveals one is needed. See **Integration After Each Answer**.
 7. **When complete, produce a Completion Report**. Summarize what was explored, what remains open, and what to do next. See **Completion Report**.
@@ -48,11 +48,12 @@ Perform a structured scan across these categories. For each, mark status: **Clea
 
 ## Question Constraints
 
+- Ask at least 1 question after choosing the exploration type and before making any substantive project decision, writing artifacts, or producing a final proposed direction, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
 - **Maximum 5 total questions** across the whole session.
 - Each question must be answerable with **either**:
   - A short multiple-choice selection (2–5 distinct, mutually exclusive options), **or**
-  - A short-phrase answer. The agent's suggested answer should be concise, but the user may provide a custom answer of any length.
-- Only ask questions whose answers materially impact which mode to enter, what to explore first, or whether the request is actionable.
+  - A short-phrase answer. The agent's proposed answer should be concise, but the user may provide a custom answer of any length.
+- Only ask questions whose answers materially impact project scope, terminology, decision status, what to explore first within the selected type, or whether the request is actionable.
 - If more than 5 candidate questions remain, select the top 5 by (Impact × Uncertainty) heuristic.
 - Do not reveal future queued questions in advance.
 
@@ -67,22 +68,22 @@ Before presenting the options, provide:
 1. **Motivation** — state the question clearly and explain why the answer materially impacts the exploration (e.g., which mode to enter, what to explore first, or whether the request is actionable).
 2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows how each option would play out in practice.
 
-Then analyze all options and determine the **most suitable option** based on:
+Then analyze all options and determine the **proposed option** based on:
 
 - Best practices for the project type
 - Common patterns in similar implementations
 - Risk reduction (security, performance, maintainability)
 - Alignment with any explicit project goals or constraints visible in the evidence
 
-Present your **recommended option prominently** at the top with:
-- The recommendation itself.
-- **Why it is recommended** (1–2 sentences).
+Present your **proposed option** prominently at the top with:
+- The proposal itself.
+- **Why it is proposed** (1–2 sentences).
 - **Implication** — what happens downstream if this option is chosen (e.g., which files change, which assumptions hold, which risks are accepted).
 
 Format as:
 
 ```
-**Recommended:** Option [X] - <why recommended>
+**Proposed:** Option [X] - <why proposed>
 
 **Implication:** <downstream consequence>
 ```
@@ -99,25 +100,25 @@ Then render all options as a Markdown table that includes a **Pros/Cons** column
 After the table, add:
 
 ```
-You can reply with the option letter (e.g., "A"), accept the recommendation by saying "yes" or "recommended", or provide your own answer.
+You can reply with the option letter (e.g., "A"), accept the proposal by saying "yes" or "proposed", or provide your own answer.
 ```
 
 ### For Short-Answer Questions
 
-Before presenting the suggested answer, provide:
+Before presenting the proposed answer, provide:
 
 1. **Motivation** — state the question clearly and explain why the answer materially impacts the exploration.
 2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows why the answer matters.
 
-Then provide your **suggested answer** with:
-- The suggestion itself.
+Then provide your **proposed answer** with:
+- The proposal itself.
 - **Brief reasoning**.
 - **Implication** — what happens downstream if this answer is chosen.
 
 Format as:
 
 ```
-**Suggested:** <your proposed answer> - <brief reasoning>
+**Proposed:** <your proposed answer> - <brief reasoning>
 
 **Implication:** <downstream consequence>
 ```
@@ -125,12 +126,12 @@ Format as:
 Then output:
 
 ```
-Format: Short answer. You can accept the suggestion by saying "yes" or "suggested", or provide your own answer.
+Format: Short answer. You can accept the proposal by saying "yes" or "proposed", or provide your own answer.
 ```
 
 ### After the User Answers
 
-- If the user replies with "yes", "recommended", or "suggested", use your previously stated recommendation/suggestion as the answer.
+- If the user replies with "yes", "recommended", "suggested", or "proposed", use your previously stated proposal as the answer.
 - Otherwise, validate the answer maps to one option or is a valid custom answer.
 - If ambiguous, ask for a quick disambiguation (this still counts as the same question; do not advance the counter).
 - Once satisfactory, record it in working memory, update the exploration state, and move to the next queued question.
@@ -140,13 +141,13 @@ Format: Short answer. You can accept the suggestion by saying "yes" or "suggeste
 - The user signals completion ("done", "good", "no more"), **or**
 - You reach 5 asked questions.
 
-If no valid questions exist at the start, immediately report: "No critical ambiguities detected worth formal clarification." and suggest proceeding.
+Do not use "no valid questions exist" as a reason to skip the first user interaction. If the prompt appears complete, state the selected exploration type and ask the user to confirm the first substantive project assumption before proceeding, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
 
 ## Integration After Each Answer
 
 - Maintain an in-memory exploration state plus the raw evidence set.
 - After each accepted answer, update the coverage map and re-prioritize remaining questions.
-- If the answer reveals the request is actually about a focused mode (feature-scope, domain-language, review-decision), state the pivot explicitly and hand off to that mode's page.
+- If the answer redirects the request toward a different focused mode (feature-scope, domain-language, review-decision), state the pivot explicitly and hand off to that mode's page.
 - Do not write to disk in `auto` unless the user explicitly requests a written result. If they do, write it to `<output-dir>/feature-scope/feat-<what>.md` or `<output-dir>/domain-concepts/dc-<what>.md` depending on the dominant concern, following the output directory discovery contract. If the target directory does not yet contain a `README.md`, create one as an index.
 - After writing any artifact, scan all other documents under `<output-dir>/` for references to the same concepts or decisions. Update affected documents to restore consistency.
 - When working with an OpenSpec change, also scan the OpenSpec change artifacts for contradictions or extensions, and update or flag them.
@@ -156,7 +157,7 @@ If no valid questions exist at the start, immediately report: "No critical ambig
 When the exploration is complete or paused, summarize:
 
 - **Questions asked & answered**: count.
-- **Chosen focus**: what mode or topic was selected.
+- **Selected exploration type**: what mode or topic the agent selected, plus any user redirection.
 - **Evidence inspected**: key files and sections.
 - **Coverage summary**: for each category, state Resolved / Deferred / Clear / Outstanding.
 - **Open questions**: only unresolved blockers.

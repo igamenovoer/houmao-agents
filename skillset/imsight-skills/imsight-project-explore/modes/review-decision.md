@@ -1,6 +1,6 @@
 # Review Decision Exploration Mode
 
-Use `review-decision` when the user's prompt asks to review, validate, or audit existing project decisions. Check for logical consistency, conflicts with current code/docs/tests, stale assumptions, missing trade-offs, and implementation drift. Ask up to 5 highly targeted clarification questions.
+Use `review-decision` when the user's prompt asks to review, validate, or audit existing project decisions. Check for logical consistency, conflicts with current code/docs/tests, stale assumptions, missing trade-offs, and implementation drift. Ask 1-5 highly targeted clarification questions unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
 
 ## Workflow
 
@@ -8,7 +8,7 @@ When `review-decision` mode is selected, execute the following steps in order. D
 
 1. **Perform a Pre-Exploration Scan**. Gather existing decision artifacts and current evidence from the repo. See **Pre-Exploration Scan**.
 2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
-3. **Build up to 5 questions**. See **Question Constraints**.
+3. **Build 1-5 questions**. See **Question Constraints**.
 4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
 5. **After each answer, integrate**. Note drift resolution, update ADRs, and maintain consistency across documents. See **Integration After Each Answer**.
 6. **When complete, produce a Completion Report**. Summarize consistent decisions, drift detected, stale assumptions, and next actions. See **Completion Report**.
@@ -54,10 +54,11 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 
 ## Question Constraints
 
+- Ask at least 1 question before updating, deprecating, reaffirming, or producing a final proposed direction about a decision, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
 - **Maximum 5 total questions** across the whole session.
 - Each question must be answerable with **either**:
   - A short multiple-choice selection (2–5 distinct, mutually exclusive options), **or**
-  - A short-phrase answer. The agent's suggested answer should be concise, but the user may provide a custom answer of any length.
+  - A short-phrase answer. The agent's proposed answer should be concise, but the user may provide a custom answer of any length.
 - Only include questions whose answers materially impact whether a decision should be updated, deprecated, or re-affirmed, or what code/docs changes are required.
 - Ensure category coverage balance: attempt to cover the highest impact unresolved categories first; avoid asking two low-impact questions when a single high-impact area (e.g., a security or data-ownership decision) is unresolved.
 - Exclude questions already answered by repo evidence or plan-level execution details (unless blocking correctness).
@@ -76,22 +77,22 @@ Before presenting the options, provide:
 1. **Motivation** — state the question clearly and explain why the answer materially impacts whether a decision should be updated, deprecated, or re-affirmed, or what code/docs changes are required.
 2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows how each option would play out in practice (e.g., a future PR that violates the current ADR, or a test that enforces drifted behavior).
 
-Then analyze all options and determine the **most suitable option** based on:
+Then analyze all options and determine the **proposed option** based on:
 
 - Best practices for the project type
 - Current codebase evidence (what the code actually does)
 - Risk reduction (security, performance, maintainability)
 - Alignment with any explicit project goals or constraints
 
-Present your **recommended option prominently** at the top with:
-- The recommendation itself.
-- **Why it is recommended** (1–2 sentences).
+Present your **proposed option** prominently at the top with:
+- The proposal itself.
+- **Why it is proposed** (1–2 sentences).
 - **Implication** — what happens downstream if this option is chosen (e.g., which ADRs to update, which code to amend, which tests to change).
 
 Format as:
 
 ```
-**Recommended:** Option [X] - <why recommended>
+**Proposed:** Option [X] - <why proposed>
 
 **Implication:** <downstream consequence>
 ```
@@ -108,25 +109,25 @@ Then render all options as a Markdown table that includes a **Pros/Cons** column
 After the table, add:
 
 ```
-You can reply with the option letter (e.g., "A"), accept the recommendation by saying "yes" or "recommended", or provide your own answer.
+You can reply with the option letter (e.g., "A"), accept the proposal by saying "yes" or "proposed", or provide your own answer.
 ```
 
 ### For Short-Answer Questions
 
-Before presenting the suggested answer, provide:
+Before presenting the proposed answer, provide:
 
 1. **Motivation** — state the question clearly and explain why the answer materially impacts whether a decision should be updated, deprecated, or re-affirmed, or what code/docs changes are required.
 2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows why the answer matters.
 
-Then provide your **suggested answer** with:
-- The suggestion itself.
+Then provide your **proposed answer** with:
+- The proposal itself.
 - **Brief reasoning**.
 - **Implication** — what happens downstream if this answer is chosen.
 
 Format as:
 
 ```
-**Suggested:** <your proposed answer> - <brief reasoning>
+**Proposed:** <your proposed answer> - <brief reasoning>
 
 **Implication:** <downstream consequence>
 ```
@@ -134,12 +135,12 @@ Format as:
 Then output:
 
 ```
-Format: Short answer. You can accept the suggestion by saying "yes" or "suggested", or provide your own answer.
+Format: Short answer. You can accept the proposal by saying "yes" or "proposed", or provide your own answer.
 ```
 
 ### After the User Answers
 
-- If the user replies with "yes", "recommended", or "suggested", use your previously stated recommendation/suggestion as the answer.
+- If the user replies with "yes", "recommended", "suggested", or "proposed", use your previously stated proposal as the answer.
 - Otherwise, validate the answer maps to one option or is a valid custom answer.
 - If ambiguous, ask for a quick disambiguation (this still counts as the same question; do not advance the counter).
 - Once satisfactory, record it in working memory, update the exploration state, and move to the next queued question.
@@ -149,7 +150,7 @@ Format: Short answer. You can accept the suggestion by saying "yes" or "suggeste
 - The user signals completion ("done", "good", "no more", "stop", "proceed"), **or**
 - You reach 5 asked questions.
 
-If no valid questions exist at the start, immediately report: "No critical ambiguities detected worth formal clarification." and suggest proceeding.
+Do not use "no valid questions exist" as a reason to skip the first user interaction. If the prompt appears complete, ask the user to confirm the proposed decision-review outcome and proceed only after the answer, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
 
 ## Integration After Each Answer
 
