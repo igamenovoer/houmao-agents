@@ -20,7 +20,7 @@ When this skill is invoked, execute the following steps in order. Detailed rules
 3. **Load previous exploration artifacts**. Check `<output-dir>/` for existing `domain-concepts/`, `adrs/`, and `feature-scope/` files. Load any relevant prior artifacts and incorporate them into your evidence set. See Core Principles §1.
 4. **Prepare domain language baseline**. See **First Step: Establish Domain Language**. If accepting or changing domain language requires a project decision, ask the user before treating it as established.
 5. **Select exploration mode**. Inspect the user's prompt and early repository evidence against the **Exploration Modes** table:
-   - If the prompt explicitly names a mode (`feature-scope`, `domain-language`, `review-decision`) or clearly asks for that kind of work, use that mode.
+   - If the prompt explicitly names a mode (`feature-scope`, `domain-language`, `review-decision`, `brainstorm`) or clearly asks for that kind of work, use that mode.
    - Otherwise, default to `auto`.
    - If the prompt spans multiple modes naturally, combine them sequentially.
 6. **Execute the selected mode's workflow**. Load the mode's page (linked in the **Exploration Modes** table) and follow its **Workflow** section step by step.
@@ -33,7 +33,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 - Preferred explicit form: `$imsight-project-explore <task prompt>`.
 - Task-only form uses `auto` exploration by default.
-- Outside `auto`, select `feature-scope`, `domain-language`, or `review-decision` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration. Inside `auto`, the agent may choose the focused exploration type after inspecting the prompt and repository evidence.
+- Outside `auto`, select `feature-scope`, `domain-language`, `review-decision`, or `brainstorm` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration. Inside `auto`, the agent may choose the focused exploration type after inspecting the prompt and repository evidence.
 - No actionable task means `help`.
 
 ## Project Directory
@@ -71,8 +71,9 @@ If the project already has an established domain language document that the user
 | `feature-scope` | Clarify a feature's target users, behaviors, boundaries, non-goals, and acceptance criteria | [modes/feature-scope.md](modes/feature-scope.md) |
 | `domain-language` | Resolve project-specific terms and terminology conflicts | [modes/domain-language.md](modes/domain-language.md) |
 | `review-decision` | Review existing decisions for consistency, drift, stale assumptions, and missing trade-offs | [modes/review-decision.md](modes/review-decision.md) |
+| `brainstorm` | Turn a vague idea or product concept into an approved system design before implementation | [subskills/brainstorm.md](subskills/brainstorm.md) |
 
-Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose the most relevant exploration type, state that routing choice, and proceed into that mode's questioning loop. The routing choice itself does not require user confirmation. Any substantive product, terminology, scope, ADR, artifact, or implementation-impacting decision after routing requires user consent. Choose another mode from the user's prompt, explicit mode names, direct requests about feature scope, terminology, or decision review, wording that clearly maps to one focused mode, or the agent's evidence-based routing judgment in `auto`. Combine modes only when the request naturally spans them.
+Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose the most relevant exploration type, state that routing choice, and proceed into that mode's questioning loop. The routing choice itself does not require user confirmation. Any substantive product, terminology, scope, ADR, artifact, or implementation-impacting decision after routing requires user consent. Choose another mode from the user's prompt, explicit mode names, direct requests about feature scope, terminology, decision review, or system design brainstorming, wording that clearly maps to one focused mode, or the agent's evidence-based routing judgment in `auto`. Combine modes only when the request naturally spans them.
 
 ## Core Principles
 
@@ -107,8 +108,9 @@ Update durable project artifacts inline when the session resolves durable knowle
 | Domain concepts | `domain-concepts/dc-<what>.md` | `references/DOMAIN-CONCEPTS-FORMAT.md` |
 | ADRs | `adrs/<index>-<what>.md` | `references/ADR-FORMAT.md` |
 | Feature scope | `feature-scope/feat-<what>.md` | — |
+| Design | `designs/YYYY-MM-DD-<topic>-design.md` | `subskills/brainstorm.md` |
 
-When creating the first file in `domain-concepts/` or `feature-scope/`, also create a `README.md` index in that directory. ADRs are durable project content; whether they are version-controlled depends on whether `<output-dir>` itself is tracked. Only write to `docs/design/` if the user explicitly requests tracked project docs.
+When creating the first file in `domain-concepts/`, `feature-scope/`, or `designs/`, also create a `README.md` index in that directory. ADRs are durable project content; whether they are version-controlled depends on whether `<output-dir>` itself is tracked. Only write to `docs/design/` if the user explicitly requests tracked project docs.
 
 ### Consistency discipline
 

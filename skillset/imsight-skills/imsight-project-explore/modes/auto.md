@@ -26,7 +26,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 Before asking any user-facing question, perform a 2-minute repo scan. Load evidence in this order:
 
-1. **Previous exploration**: `<output-dir>/domain-concepts/`, `<output-dir>/adrs/`, `<output-dir>/feature-scope/`. Load any relevant prior artifacts and incorporate them into your evidence set.
+1. **Previous exploration**: `<output-dir>/domain-concepts/`, `<output-dir>/adrs/`, `<output-dir>/feature-scope/`, `<output-dir>/designs/`. Load any relevant prior artifacts and incorporate them into your evidence set.
 2. **Project guidance**: `AGENTS.md`, `CLAUDE.md`, `.agents/`, `.cursor/`, `.github/copilot-instructions.md`
 3. **Product/spec material**: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files, roadmap notes
 4. **Domain memory**: `CONTEXT.md`, architecture docs, design docs
@@ -147,8 +147,8 @@ Do not use "no valid questions exist" as a reason to skip the first user interac
 
 - Maintain an in-memory exploration state plus the raw evidence set.
 - After each accepted answer, update the coverage map and re-prioritize remaining questions.
-- If the answer redirects the request toward a different focused mode (feature-scope, domain-language, review-decision), state the pivot explicitly and hand off to that mode's page.
-- Do not write to disk in `auto` unless the user explicitly requests a written result. If they do, write it to `<output-dir>/feature-scope/feat-<what>.md` or `<output-dir>/domain-concepts/dc-<what>.md` depending on the dominant concern, following the output directory discovery contract. If the target directory does not yet contain a `README.md`, create one as an index.
+- If the answer redirects the request toward a different focused mode (feature-scope, domain-language, review-decision, brainstorm), state the pivot explicitly and hand off to that mode's page.
+- Do not write to disk in `auto` unless the user explicitly requests a written result. If they do, write it to `<output-dir>/feature-scope/feat-<what>.md`, `<output-dir>/domain-concepts/dc-<what>.md`, or `<output-dir>/designs/YYYY-MM-DD-<topic>-design.md` depending on the dominant concern, following the output directory discovery contract. If the target directory does not yet contain a `README.md`, create one as an index.
 - After writing any artifact, scan all other documents under `<output-dir>/` for references to the same concepts or decisions. Update affected documents to restore consistency.
 - When working with an OpenSpec change, also scan the OpenSpec change artifacts for contradictions or extensions, and update or flag them.
 
