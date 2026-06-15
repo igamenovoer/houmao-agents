@@ -53,3 +53,4 @@ This contract does not replace intentional install destinations such as tool hom
 ## Maintenance
 
 Name new setup references after the install target, keep each file self-contained, and avoid duplicating detailed commands in this index.
+Place reusable helper scripts owned by this skill in `<skill-dir>/scripts/` and have references call those scripts instead of embedding long generated-script bodies inline.

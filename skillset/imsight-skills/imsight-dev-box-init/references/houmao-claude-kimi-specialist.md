@@ -4,13 +4,11 @@ Use this reference when the user wants a Houmao specialist that launches Claude 
 
 ## Required Input
 
-You need a Kimi API key. Prefer reading it from the existing `claude-kimi` key file when present:
+You need a Kimi API key. Prefer `KIMI_API_KEY` or `ANTHROPIC_API_KEY` when already set by the user. If a `claude-kimi` launcher already exists from `references/claude-kimi-launcher.md`, prefer reading the shared `kimi-api-key` file next to that launcher. Never print the key.
 
-```bash
-test -r "$HOME/.config/claude-kimi/env"
-```
+On Windows, check `%LOCALAPPDATA%\Programs\kimi-launchers\kimi-api-key`. On Unix, check `$HOME/.local/bin/kimi-api-key`.
 
-If there is no readable key file and no explicit key in the environment, ask:
+If there is no usable key and no explicit key in the environment, ask:
 
 ```text
 Please provide your Kimi API key for the Houmao Claude+Kimi specialist.
@@ -106,12 +104,12 @@ If Node is unavailable, update `~/.claude.json` with another JSON-aware tool. Pr
 
 ## Create The Specialist
 
-Load the key from the `claude-kimi` env file when available:
+If the key is not already in `ANTHROPIC_API_KEY`, recover it from the shared Unix Kimi key file when available:
 
 ```bash
-set -a
-. "$HOME/.config/claude-kimi/env"
-set +a
+if [ -z "${ANTHROPIC_API_KEY:-}" ] && [ -r "$HOME/.local/bin/kimi-api-key" ]; then
+  IFS= read -r ANTHROPIC_API_KEY < "$HOME/.local/bin/kimi-api-key"
+fi
 ```
 
 Then create the specialist. Start with the current Kimi Code Claude settings:
