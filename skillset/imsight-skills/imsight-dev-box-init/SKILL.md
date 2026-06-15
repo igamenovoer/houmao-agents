@@ -1,6 +1,6 @@
 ---
 name: imsight-dev-box-init
-description: Imsight-authored development host setup and installation command index. Use when explicitly invoked as imsight-dev-box-init, routed from another Imsight skill, or when the prompt or context mentions `imsight` and asks to install software, set up development packages or CLI tools, bootstrap a development box, configure local developer tooling, configure Codex CLI, install Tavily or Houmao tooling, create a claude-kimi launcher, create a Houmao Claude+Kimi specialist, or choose an Imsight-preferred installation process. Do not invoke for generic installation or dev-box setup tasks that do not mention `imsight`.
+description: Imsight-authored development host setup and installation command index. Use when explicitly invoked as imsight-dev-box-init, routed from another Imsight skill, or when the prompt or context mentions `imsight` and asks to install software, set up development packages or CLI tools, bootstrap a development box, configure local developer tooling, configure Codex CLI, configure Codex CLI third-party API providers, install Tavily or Houmao tooling, create a claude-kimi launcher, create a Houmao Claude+Kimi specialist, or choose an Imsight-preferred installation process. Do not invoke for generic installation or dev-box setup tasks that do not mention `imsight`.
 ---
 
 # Imsight Dev Box Init
@@ -39,6 +39,7 @@ This contract does not replace intentional install destinations such as tool hom
 | `claude-kimi-launcher` | Create or repair the `claude-kimi` launcher for Claude Code through Kimi Code | `references/claude-kimi-launcher.md` |
 | `houmao-claude-kimi-specialist` | Create a Houmao specialist that uses Claude Code with Kimi credentials | `references/houmao-claude-kimi-specialist.md` |
 | `codex-cli-setup` | Configure Codex CLI according to Imsight preferences | `references/codex-cli-setup.md` |
+| `codex-cli-3rd-party` | Configure Codex CLI model providers for third-party OpenAI-compatible APIs such as Yunwu | `references/codex-cli-3rd-party.md` |
 
 ## Procedure
 
