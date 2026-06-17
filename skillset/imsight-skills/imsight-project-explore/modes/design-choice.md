@@ -1,35 +1,37 @@
-# Feature Scope Exploration Mode
+# Design Choice Exploration Mode
 
-Use `feature-scope` when the user's prompt is about a feature, user story, or behavior change. Clarify who it is for, what it does, what it explicitly does not do, and how to know it is done. Ask 1-5 highly targeted clarification questions unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
+Use `design-choice` when the user's prompt is about a design decision: a feature, user story, behavior change, protocol, convention, architectural pattern, interface contract, or any other choice in a design space. Clarify what is being decided, who it is for, what the chosen direction does, what it explicitly does not do, and how to know the decision is sound. Ask 1-5 highly targeted clarification questions unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
 
 ## Workflow
 
-When `feature-scope` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
+When `design-choice` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
 
-1. **Perform a Pre-Exploration Scan**. Gather repo evidence about similar features, behavior surfaces, product material, and domain memory. See **Pre-Exploration Scan**.
+1. **Perform a Pre-Exploration Scan**. Gather repo evidence about similar design decisions, behavior surfaces, product material, and domain memory. See **Pre-Exploration Scan**.
 2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
 3. **Build 1-5 questions**. See **Question Constraints**.
 4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
-5. **After each answer, integrate**. Update scope notes, write ADRs for hard decisions, and update the feature-scope doc. See **Integration After Each Answer**.
-6. **When complete, produce a Completion Report**. Summarize scope, resolved behavior, open questions, and next actions. See **Completion Report**.
+5. **After each answer, integrate**. Update choice notes, write ADRs for hard decisions, and update the design-choice doc. See **Integration After Each Answer**.
+6. **When complete, produce a Completion Report**. Summarize the decision, resolved behavior, open questions, and next actions. See **Completion Report**.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
 
 ## When to Use
 
 - The user describes a new feature, enhancement, or change in behavior.
-- The prompt includes phrases like "support X", "handle Y", "integrate Z", or "add a way to..."
-- There is no clear acceptance criteria or boundary stated.
+- The prompt asks for a choice between protocols, formats, conventions, patterns, or interfaces.
+- The prompt includes phrases like "support X", "handle Y", "integrate Z", "add a way to...", "should we use A or B", or "what protocol/format/convention should...".
+- There is no clear decision criteria, boundary, or acceptance criteria stated.
+- The central question is a design-space decision rather than terminology clarification or review of an existing decision.
 
 ## Pre-Exploration Scan
 
 Before asking any user-facing question, inspect the repo for:
 
-- **Previous exploration**: `<output-dir>/feature-scope/`, `<output-dir>/domain-concepts/`, `<output-dir>/adrs/`. Load any relevant prior artifacts and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
-- **Similar existing features**: How are they named, tested, and scoped? What permissions and error patterns do they use?
+- **Previous exploration**: `<output-dir>/design-choice/`, `<output-dir>/domain-concepts/`, `<output-dir>/adrs/`. Load any relevant prior artifacts and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
+- **Similar existing decisions**: How are comparable features, protocols, conventions, or patterns named, tested, and scoped? What permissions and error patterns do they use?
 - **Behavior surfaces**: Routes, controllers, API schemas, UI pages, CLI commands, migrations, test names, fixtures.
 - **Product material**: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files.
-- **Domain memory**: `CONTEXT.md`, architecture docs that constrain the feature.
+- **Domain memory**: `CONTEXT.md`, architecture docs that constrain the decision.
 
 Cite file paths and line numbers when reporting evidence.
 
@@ -39,8 +41,12 @@ Perform a structured ambiguity & coverage scan across this taxonomy. For each ca
 
 | Category | What to Check |
 | --- | --- |
+| **Decision Type & Design Space** | What kind of choice is being made (feature, protocol, convention, pattern, interface, format)? What are the known alternatives? |
 | **Functional Scope & Behavior** | Core user goals & success criteria; explicit out-of-scope declarations; user roles / personas differentiation |
 | **Domain & Data Model** | Entities, attributes, relationships; identity & uniqueness rules; lifecycle/state transitions; data volume / scale assumptions |
+| **Protocol & Interface Choices** | Wire protocols, API styles, serialization formats, event schemas, version contracts, compatibility guarantees |
+| **Conventions & Standards** | Naming, formatting, linting, project conventions, team standards, regulatory or compliance standards that apply |
+| **Architecture & Pattern Choices** | Structural patterns, component boundaries, responsibility allocation, coupling/decoupling decisions |
 | **Interaction & UX Flow** | Critical user journeys / sequences; error/empty/loading states; accessibility or localization notes |
 | **Non-Functional Quality Attributes** | Performance targets; reliability & availability; observability signals; security & privacy posture |
 | **Integration & External Dependencies** | External services/APIs and failure modes; data import/export formats; protocol/versioning assumptions |
@@ -56,13 +62,13 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 
 ## Question Constraints
 
-- Ask at least 1 question before finalizing scope, writing artifacts, or producing a final proposed direction, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
+- Ask at least 1 question before finalizing the design choice, writing artifacts, or producing a final proposed direction, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
 - **Maximum 5 total questions** across the whole session.
 - Each question must be answerable with **either**:
   - A short multiple-choice selection (2–5 distinct, mutually exclusive options), **or**
   - A short-phrase answer. The agent's proposed answer should be concise, but the user may provide a custom answer of any length.
-- Only include questions whose answers materially impact architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, or compliance validation.
-- Ensure category coverage balance: attempt to cover the highest impact unresolved categories first; avoid asking two low-impact questions when a single high-impact area (e.g., security posture) is unresolved.
+- Only include questions whose answers materially impact architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, compliance validation, or choice of protocol/convention/pattern.
+- Ensure category coverage balance: attempt to cover the highest impact unresolved categories first; avoid asking two low-impact questions when a single high-impact area (e.g., security posture or protocol choice) is unresolved.
 - Exclude questions already answered by repo evidence, trivial stylistic preferences, or plan-level execution details (unless blocking correctness).
 - Favor clarifications that reduce downstream rework risk or prevent misaligned acceptance tests.
 - If more than 5 categories remain unresolved, select the top 5 by (Impact × Uncertainty) heuristic.
@@ -76,7 +82,7 @@ Present **exactly one question at a time**.
 
 Before presenting the options, provide:
 
-1. **Motivation** — state the question clearly and explain why the answer materially impacts architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, or compliance validation.
+1. **Motivation** — state the question clearly and explain why the answer materially impacts architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, compliance validation, or choice of protocol/convention/pattern.
 2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows how each option would play out in practice.
 
 Then analyze all options and determine the **proposed option** based on:
@@ -118,7 +124,7 @@ You can reply with the option letter (e.g., "A"), accept the proposal by saying 
 
 Before presenting the proposed answer, provide:
 
-1. **Motivation** — state the question clearly and explain why the answer materially impacts architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, or compliance validation.
+1. **Motivation** — state the question clearly and explain why the answer materially impacts architecture, data modeling, task decomposition, test design, UX behavior, operational readiness, compliance validation, or choice of protocol/convention/pattern.
 2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows why the answer matters.
 
 Then provide your **proposed answer** with:
@@ -152,7 +158,7 @@ Format: Short answer. You can accept the proposal by saying "yes" or "proposed",
 - The user signals completion ("done", "good", "no more", "stop", "proceed"), **or**
 - You reach 5 asked questions.
 
-Do not use "no valid questions exist" as a reason to skip the first user interaction. If the prompt appears complete, ask the user to confirm the proposed feature scope and proceed only after the answer, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
+Do not use "no valid questions exist" as a reason to skip the first user interaction. If the prompt appears complete, ask the user to confirm the proposed design choice and proceed only after the answer, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
 
 ## Integration After Each Answer
 
@@ -161,13 +167,14 @@ Do not use "no valid questions exist" as a reason to skip the first user interac
   - Functional ambiguity → Update scope / behavior notes
   - User interaction / actor distinction → Update user roles or entry points
   - Data shape / entities → Update data model notes
+  - Protocol / convention / pattern choice → Update design-choice notes and record the selected alternative
   - Non-functional constraint → Add measurable criteria
   - Edge case / negative flow → Add error-handling notes
   - Terminology conflict → Normalize term across notes; if the conflict is durable, also update `<output-dir>/domain-concepts/dc-<what>.md`
 - If the clarification invalidates an earlier ambiguous statement, replace that statement instead of duplicating; leave no obsolete contradictory text.
 - If an existing spec, issue, PRD, or design doc is the target artifact, update it incrementally after each answer (atomic overwrite). Preserve formatting and heading hierarchy.
 - If the answer resolves a decision that is hard to reverse, surprising without context, or involves a real trade-off, write an ADR immediately to `<output-dir>/adrs/<index>-<what>.md`. Load `references/ADR-FORMAT.md` before creating it. Do not batch ADRs; create them as decisions are made.
-- If the user asked for a written result or the session is pausing, write the accumulated scope notes to `<output-dir>/feature-scope/feat-<what>.md`. If the `feature-scope/` directory does not yet contain a `README.md`, create one as an index.
+- If the user asked for a written result or the session is pausing, write the accumulated choice notes to `<output-dir>/design-choice/design-<what>.md`. If the `design-choice/` directory does not yet contain a `README.md`, create one as an index.
 - After writing or updating any artifact, scan all other documents under `<output-dir>/` for references to the same concepts, decisions, or terms. Update affected documents to restore consistency.
 - When working with an OpenSpec change, also scan the OpenSpec change artifacts (`proposal.md`, `design.md`, `tasks.md`, and specs under `specs/`) for references to the same topics. Update the relevant OpenSpec documents or flag the inconsistency to the user.
 
@@ -176,11 +183,11 @@ Do not use "no valid questions exist" as a reason to skip the first user interac
 When the exploration is complete or paused, summarize:
 
 - **Questions asked & answered**: count.
-- **Scope decision**: what is in and out.
-- **Resolved behavior**: concrete feature/spec decisions.
+- **Design choice decision**: what was chosen, what is in and out, and what alternatives were rejected.
+- **Resolved behavior**: concrete feature/spec/protocol/convention/pattern decisions.
 - **Open questions**: only unresolved blockers.
 - **Evidence**: most important docs/code references.
 - **Coverage summary**: for each taxonomy category, state Resolved / Deferred / Clear / Outstanding.
 - **Suggested next action**: spec update, decision review report, ADR update, issue breakdown, implementation plan, or handoff to another Imsight skill.
 
-Prefer a narrow end-to-end slice over broad partial infrastructure. Name the slice in terms of user-visible behavior.
+Prefer a narrow end-to-end slice over broad partial infrastructure. Name the slice in terms of user-visible behavior or the concrete design decision made.

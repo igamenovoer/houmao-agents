@@ -28,7 +28,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 - The user describes an idea in broad terms (e.g., "build a dashboard", "add notifications", "rethink the workflow").
 - The request mixes product intent, UX concerns, architecture, and scope without a clear design.
 - The user explicitly asks to brainstorm, explore possibilities, or design a system.
-- `feature-scope` feels too narrow because the central challenge is deciding what the system should be, not just scoping a known feature.
+- `design-choice` feels too narrow because the central challenge is deciding what the system should be, not just choosing a known design option.
 
 ## Hard Gate
 
@@ -38,7 +38,7 @@ Do **not** start implementation, invoke an implementation skill, write code, sca
 
 Before asking any user-facing question, inspect the repo for:
 
-- **Previous exploration**: `<output-dir>/designs/`, `<output-dir>/domain-concepts/`, `<output-dir>/adrs/`, `<output-dir>/feature-scope/`. Load any relevant prior artifacts and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
+- **Previous exploration**: `<output-dir>/designs/`, `<output-dir>/domain-concepts/`, `<output-dir>/adrs/`, `<output-dir>/design-choice/`. Load any relevant prior artifacts and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
 - **Project guidance**: `AGENTS.md`, `CLAUDE.md`, `.agents/`, `.cursor/`, `.github/copilot-instructions.md`.
 - **Product/spec material**: `README.md`, `docs/`, `specs/`, `features/`, issue or PRD files, roadmap notes.
 - **Domain memory**: `CONTEXT.md`, architecture docs, design docs.
@@ -84,7 +84,7 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 
 Present **exactly one question at a time**.
 
-Follow the same multiple-choice and short-answer formats defined in `modes/feature-scope.md`:
+Follow the same multiple-choice and short-answer formats defined in `modes/design-choice.md`:
 
 - State the **motivation** and a concrete **example**.
 - Provide a **proposed option/answer** with **why it is proposed** and **downstream implications**.
@@ -166,7 +166,7 @@ Do not transition to implementation until the user explicitly approves the writt
 - Maintain an in-memory representation of the exploration state plus the raw evidence set.
 - After each accepted answer, apply the clarification to the most appropriate category in the coverage map.
 - If the answer resolves a hard-to-reverse decision, involves a real trade-off, or would surprise a future reader, write an ADR immediately to `<output-dir>/adrs/<index>-<what>.md`. Load `references/ADR-FORMAT.md` before creating it. Do not batch ADRs; create them as decisions are made.
-- If the answer reveals that `feature-scope`, `domain-language`, or `review-decision` is a better fit, state the pivot explicitly and hand off to that mode's page.
+- If the answer reveals that `design-choice`, `domain-language`, or `review-decision` is a better fit, state the pivot explicitly and hand off to that mode's page.
 - After writing or updating any artifact, scan all other documents under `<output-dir>/` for references to the same concepts, decisions, or terms. Update affected documents to restore consistency.
 - When working with an OpenSpec change, also scan the OpenSpec change artifacts (`proposal.md`, `design.md`, `tasks.md`, and specs under `specs/`) for references to the same topics. Update the relevant OpenSpec documents or flag the inconsistency to the user.
 
