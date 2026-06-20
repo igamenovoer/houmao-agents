@@ -20,6 +20,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 - The user asks a broad question such as "explore this project" or "what should we build?"
 - The prompt mixes scope, terminology, and decision concerns without naming a mode.
+- The prompt asks for open questions, unresolved decisions, or gaps but does not explicitly name `any-open-question`.
 - You need to discover which focused mode is most relevant before committing to it.
 
 ## Pre-Exploration Scan
@@ -45,6 +46,7 @@ Perform a structured scan across these categories. For each, mark status: **Clea
 | **Primary concern** | Does the prompt lean toward scope, terminology, or existing decision review? |
 | **Blockers** | What is the smallest unresolved item that prevents choosing a focused mode? |
 | **Drift signals** | Are there contradictions between docs, code, tests, or the user's language? |
+| **Open-question signals** | Does the request first need an inventory of unresolved questions before a focused mode can be selected? |
 
 ## Question Constraints
 
@@ -147,7 +149,7 @@ Do not use "no valid questions exist" as a reason to skip the first user interac
 
 - Maintain an in-memory exploration state plus the raw evidence set.
 - After each accepted answer, update the coverage map and re-prioritize remaining questions.
-- If the answer redirects the request toward a different focused mode (design-choice, domain-language, review-decision, brainstorm), state the pivot explicitly and hand off to that mode's page.
+- If the answer redirects the request toward a different focused mode (`any-open-question`, `design-choice`, `domain-language`, `review-decision`, or `brainstorm`), state the pivot explicitly and hand off to that mode's page.
 - Do not write to disk in `auto` unless the user explicitly requests a written result. If they do, write it to `<output-dir>/design-choice/design-<what>.md`, `<output-dir>/domain-concepts/dc-<what>.md`, or `<output-dir>/designs/YYYY-MM-DD-<topic>-design.md` depending on the dominant concern, following the output directory discovery contract. If the target directory does not yet contain a `README.md`, create one as an index.
 - After writing any artifact, scan all other documents under `<output-dir>/` for references to the same concepts or decisions. Update affected documents to restore consistency.
 - When working with an OpenSpec change, also scan the OpenSpec change artifacts for contradictions or extensions, and update or flag them.

@@ -9,7 +9,7 @@ description: Imsight-authored agent-assisted exploration workflow for developmen
 
 Use this skill to explore a development project before planning or building. Treat the user's proposal, issue, feature idea, or spec as a hypothesis to test against the repository's existing docs, code, tests, terminology, and product boundaries.
 
-Exploration is interactive by default. In `auto` mode, the agent may inspect repository evidence and choose the exploration type itself, such as `design-choice`, `domain-language`, or `review-decision`. After that routing choice, the agent must ask the user at least one decision-bearing question before choosing a durable project direction, writing artifacts, or producing a final proposed direction. Use zero questions only when the user explicitly requests a non-interactive audit, explicitly asks the agent to make reasonable assumptions, or provides all required decisions in the prompt.
+Exploration is interactive by default. In `auto` mode, the agent may inspect repository evidence and choose the exploration type itself, such as `any-open-question`, `design-choice`, `domain-language`, or `review-decision`. After that routing choice, the agent must ask the user at least one decision-bearing question before choosing a durable project direction, writing artifacts, or producing a final proposed direction. Use zero questions only when the user explicitly requests a non-interactive audit, explicitly asks the agent to make reasonable assumptions, or provides all required decisions in the prompt.
 
 ## Workflow
 
@@ -20,7 +20,7 @@ When this skill is invoked, execute the following steps in order. Detailed rules
 3. **Load previous exploration artifacts**. Check `<output-dir>/` for existing `domain-concepts/`, `adrs/`, and `design-choice/` files. Load any relevant prior artifacts and incorporate them into your evidence set. See Core Principles §1.
 4. **Prepare domain language baseline**. See **First Step: Establish Domain Language**. If accepting or changing domain language requires a project decision, ask the user before treating it as established.
 5. **Select exploration mode**. Inspect the user's prompt and early repository evidence against the **Exploration Modes** table:
-   - If the prompt explicitly names a mode (`design-choice`, `domain-language`, `review-decision`, `brainstorm`) or clearly asks for that kind of work, use that mode.
+   - If the prompt explicitly names a mode (`any-open-question`, `design-choice`, `domain-language`, `review-decision`, `brainstorm`) or clearly asks for that kind of work, use that mode.
    - Otherwise, default to `auto`.
    - If the prompt spans multiple modes naturally, combine them sequentially.
 6. **Execute the selected mode's workflow**. Load the mode's page (linked in the **Exploration Modes** table) and follow its **Workflow** section step by step.
@@ -33,7 +33,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 - Preferred explicit form: `$imsight-project-explore <task prompt>`.
 - Task-only form uses `auto` exploration by default.
-- Outside `auto`, select `design-choice`, `domain-language`, `review-decision`, or `brainstorm` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration. Inside `auto`, the agent may choose the focused exploration type after inspecting the prompt and repository evidence.
+- Outside `auto`, select `any-open-question`, `design-choice`, `domain-language`, `review-decision`, or `brainstorm` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration. Inside `auto`, the agent may choose the focused exploration type after inspecting the prompt and repository evidence.
 - No actionable task means `help`.
 
 ## Project Directory
@@ -68,12 +68,13 @@ If the project already has an established domain language document that the user
 | Mode | Use For | Detail |
 | --- | --- | --- |
 | `auto` | Let the agent choose the exploration type from the prompt, repo evidence, and highest-risk uncertainty | [modes/auto.md](modes/auto.md) |
+| `any-open-question` | Identify unresolved questions in given material, classify them by type, and route each material question to the matching non-brainstorm exploration mode | [modes/any-open-question.md](modes/any-open-question.md) |
 | `design-choice` | Clarify a design decision: features, scopes, protocols, conventions, patterns, interfaces, acceptance criteria, and tradeoffs | [modes/design-choice.md](modes/design-choice.md) |
 | `domain-language` | Resolve project-specific terms and terminology conflicts | [modes/domain-language.md](modes/domain-language.md) |
 | `review-decision` | Review existing decisions for consistency, drift, stale assumptions, and missing trade-offs | [modes/review-decision.md](modes/review-decision.md) |
 | `brainstorm` | Turn a vague idea or product concept into an approved system design before implementation | [subskills/brainstorm.md](subskills/brainstorm.md) |
 
-Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose the most relevant exploration type, state that routing choice, and proceed into that mode's questioning loop. The routing choice itself does not require user confirmation. Any substantive product, terminology, scope, ADR, artifact, or implementation-impacting decision after routing requires user consent. Choose another mode from the user's prompt, explicit mode names, direct requests about feature scope, terminology, decision review, or system design brainstorming, wording that clearly maps to one focused mode, or the agent's evidence-based routing judgment in `auto`. Combine modes only when the request naturally spans them.
+Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose the most relevant exploration type, state that routing choice, and proceed into that mode's questioning loop. The routing choice itself does not require user confirmation. Any substantive product, terminology, scope, ADR, artifact, or implementation-impacting decision after routing requires user consent. Choose another mode from the user's prompt, explicit mode names, requests to find any open or unresolved questions, direct requests about feature scope, terminology, decision review, or system design brainstorming, wording that clearly maps to one focused mode, or the agent's evidence-based routing judgment in `auto`. Combine modes only when the request naturally spans them.
 
 ## Core Principles
 
