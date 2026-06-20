@@ -17,10 +17,10 @@ When this skill is invoked, execute the following steps in order. Detailed rules
 
 1. **Determine the project directory**. See **Project Directory**.
 2. **Resolve `<output-dir>`**. See **Output Directory Discovery**.
-3. **Load previous exploration artifacts**. Check `<output-dir>/` for existing `domain-concepts/`, `adrs/`, and `design-choice/` files. Load any relevant prior artifacts and incorporate them into your evidence set. See Core Principles §1.
+3. **Load previous exploration artifacts**. Check `<output-dir>/` for existing `domain-concepts/`, `adrs/`, `design-choice/`, `designs/`, and `use-cases/` files. Load any relevant prior artifacts and incorporate them into your evidence set. See Core Principles §1.
 4. **Prepare domain language baseline**. See **First Step: Establish Domain Language**. If accepting or changing domain language requires a project decision, ask the user before treating it as established.
 5. **Select exploration mode**. Inspect the user's prompt and early repository evidence against the **Exploration Modes** table:
-   - If the prompt explicitly names a mode (`any-open-question`, `design-choice`, `domain-language`, `review-decision`, `brainstorm`) or clearly asks for that kind of work, use that mode.
+   - If the prompt explicitly names a mode (`any-open-question`, `design-choice`, `domain-language`, `review-decision`, `brainstorm`, `usecase-design`) or clearly asks for that kind of work, use that mode.
    - Otherwise, default to `auto`.
    - If the prompt spans multiple modes naturally, combine them sequentially.
 6. **Execute the selected mode's workflow**. Load the mode's page (linked in the **Exploration Modes** table) and follow its **Workflow** section step by step.
@@ -33,7 +33,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 - Preferred explicit form: `$imsight-project-explore <task prompt>`.
 - Task-only form uses `auto` exploration by default.
-- Outside `auto`, select `any-open-question`, `design-choice`, `domain-language`, `review-decision`, or `brainstorm` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration. Inside `auto`, the agent may choose the focused exploration type after inspecting the prompt and repository evidence.
+- Outside `auto`, select `any-open-question`, `design-choice`, `domain-language`, `review-decision`, `brainstorm`, or `usecase-design` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration. Inside `auto`, the agent may choose the focused exploration type after inspecting the prompt and repository evidence.
 - No actionable task means `help`.
 
 ## Project Directory
@@ -73,8 +73,9 @@ If the project already has an established domain language document that the user
 | `domain-language` | Resolve project-specific terms and terminology conflicts | [modes/domain-language.md](modes/domain-language.md) |
 | `review-decision` | Review existing decisions for consistency, drift, stale assumptions, and missing trade-offs | [modes/review-decision.md](modes/review-decision.md) |
 | `brainstorm` | Turn a vague idea or product concept into an approved system design before implementation | [subskills/brainstorm.md](subskills/brainstorm.md) |
+| `usecase-design` | Create use cases from project context, or clarify and refine existing use cases against system design and domain language | [subskills/usecase-design.md](subskills/usecase-design.md) |
 
-Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose the most relevant exploration type, state that routing choice, and proceed into that mode's questioning loop. The routing choice itself does not require user confirmation. Any substantive product, terminology, scope, ADR, artifact, or implementation-impacting decision after routing requires user consent. Choose another mode from the user's prompt, explicit mode names, requests to find any open or unresolved questions, direct requests about feature scope, terminology, decision review, or system design brainstorming, wording that clearly maps to one focused mode, or the agent's evidence-based routing judgment in `auto`. Combine modes only when the request naturally spans them.
+Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose the most relevant exploration type, state that routing choice, and proceed into that mode's questioning loop. The routing choice itself does not require user confirmation. Any substantive product, terminology, scope, ADR, artifact, or implementation-impacting decision after routing requires user consent. Choose another mode from the user's prompt, explicit mode names, requests to find any open or unresolved questions, direct requests about feature scope, terminology, decision review, system design brainstorming, or use-case design, wording that clearly maps to one focused mode, or the agent's evidence-based routing judgment in `auto`. Combine modes only when the request naturally spans them.
 
 ## Core Principles
 
@@ -86,7 +87,7 @@ Do not treat repository evidence as a substitute for product intent, priority, r
 
 Look for coding agent context files (such as `AGENTS.md` or `.cursor/`), project documentation, domain memory (such as `CONTEXT.md`, architecture docs, or ADRs), and behavior surfaces (routes, schemas, tests, migrations, UI labels, CLI commands). Also look for similar existing features that imply naming, permissions, lifecycle states, error handling, or acceptance criteria.
 
-Before creating any new artifact, check `<output-dir>/` for previous exploration results. Load existing `domain-concepts/`, `adrs/`, and `design-choice/` files and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
+Before creating any new artifact, check `<output-dir>/` for previous exploration results. Load existing `domain-concepts/`, `adrs/`, `design-choice/`, `designs/`, and `use-cases/` files and incorporate them into your evidence set. Do not duplicate or contradict prior exploration without explicitly noting the conflict.
 
 Use targeted search and file reads before broad exploration. Cite file paths and line numbers when reporting evidence or contradictions.
 
@@ -110,8 +111,9 @@ Update durable project artifacts inline when the session resolves durable knowle
 | ADRs | `adrs/<index>-<what>.md` | `references/ADR-FORMAT.md` |
 | Design choice | `design-choice/design-<what>.md` | — |
 | Design | `designs/YYYY-MM-DD-<topic>-design.md` | `subskills/brainstorm.md` |
+| Use cases | `use-cases/uc-<NN>-<what>.md` | `subskills/usecase-design.md` |
 
-When creating the first file in `domain-concepts/`, `design-choice/`, or `designs/`, also create a `README.md` index in that directory. ADRs are durable project content; whether they are version-controlled depends on whether `<output-dir>` itself is tracked. Only write to `docs/design/` if the user explicitly requests tracked project docs.
+When creating the first file in `domain-concepts/`, `design-choice/`, `designs/`, or `use-cases/`, also create a `README.md` index in that directory. ADRs are durable project content; whether they are version-controlled depends on whether `<output-dir>` itself is tracked. Only write to `docs/design/` if the user explicitly requests tracked project docs.
 
 ### Consistency discipline
 
