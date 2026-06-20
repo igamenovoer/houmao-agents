@@ -39,7 +39,7 @@ This contract does not replace intentional install destinations such as tool hom
 | `claude-kimi-launcher` | Create or repair the `claude-kimi` launcher for Claude Code through Kimi Code | `references/claude-kimi-launcher.md` |
 | `houmao-claude-kimi-specialist` | Create a Houmao specialist that uses Claude Code with Kimi credentials | `references/houmao-claude-kimi-specialist.md` |
 | `codex-cli-setup` | Configure Codex CLI according to Imsight preferences | `references/codex-cli-setup.md` |
-| `codex-cli-3rd-party` | Configure Codex CLI model providers for third-party OpenAI-compatible APIs such as Yunwu | `references/codex-cli-3rd-party.md` |
+| `codex-cli-3rd-party` | Configure Codex CLI model providers for third-party OpenAI-compatible APIs. Second-level cases: `responses-api` (Yunwu), `chat-completions-only` (SiliconFlow, DeepSeek direct) | `references/codex-cli-3rd-party.md` |
 
 ## Procedure
 
