@@ -24,8 +24,9 @@ When this skill is invoked, execute the following steps in order. Detailed rules
    - Otherwise, default to `auto`.
    - If the prompt spans multiple modes naturally, combine them sequentially.
 6. **Execute the selected mode's workflow**. Load the mode's page (linked in the **Exploration Modes** table) and follow its **Workflow** section step by step.
-7. **Capture durable knowledge**. Follow the **Capturing Knowledge** rules when writing or updating artifacts.
-8. **Do not start implementation** unless the user explicitly asks to switch from exploration to implementation.
+7. **Route documentation-specific writing needs**. If the artifact needs a particular document style, Markdown structure, polished prose, Mermaid diagrams, or other writing-specific conventions, use `imsight-doc-writing` for those rules before writing the artifact. See **Documentation Writing Route**.
+8. **Capture durable knowledge**. Follow the **Capturing Knowledge** rules when writing or updating artifacts.
+9. **Do not start implementation** unless the user explicitly asks to switch from exploration to implementation.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the available modes, constraints above, and the user's specific goal, then execute the plan.
 
@@ -50,6 +51,12 @@ When this skill writes artifacts, resolve `<output-dir>` in this priority:
 4. `<project-dir>/.imsight-arts/project-explore/` by default.
 
 Only write to `docs/design/` if the user explicitly requests tracked project docs.
+
+## Documentation Writing Route
+
+Use `imsight-doc-writing` whenever exploration produces or revises documentation that needs writing-specific guidance: domain concept notes, ADRs, design-choice records, design docs, use cases, review summaries, Markdown structure, prose style, or Mermaid diagrams. Treat `imsight-project-explore` as responsible for project evidence, decisions, artifact paths, consent, and consistency; treat `imsight-doc-writing` as responsible for how the document should be written in the requested or established style.
+
+Do not duplicate detailed writing-style rules in this skill. When the user asks for a particular documentation style or the artifact type has a specialized writing convention, load `imsight-doc-writing`, follow its applicable subskill, then return here to apply the **Capturing Knowledge** and consistency rules.
 
 ## First Step: Prepare Domain Language
 

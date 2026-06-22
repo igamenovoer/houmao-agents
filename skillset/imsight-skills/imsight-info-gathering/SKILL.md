@@ -9,7 +9,7 @@ description: Imsight-authored online information gathering command workflow for 
 
 Use this skill as the Imsight research SOP for online information work. Prefer explicit source ledgers, primary-source bias, reproducible downloads, and synthesized conclusions over loose search-result summaries.
 
-This skill can route to other Imsight skills in the same suite. If the task needs tool installation, network setup, proxy repair, or environment bootstrapping, use the matching Imsight skill before continuing.
+This skill can route to other Imsight skills in the same suite. If the task needs tool installation, network setup, proxy repair, environment bootstrapping, or documentation-specific writing guidance, use the matching Imsight skill before continuing.
 
 ## Invocation Contract
 
@@ -49,12 +49,14 @@ When this skill writes hints, downloaded source corpora, source packs, reports, 
 6. Maintain a source ledger while working: URL, title, publisher, date accessed, publish date if available, why it matters, and whether it is primary or secondary.
 7. Download or extract durable source material when the user asks for downloads, when sources are likely to move, or when a report needs an auditable local corpus.
 8. Synthesize across sources. Separate findings, conflicts, uncertainty, and recommendations. Do not pad the report with source-by-source summaries unless the user asked for an annotated bibliography.
-9. If the task asks for LibGen mirror search, direct download links, or wget-ready commands, load `subskills/find-libgen.md` and use that workflow.
+9. If writing a durable hint, report, source pack narrative, comparison, or other documentation artifact that needs structure, prose style, Markdown conventions, diagrams, or a particular document style, route to `imsight-doc-writing` for the writing-specific rules, then return to this skill for evidence and source-handling rules.
+10. If the task asks for LibGen mirror search, direct download links, or wget-ready commands, load `subskills/find-libgen.md` and use that workflow.
 
 ## Routing
 
 - Use `imsight-dev-box-init` when missing tooling must be installed, such as Tavily CLI, crawling utilities, PDF tools, or other development/research dependencies.
 - Use `imsight-dev-box-network` when downloads fail because of proxy, tunnel, DNS, SSH, or dev-box connectivity issues.
+- Use `imsight-doc-writing` when a research output becomes a documentation-writing task: choosing a doc structure, matching a requested style, polishing Markdown prose, drafting a hint/report as durable docs, adding Mermaid diagrams, or finding writing-specific conventions. Do not duplicate those style rules here; load the doc-writing skill and follow its applicable subskill.
 - Use existing Tavily skills when available: search for discovery, extract for specific URLs, crawl for documentation sections, and research for comprehensive multi-source reports.
 - Use official documentation or primary repositories for technical library/API behavior before relying on blogs or generated examples.
 
