@@ -5,7 +5,7 @@
 Use this reference to analyze a given agent skill from the skill files themselves and produce a Markdown report set under `<output-dir>`.
 
 1. **Locate the skill folder**. Resolve the target folder from the user's request, then confirm it contains `SKILL.md`.
-2. **Resolve `<output-dir>`** using the entrypoint **Output Contract**.
+2. **Resolve `<output-dir>`** using **Output Contract**.
 3. **Read the entrypoint completely**. Read `SKILL.md` from start to finish.
 4. **Inspect runtime metadata**. Read `agents/openai.yaml` when present.
 5. **Map linked resources**. Identify directly linked `references/`, `subskills/`, `scripts/`, `assets/`, mode pages, primitive pages, and workflow pages.
@@ -18,6 +18,23 @@ Use this reference to analyze a given agent skill from the skill files themselve
 12. **Return a brief in-chat response** using `references/chat-response-template.md`.
 
 If a skill has multiple subcommands or modes, write `ENTRYPOINT.md` for the top-level routing flow, then write one Markdown file for each analyzed subcommand or mode. If no specific subcommand is requested, analyze all public subcommands at a concise level.
+
+## Output Contract
+
+By default, `analyze` writes Markdown report files under `<output-dir>` and returns a brief in-chat response using `references/chat-response-template.md`.
+
+Resolve `<output-dir>` in this order:
+
+1. Use the output location explicitly provided by the user.
+2. Otherwise, use `AGENT_SKILL_OUTPUT_DIR` when set; relative values are resolved from the current project directory and absolute values are used as-is.
+3. Otherwise, use `<project-dir>/.agent-skill-handling/analysis/<target-skill-name>/`.
+
+Write reports using these names:
+
+- Primary `SKILL.md` entrypoint report: `<output-dir>/ENTRYPOINT.md`.
+- Multi-part skill reports: `<output-dir>/<subskill-or-subcommand-name>.md` for each public subskill, subcommand, mode, workflow, or primitive page that deserves its own analysis.
+
+Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary `SKILL.md` report. Prefer the public subcommand or subskill name over the source file stem when they differ.
 
 ## Evidence Rules
 

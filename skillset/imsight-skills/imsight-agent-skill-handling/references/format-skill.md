@@ -2,7 +2,7 @@
 
 ## Workflow
 
-Use this reference to revise a given skill so its structure conforms to the bundled Imsight skill style guide.
+Use this reference to revise a given skill so its structure conforms to the bundled skill style guide.
 
 1. **Locate the target skill**. Resolve the skill folder from the user's request and confirm it contains `SKILL.md`.
 2. **Load the local style guide**. Read `references/imsight-skill-style-guide.md`; do not rely on any style guide outside this skill directory.
@@ -40,13 +40,17 @@ Apply these checks to the target `SKILL.md` and any subskill-like Markdown page 
 
 ## Validation
 
-Run the platform validator when available. For Codex skills, use the local `skill-creator` validator if present:
+Run the platform validator when available. If a local skill validator such as `skill-creator/scripts/quick_validate.py` is present, use it:
 
 ```bash
 python /path/to/skill-creator/scripts/quick_validate.py <target-skill-folder>
 ```
 
 If the current Python environment lacks validator dependencies, try the repository's managed Python environment before giving up.
+
+## Output Contract
+
+By default, `format-skill` edits the target skill files in place and writes no analysis report. It returns a brief chat summary with changed files, validations run, and any style issues left unresolved.
 
 After validation, inspect changed files for:
 
