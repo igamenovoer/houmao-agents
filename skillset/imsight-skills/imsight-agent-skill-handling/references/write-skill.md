@@ -2,7 +2,7 @@
 
 ## Workflow
 
-Use this reference to create a new skill from a user request, or to rewrite an existing skill draft so it is ready for testing.
+Use this reference to create a new skill from a user request, or to rewrite an existing skill draft so it is ready for use.
 
 1. **Confirm the task and locate the skill home**. See **Skill Home**.
 2. **Capture intent** from the user's request and conversation history. See **Intent Capture**.
@@ -11,9 +11,8 @@ Use this reference to create a new skill from a user request, or to rewrite an e
 5. **Choose a structure** based on the skill's complexity. See **Structure Selection**.
 6. **Write or revise the SKILL.md entrypoint**. See **SKILL.md Writing Guide**.
 7. **Add bundled resources** when the skill needs scripts, references, or assets. See **Bundled Resources**.
-8. **Draft initial test prompts** and save them to `evals/evals.json`. See **Test Prompts**.
-9. **Validate** the skill frontmatter and structure. See **Validation**.
-10. **Return a brief in-chat summary** using `references/chat-response-template.md` and list the files written or changed.
+8. **Validate** the skill frontmatter and structure. See **Validation**.
+9. **Return a brief in-chat summary** using `references/chat-response-template.md` and list the files written or changed.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan from the available writing guidance and the user's request, then execute the plan.
 
@@ -34,15 +33,14 @@ Resolve these questions before writing:
 1. What should this skill enable the agent to do?
 2. When should this skill be invoked? (user phrases or contexts)
 3. What is the expected output format?
-4. Does this skill need objectively verifiable test cases? Suggest test cases for file transforms, data extraction, code generation, or fixed workflow steps. For subjective outputs such as writing style or art, suggest skipping test cases unless the user wants them.
 
 Confirm the answers with the user before proceeding to the next step.
 
 ## User Interview
 
-Proactively ask questions about edge cases, input/output formats, example files, success criteria, and dependencies. Wait to write test prompts until this part is clear.
+Proactively ask questions about edge cases, input/output formats, example files, success criteria, and dependencies.
 
-Use the user's answers to fill in the SKILL.md sections and to draft realistic test prompts.
+Use the user's answers to fill in the SKILL.md sections.
 
 ## Research
 
@@ -116,26 +114,6 @@ Add bundled resources only when they reduce repetition or handle deterministic t
 
 Keep references one level from SKILL.md when the entrypoint needs them.
 
-## Test Prompts
-
-After writing the skill draft, create 2-3 realistic test prompts — the kind of thing a real user would actually say. Save them to `evals/evals.json` in the skill directory:
-
-```json
-{
-  "skill_name": "example-skill",
-  "evals": [
-    {
-      "id": 1,
-      "prompt": "User's task prompt",
-      "expected_output": "Description of expected result",
-      "files": []
-    }
-  ]
-}
-```
-
-Do not write assertions yet — just the prompts. Share the prompts with the user for review before running evals.
-
 ## Validation
 
 Validate the skill before finishing:
@@ -157,4 +135,4 @@ The chat summary must include:
 - The skill folder path.
 - Files written or changed.
 - Validation results.
-- Next recommended step (for example, run evals or review the skill).
+- Next recommended step (for example, review the skill or hand it off for evaluation).
