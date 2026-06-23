@@ -1,6 +1,6 @@
 interface:
   display_name: "Imsight Agent Skill Handling"
-  short_description: "Analyze, write, and format agent skills"
+  short_description: "Analyze, create, test, harden, and format agent skills"
   default_prompt: "Use $imsight-agent-skill-handling use help to see Imsight agent skill handling subcommands."
 policy:
   allow_implicit_invocation: false

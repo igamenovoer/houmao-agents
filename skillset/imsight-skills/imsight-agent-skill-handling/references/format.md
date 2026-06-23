@@ -2,16 +2,17 @@
 
 ## Workflow
 
-Use this reference to revise a given skill so its structure conforms to the bundled skill style guide. It applies to existing skills and to new skills created by `write-skill`.
+Use this reference to revise a given skill so its structure conforms to the bundled style guide and its description is optimized for discovery. It applies to existing skills and to new skills created by `create`.
 
 1. **Locate the target skill**. Resolve the skill folder from the user's request and confirm it contains `SKILL.md`.
 2. **Load the local style guide**. Read `references/imsight-skill-style-guide.md`; do not rely on any style guide outside this skill directory.
 3. **Read target skill files**. Read the target `SKILL.md`, `agents/openai.yaml` when present, and any directly linked subskill, mode, workflow, primitive, or reference page that acts as an executable skill page.
 4. **Identify style gaps**. Check **Formatting Checks** for the entrypoint and each subskill-like page.
-5. **Revise structure in place**. Apply the smallest edits that make the target files conform while preserving skill meaning, public subcommands, trigger behavior, output contracts, and guardrails. See **New Skills from write-skill** for how to keep task-specific detail while conforming to the format.
-6. **Synchronize links and metadata** when structural edits change subcommand labels, reference paths, or help text.
-7. **Validate**. Run the available skill validator on the target skill and inspect changed files for remaining style gaps.
-8. **Report results**. Summarize changed files, validations run, and any unresolved style issues.
+5. **Optimize the description**. Check **Description Optimization**.
+6. **Revise structure in place**. Apply the smallest edits that make the target files conform while preserving skill meaning, public subcommands, trigger behavior, output contracts, and guardrails. See **Automatic Refactoring** for how to keep task-specific detail while conforming to the format.
+7. **Synchronize links and metadata** when structural edits change subcommand labels, reference paths, or help text.
+8. **Validate**. Run the available skill validator on the target skill and inspect changed files for remaining style gaps.
+9. **Report results**. Summarize changed files, validations run, and any unresolved style issues.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan from the bundled style guide and the target skill's structure, then execute the plan.
 
@@ -27,9 +28,32 @@ Apply these checks to the target `SKILL.md` and any subskill-like Markdown page 
 - Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subskills, subcommands, and user request.
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
 
-## New Skills from write-skill
+## Description Optimization
 
-When `write-skill` creates a new skill, that skill must still satisfy the **Formatting Checks**. Task-specific detail is welcome, but it should live in the right place:
+The `description` field in SKILL.md frontmatter determines whether future agents discover the skill. Apply these rules:
+
+- Start with "Use when...".
+- Describe triggering conditions and symptoms only.
+- Do NOT summarize the skill's workflow or process.
+- Write in third person.
+- Include keywords agents would search for: error messages, symptoms, tools, library names.
+- Keep under 500 characters if possible, 1024 maximum.
+
+Examples:
+
+```yaml
+# ❌ BAD: Summarizes workflow
+description: Use when executing plans - dispatches subagent per task with code review between tasks
+
+# ✅ GOOD: Triggering conditions only
+description: Use when executing implementation plans with independent tasks in the current session
+```
+
+If the current description violates these rules, rewrite it.
+
+## Automatic Refactoring
+
+When `create` or `format` edits a skill, task-specific detail is welcome but must live in the right place:
 
 - Keep the `## Workflow` as a concise numbered list of steps.
 - Move task-specific procedures, examples, edge cases, and configuration notes into dedicated detail sections.
@@ -61,7 +85,7 @@ If the current Python environment lacks validator dependencies, try the reposito
 
 ## Output Contract
 
-By default, `format-skill` edits the target skill files in place and writes no analysis report. It returns a brief chat summary with changed files, validations run, and any style issues left unresolved.
+By default, `format` edits the target skill files in place and writes no analysis report. It returns a brief chat summary with changed files, validations run, and any unresolved style issues.
 
 After validation, inspect changed files for:
 
