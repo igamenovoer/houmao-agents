@@ -2,13 +2,13 @@
 
 ## Workflow
 
-Use this reference to revise a given skill so its structure conforms to the bundled skill style guide.
+Use this reference to revise a given skill so its structure conforms to the bundled skill style guide. It applies to existing skills and to new skills created by `write-skill`.
 
 1. **Locate the target skill**. Resolve the skill folder from the user's request and confirm it contains `SKILL.md`.
 2. **Load the local style guide**. Read `references/imsight-skill-style-guide.md`; do not rely on any style guide outside this skill directory.
 3. **Read target skill files**. Read the target `SKILL.md`, `agents/openai.yaml` when present, and any directly linked subskill, mode, workflow, primitive, or reference page that acts as an executable skill page.
 4. **Identify style gaps**. Check **Formatting Checks** for the entrypoint and each subskill-like page.
-5. **Revise structure in place**. Apply the smallest edits that make the target files conform while preserving skill meaning, public subcommands, trigger behavior, output contracts, and guardrails.
+5. **Revise structure in place**. Apply the smallest edits that make the target files conform while preserving skill meaning, public subcommands, trigger behavior, output contracts, and guardrails. See **New Skills from write-skill** for how to keep task-specific detail while conforming to the format.
 6. **Synchronize links and metadata** when structural edits change subcommand labels, reference paths, or help text.
 7. **Validate**. Run the available skill validator on the target skill and inspect changed files for remaining style gaps.
 8. **Report results**. Summarize changed files, validations run, and any unresolved style issues.
@@ -26,6 +26,17 @@ Apply these checks to the target `SKILL.md` and any subskill-like Markdown page 
 - Multiple-choice steps let the agent choose the option that fits the user's task; they do not hardcode one option without evidence.
 - Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subskills, subcommands, and user request.
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
+
+## New Skills from write-skill
+
+When `write-skill` creates a new skill, that skill must still satisfy the **Formatting Checks**. Task-specific detail is welcome, but it should live in the right place:
+
+- Keep the `## Workflow` as a concise numbered list of steps.
+- Move task-specific procedures, examples, edge cases, and configuration notes into dedicated detail sections.
+- If the skill has multiple modes, subcommands, or variants, create `references/<subcommand>.md` detail pages and link them from the workflow.
+- Preserve all domain-specific content: examples, guardrails, success criteria, and output templates. Only the structure should change, not the substance.
+
+The goal is a skill that is both well-formatted and rich enough to execute the user's task correctly.
 
 ## Editing Rules
 
