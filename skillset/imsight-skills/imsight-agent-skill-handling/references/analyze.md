@@ -8,8 +8,8 @@ Use this reference to analyze a given agent skill from the skill files themselve
 2. **Resolve `<output-dir>`** using **Output Contract**.
 3. **Read the entrypoint completely**. Read `SKILL.md` from start to finish.
 4. **Inspect runtime metadata**. Read `agents/openai.yaml` when present.
-5. **Map linked resources**. Identify directly linked `references/`, `subskills/`, `scripts/`, `assets/`, mode pages, primitive pages, and workflow pages.
-6. **Choose report units**. Always create an entrypoint report for `SKILL.md`. For multi-part skills, choose one report unit for each public subskill, subcommand, mode, workflow, or primitive page that has distinct workflow logic.
+5. **Map linked resources**. Identify directly linked `references/`, `subcommands/`, `scripts/`, `assets/`, and workflow pages.
+6. **Choose report units**. Always create an entrypoint report for `SKILL.md`. For multi-part skills, choose one report unit for each public subcommand, mode, workflow, or primitive page that has distinct workflow logic.
 7. **Load workflow-critical resources** for each report unit. Read the linked pages needed to reconstruct execution flow and output artifacts. Do not load unrelated references just because they exist.
 8. **Infer workflow logic**. Build a step model from frontmatter, invocation contract, workflow sections, subcommands, routing rules, guardrails, output contracts, and linked task pages.
 9. **Infer durable outputs**. Extract explicit artifact paths, reports, manifests, generated files, modified files, branches, worktrees, messages, or other durable side effects. Label inferred outputs as inferred when no explicit path is stated.
@@ -32,14 +32,14 @@ Resolve `<output-dir>` in this order:
 Write reports using these names:
 
 - Primary `SKILL.md` entrypoint report: `<output-dir>/ENTRYPOINT.md`.
-- Multi-part skill reports: `<output-dir>/<subskill-or-subcommand-name>.md` for each public subskill, subcommand, mode, workflow, or primitive page that deserves its own analysis.
+- Multi-part skill reports: `<output-dir>/<subcommand-name>.md` for each public subcommand, mode, workflow, or primitive page that deserves its own analysis.
 
-Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary `SKILL.md` report. Prefer the public subcommand or subskill name over the source file stem when they differ.
+Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary `SKILL.md` report. Prefer the public subcommand name over the source file stem when they differ.
 
 ## Evidence Rules
 
 - Treat `SKILL.md` as authoritative for trigger behavior and top-level workflow.
-- Treat linked reference, subskill, workflow, mode, and primitive files as authoritative for their owned steps.
+- Treat linked reference, subcommand, workflow, mode, and primitive files as authoritative for their owned steps.
 - Use `agents/openai.yaml` for UI metadata and implicit-invocation policy only.
 - Distinguish explicit behavior from inferred behavior.
 - Cite file paths and line numbers for important claims when practical.
@@ -52,7 +52,6 @@ Write these files under `<output-dir>`:
 | Report Unit | File Name |
 | --- | --- |
 | Primary `SKILL.md` entrypoint | `ENTRYPOINT.md` |
-| Public subskill | `<subskill-name>.md` |
 | Public subcommand | `<subcommand-name>.md` |
 | Public mode, workflow, or primitive page | `<public-name>.md` |
 

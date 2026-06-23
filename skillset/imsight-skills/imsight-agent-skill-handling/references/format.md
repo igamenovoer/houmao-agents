@@ -6,8 +6,8 @@ Use this reference to revise a given skill so its structure conforms to the bund
 
 1. **Locate the target skill**. Resolve the skill folder from the user's request and confirm it contains `SKILL.md`.
 2. **Load the local style guide**. Read `references/imsight-skill-style-guide.md`; do not rely on any style guide outside this skill directory.
-3. **Read target skill files**. Read the target `SKILL.md`, `agents/openai.yaml` when present, and any directly linked subskill, mode, workflow, primitive, or reference page that acts as an executable skill page.
-4. **Identify style gaps**. Check **Formatting Checks** for the entrypoint and each subskill-like page.
+3. **Read target skill files**. Read the target `SKILL.md`, `agents/openai.yaml` when present, and any directly linked subcommand, mode, workflow, primitive, or reference page that acts as an executable skill page.
+4. **Identify style gaps**. Check **Formatting Checks** for the entrypoint and each subcommand-like page.
 5. **Optimize the description**. Check **Description Optimization**.
 6. **Revise structure in place**. Apply the smallest edits that make the target files conform while preserving skill meaning, public subcommands, trigger behavior, output contracts, and guardrails. See **Automatic Refactoring** for how to keep task-specific detail while conforming to the format.
 7. **Synchronize links and metadata** when structural edits change subcommand labels, reference paths, or help text.
@@ -18,14 +18,14 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 ## Formatting Checks
 
-Apply these checks to the target `SKILL.md` and any subskill-like Markdown page that another agent may execute as a workflow.
+Apply these checks to the target `SKILL.md` and any subcommand-like Markdown page that another agent may execute as a workflow.
 
 - The file has a `## Workflow` section near the top.
 - The workflow is written as numbered steps.
 - Each workflow step is concise and points to a detailed section when it needs more explanation.
-- Multiple-choice steps tell the agent which table, mode list, subskill list, or procedure set to choose from.
+- Multiple-choice steps tell the agent which table, mode list, subcommand list, or procedure set to choose from.
 - Multiple-choice steps let the agent choose the option that fits the user's task; they do not hardcode one option without evidence.
-- Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subskills, subcommands, and user request.
+- Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subcommands, and user request.
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
 
 ## Description Optimization
@@ -66,7 +66,7 @@ The goal is a skill that is both well-formatted and rich enough to execute the u
 
 - Preserve frontmatter `name` and `description` unless they are invalid or stale because of structural edits.
 - Do not broaden trigger behavior while formatting.
-- Do not rename public subcommands, subskills, files, or output paths unless the user explicitly asks or the current name is broken.
+- Do not rename public subcommands, files, or output paths unless the user explicitly asks or the current name is broken.
 - Do not remove domain-specific guardrails, approval rules, or output contracts.
 - Move long procedural detail out of the workflow into existing sections when possible.
 - Add a new detail section only when no suitable section exists.
@@ -90,7 +90,7 @@ By default, `format` edits the target skill files in place and writes no analysi
 After validation, inspect changed files for:
 
 - stale links to moved or renamed files,
-- missing `## Workflow` sections in subskill-like pages,
+- missing `## Workflow` sections in subcommand-like pages,
 - workflows without numbered steps,
 - workflows without a freeform fallback,
 - accidental changes to trigger or output semantics.

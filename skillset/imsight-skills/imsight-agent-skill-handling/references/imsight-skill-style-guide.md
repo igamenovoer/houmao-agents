@@ -1,6 +1,6 @@
 # Imsight Skill Style Guide
 
-This is the local bundled copy of the Imsight skill style guide used by `format-skill`. Do not depend on a style-guide file outside this skill directory at runtime.
+This is the local bundled copy of the Imsight skill style guide used by `format`. Do not depend on a style-guide file outside this skill directory at runtime.
 
 ## Overview
 
@@ -8,11 +8,11 @@ This guide specifies a small set of structural rules that every skill must follo
 
 ## Workflow section (required)
 
-Every skill and subskill must have a `## Workflow` section near the top. This is the agent's entrypoint.
+Every skill and subcommand must have a `## Workflow` section near the top. This is the agent's entrypoint.
 
 - Write it as **numbered steps** the agent executes in order.
 - Keep each step concise. If a step needs detailed rules, reference another section: `See **Pre-Exploration Scan**.`
-- End with a fallback for freeform tasks: if the task does not map cleanly to the default steps, tell the agent to use its native planning tool to build a step-by-step plan using the tools, constraints, subskills, or subcommands provided by the skill, then execute the plan.
+- End with a fallback for freeform tasks: if the task does not map cleanly to the default steps, tell the agent to use its native planning tool to build a step-by-step plan using the tools, constraints, or subcommands provided by the skill, then execute the plan.
 
 ## Referencing details
 
@@ -20,7 +20,7 @@ When a step needs detail that is too long for the workflow line, state the step 
 
 ## Multiple-choice steps
 
-When a workflow step involves choosing among modes, subskills, subcommands, or procedures:
+When a workflow step involves choosing among modes, subcommands, or procedures:
 
 - State the choice in the workflow step, for example: "Select an exploration mode from the **Exploration Modes** table."
 - Let the agent decide which option fits the user's task, using the information provided in the skill.
@@ -30,7 +30,7 @@ When a workflow step involves choosing among modes, subskills, subcommands, or p
 
 If the skill mainly provides tools, constraints, or subcommands rather than a rigid procedure:
 
-- The workflow should tell the agent to use its native planning tool to plan execution steps based on the available tools, constraints, subskills, and the user's specific task.
+- The workflow should tell the agent to use its native planning tool to plan execution steps based on the available tools, constraints, subcommands, and the user's specific task.
 - The rest of the skill serves as reference material for that plan.
 
 These four rules do not prevent adding other sections. They only enforce that every skill has a clear, actionable workflow entrypoint.

@@ -9,7 +9,7 @@ Source skill: [{{SOURCE_LABEL}}]({{RELATIVE_SOURCE_PATH}})
 
 Parent skill: {{PARENT_SKILL_NAME_OR_NONE}}
 
-Report unit: {{entrypoint | subcommand | subskill | mode | workflow | primitive}}
+Report unit: {{entrypoint | subcommand | mode | workflow | primitive}}
 
 Role: {{ROLE_IN_SKILL}}
 
