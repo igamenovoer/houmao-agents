@@ -10,10 +10,11 @@ Use this reference to create a new skill from a user request using test-driven s
 4. **Design a pressure scenario** that exposes the failure the skill must prevent. See **Baseline Scenario**.
 5. **Run the scenario without the skill** and capture the failure and rationalizations. See **RED Phase**.
 6. **Write a minimal SKILL.md** that addresses the observed failures. See **GREEN Phase**.
-7. **Run the scenario with the skill** and verify the agent now complies. See **Verify GREEN**.
-8. **Close loopholes** if the agent finds new rationalizations. See **REFACTOR Phase**.
-9. **Validate** the skill frontmatter and structure. See **Validation**.
-10. **Return a brief in-chat summary** using `references/chat-response-template.md` and list the files written.
+7. **Apply format practices** to the new skill before testing it. See **Apply Format Practices**.
+8. **Run the scenario with the skill** and verify the agent now complies. See **Verify GREEN**.
+9. **Close loopholes** if the agent finds new rationalizations. See **REFACTOR Phase**.
+10. **Validate** the skill frontmatter and structure. See **Validation**.
+11. **Return a brief in-chat summary** using `references/chat-response-template.md` and list the files written.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan from the available writing guidance and the user's request, then execute the plan.
 
@@ -121,6 +122,17 @@ Choose the guidance form based on the baseline failure:
 | Behavior should depend on a condition | Conditional keyed to an observable predicate |
 
 Keep the skill concise. One excellent example beats many mediocre ones.
+
+## Apply Format Practices
+
+Immediately after writing the first draft, apply the practices from `references/format.md` before running the verification scenario:
+
+1. **Check structure**. Ensure the skill has a concise `## Workflow` written as numbered steps, with a fallback for freeform tasks.
+2. **Move detail out of the workflow**. Task-specific procedures, examples, edge cases, and configuration notes should live in dedicated sections or `references/<page>.md` files.
+3. **Optimize the description**. Confirm the frontmatter description starts with "Use when...", describes triggering conditions only, is written in third person, and does not summarize the workflow.
+4. **Run the available validator** if one exists.
+
+Fix any format issues now. A well-formatted skill is easier to verify and harder to misinterpret.
 
 ## Verify GREEN
 
