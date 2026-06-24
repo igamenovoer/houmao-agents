@@ -19,8 +19,10 @@ Choose the mode based on what the user wants:
 
 | Mode | When to Use |
 | --- | --- |
-| Baseline | Run scenarios **without** the skill to document natural failure. Use this when creating a new skill or adding a new rule. |
-| Verify | Run scenarios **with** the skill to confirm compliance. Use this after writing or editing a skill. |
+| Baseline | Run scenarios **without** the skill to document natural failure. This is the RED phase. Use this when creating a new skill or adding a new rule. |
+| Verify | Run scenarios **with** the skill to confirm compliance. This is the GREEN phase. Use this after writing or editing a skill. |
+
+`create` no longer runs these phases automatically. Invoke `test` explicitly when the user wants a failing baseline, a compliance verification, or both.
 
 ## Pressure Scenarios
 

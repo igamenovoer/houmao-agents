@@ -7,7 +7,7 @@ description: Manual invocation only; Imsight-authored command skill for analyzin
 
 ## Overview
 
-Use this skill as the manual entrypoint for analyzing, creating, testing, hardening, and formatting agent skills. It reconstructs a skill's operational logic and durable outputs, writes analysis report sets, creates new skills using test-driven skill authoring, runs pressure scenarios to verify skills, hardens discipline skills against rationalization, and revises skills so their structure and descriptions conform to the bundled style guide.
+Use this skill as the manual entrypoint for analyzing, creating, testing, hardening, and formatting agent skills. It reconstructs a skill's operational logic and durable outputs, writes analysis report sets, creates new skills from user requests, runs pressure scenarios to baseline or verify skills, hardens discipline skills against rationalization, and revises skills so their structure and descriptions conform to the bundled style guide.
 
 ## Workflow
 
@@ -34,7 +34,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 | --- | --- | --- |
 | `help` | Explain this skill and list available subcommands | This entrypoint |
 | `analyze` | Analyze a given skill's workflow logic and durable outputs, then write Mermaid-based Markdown reports and return a brief ASCII workflow summary in chat | `references/analyze.md` |
-| `create` | Create a new skill from a user request using test-driven skill authoring (baseline first, then skill) | `references/create.md` |
+| `create` | Create a new skill from a user request; pressure testing is handled by the explicit `test` subcommand | `references/create.md` |
 | `test` | Run pressure scenarios with subagents to baseline or verify a skill | `references/test.md` |
 | `harden` | Add rationalization tables, red flags, and explicit counters to a discipline skill | `references/harden.md` |
 | `format` | Revise a given skill so its structure conforms to the bundled style guide and its description is optimized for discovery | `references/format.md` |

@@ -2,18 +2,14 @@
 
 ## Workflow
 
-Use this reference to create a new skill from a user request using test-driven skill authoring. The core rule is: **no skill without a failing baseline first**.
+Use this reference to create a new skill from a user request. Because `imsight-agent-skill-handling` is manually invoked, respect the user's intent: do not force a failing baseline or a post-creation verification run. Capture what the user wants, choose the right shape for the skill, write a minimal and format-compliant `SKILL.md`, validate its structure, and return a brief summary. Leave pressure testing to the explicit `test` subcommand.
 
 1. **Confirm the task and locate the skill home**. See **Skill Home**.
 2. **Capture intent** from the user's request and conversation history. See **Intent Capture**.
 3. **Classify the skill type** based on what it must do. See **Skill Type**.
-4. **Design a pressure scenario** that exposes the failure the skill must prevent. See **Baseline Scenario**.
-5. **Run the scenario without the skill** and capture the failure and rationalizations. See **RED Phase**.
-6. **Write a minimal SKILL.md** that addresses the observed failures and is already format-compliant. See **GREEN Phase**.
-7. **Run the scenario with the skill** and verify the agent now complies. See **Verify GREEN**.
-8. **Close loopholes** if the agent finds new rationalizations. See **REFACTOR Phase**.
-9. **Validate** the skill frontmatter and structure. See **Validation**.
-10. **Return a brief in-chat summary** using `references/chat-response-template.md` and list the files written.
+4. **Author a minimal `SKILL.md`** that captures the requested behavior and is already format-compliant. See **Authoring the Skill**.
+5. **Validate** the skill frontmatter and structure. See **Validation**.
+6. **Return a brief in-chat summary** that lists the files written and the validation result.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan from the available writing guidance and the user's request, then execute the plan.
 
@@ -50,35 +46,9 @@ Choose the type that best matches the skill's purpose:
 
 The skill type determines how you test and harden it.
 
-## Baseline Scenario
+## Authoring the Skill
 
-Before writing the skill, design a realistic pressure scenario that would cause an agent to fail without the skill.
-
-A good scenario:
-
-- Uses concrete constraints: real paths, times, consequences.
-- Forces the agent to act, not just describe.
-- Combines 2-3 pressures for discipline skills (time, sunk cost, authority, exhaustion).
-- Targets the exact failure the skill must prevent.
-
-Write the scenario into a file under the skill's `tests/` or `scenarios/` directory, or keep it in a temporary workspace file if the skill has no test directory yet.
-
-## RED Phase
-
-Run the baseline scenario **without** the skill.
-
-1. Spawn a subagent with the scenario prompt.
-2. Do not give it the skill.
-3. Document:
-   - What choice the agent made.
-   - What rationalizations it used, verbatim.
-   - Which pressures triggered the failure.
-
-This is the failing test. If the agent does not fail, the scenario is not pressurized enough — redesign it before writing the skill.
-
-## GREEN Phase
-
-Write a minimal `SKILL.md` that addresses the specific failures observed in the RED phase. Write it in format-compliant form from the start; do not rely on a later `format` pass to fix structure or description.
+Write a minimal `SKILL.md` that captures the user's request. Write it in format-compliant form from the start; do not rely on a later `format` pass to fix structure or description.
 
 ### Required Frontmatter
 
@@ -112,11 +82,11 @@ For discipline-enforcing skills, also include:
 - A rationalization table.
 - A red flags list.
 
-### Form That Matches the Failure
+### Form That Matches the Purpose
 
-Choose the guidance form based on the baseline failure:
+Choose the guidance form based on what the skill must prevent or produce:
 
-| Baseline failure | Right form |
+| Problem the skill solves | Right form |
 | --- | --- |
 | Skips/violates a rule under pressure | Prohibition + rationalization table + red flags |
 | Output has wrong shape | Positive recipe or contract: state what the output IS |
@@ -124,26 +94,6 @@ Choose the guidance form based on the baseline failure:
 | Behavior should depend on a condition | Conditional keyed to an observable predicate |
 
 Keep the skill concise. One excellent example beats many mediocre ones.
-
-## Verify GREEN
-
-Run the same scenario **with** the skill loaded.
-
-1. Spawn a subagent with the scenario prompt.
-2. Give it access to the skill.
-3. Verify the agent now complies and cites the skill.
-
-If the agent still fails, revise the skill and re-test.
-
-## REFACTOR Phase
-
-If the agent complies but finds a new rationalization, add an explicit counter and re-test.
-
-- Add the new excuse to the rationalization table.
-- Add a matching red flag.
-- Tighten the rule or add a conditional.
-
-Repeat until the skill is bulletproof for the scenario.
 
 ## Validation
 
@@ -159,6 +109,10 @@ Validate the skill before finishing:
 
 Report any validation failures and fix them before returning the summary.
 
+## Pressure Testing
+
+Do not run pressure scenarios as part of `create`. After the skill is written, the user can run the `test` subcommand explicitly to baseline natural failure or verify compliance. If the user wants a failing baseline before writing, invoke `test` in baseline mode first, then run `create`, then invoke `test` in verify mode.
+
 ## Output Contract
 
 By default, `create` writes files inside the target skill folder and returns a brief chat summary. It does not produce analysis reports under `<output-dir>`.
@@ -168,6 +122,5 @@ The chat summary must include:
 - The skill folder path.
 - The skill type chosen.
 - Files written or changed.
-- Baseline failure observed.
-- Verification result.
-- Next recommended step (for example, run additional pressure scenarios or hand off for review).
+- Validation result.
+- Next recommended step (for example, run `test` pressure scenarios or hand off for review).
