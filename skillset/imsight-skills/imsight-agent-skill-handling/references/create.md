@@ -7,9 +7,10 @@ Use this reference to create a new skill from a user request. Because `imsight-a
 1. **Confirm the task and locate the skill home**. See **Skill Home**.
 2. **Capture intent** from the user's request and conversation history. See **Intent Capture**.
 3. **Classify the skill type** based on what it must do. See **Skill Type**.
-4. **Author a minimal `SKILL.md`** that captures the requested behavior and is already format-compliant. See **Authoring the Skill**.
-5. **Validate** the skill frontmatter and structure. See **Validation**.
-6. **Return a brief in-chat summary** that lists the files written and the validation result.
+4. **Choose the subcommand structure flavor** if the skill needs subcommands. See **Subcommand Structure**.
+5. **Author a minimal `SKILL.md`** that captures the requested behavior and is already format-compliant. See **Authoring the Skill**.
+6. **Validate** the skill frontmatter and structure. See **Validation**.
+7. **Return a brief in-chat summary** that lists the files written and the validation result.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan from the available writing guidance and the user's request, then execute the plan.
 
@@ -46,6 +47,20 @@ Choose the type that best matches the skill's purpose:
 
 The skill type determines how you test and harden it.
 
+## Subcommand Structure
+
+If the skill needs subcommands, choose the structure from the skill's functionality.
+
+Use the collection-of-routines flavor when subcommands are peer routines, tools, or functions and their calling order is absent, flexible, or task-specific. Write one plain `## Subcommands` section with a table.
+
+Use the complex-procedure flavor when the skill describes a multi-step procedure, each step may have its own sub-workflow or reference page, and some steps depend on artifacts produced by earlier steps. Split `## Subcommands` into:
+
+- `### Procedural Subcommands` for user-facing workflow steps.
+- `### Helper Subcommands` for lower-level implementation commands called by procedural subcommands.
+- `### Misc Subcommands` for `help` and public shortcuts such as `fast-forward` or `step-by-step`.
+
+For complex-procedure skills, put procedural subcommands in user-facing workflow order, keep helper subcommands out of help output unless promoted, and say `No helper subcommands are currently exposed.` when the helper group is empty.
+
 ## Authoring the Skill
 
 Write a minimal `SKILL.md` that captures the user's request. Write it in format-compliant form from the start; do not rely on a later `format` pass to fix structure or description.
@@ -76,6 +91,8 @@ Rules for the frontmatter:
 
 Write the workflow as numbered steps. Keep each step concise and point to a detail section when it needs more explanation. End with a fallback for freeform tasks. Move long procedural detail, examples, edge cases, and configuration notes out of the workflow into dedicated sections or `references/<page>.md` files.
 
+When the skill has subcommands, apply **Subcommand Structure** before writing the `## Subcommands` section. Do not use the three-type split for a simple collection of unordered routines.
+
 For discipline-enforcing skills, also include:
 
 - A foundational principle such as "Violating the letter of the rules is violating the spirit of the rules."
@@ -105,7 +122,8 @@ Validate the skill before finishing:
 4. Confirm the overview, when-to-use, and workflow/core-pattern sections exist.
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long detail has been moved out of the workflow into dedicated sections or reference pages.
-7. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
+7. If subcommands exist, confirm the selected subcommand structure flavor matches the skill functionality.
+8. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
 
 Report any validation failures and fix them before returning the summary.
 

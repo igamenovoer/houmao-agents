@@ -8,11 +8,12 @@ Use this reference to revise a given skill so its structure conforms to the bund
 2. **Load the local style guide**. Read `references/imsight-skill-style-guide.md`; do not rely on any style guide outside this skill directory.
 3. **Read target skill files**. Read the target `SKILL.md`, `agents/openai.yaml` when present, and any directly linked subcommand, mode, workflow, primitive, or reference page that acts as an executable skill page.
 4. **Identify style gaps**. Check **Formatting Checks** for the entrypoint and each subcommand-like page.
-5. **Optimize the description**. Check **Description Optimization**.
-6. **Revise structure in place**. Apply the smallest edits that make the target files conform while preserving skill meaning, public subcommands, trigger behavior, output contracts, and guardrails. See **Automatic Refactoring** for how to keep task-specific detail while conforming to the format.
-7. **Synchronize links and metadata** when structural edits change subcommand labels, reference paths, or help text.
-8. **Validate**. Run the available skill validator on the target skill and inspect changed files for remaining style gaps.
-9. **Report results**. Summarize changed files, validations run, and any unresolved style issues.
+5. **Select the subcommand structure flavor** when the skill has subcommands. See **Subcommand Structure Checks**.
+6. **Optimize the description**. Check **Description Optimization**.
+7. **Revise structure in place**. Apply the smallest edits that make the target files conform while preserving skill meaning, public subcommands, trigger behavior, output contracts, and guardrails. See **Automatic Refactoring** for how to keep task-specific detail while conforming to the format.
+8. **Synchronize links and metadata** when structural edits change subcommand labels, reference paths, or help text.
+9. **Validate**. Run the available skill validator on the target skill and inspect changed files for remaining style gaps.
+10. **Report results**. Summarize changed files, validations run, and any unresolved style issues.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan from the bundled style guide and the target skill's structure, then execute the plan.
 
@@ -27,6 +28,20 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - Multiple-choice steps let the agent choose the option that fits the user's task; they do not hardcode one option without evidence.
 - Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subcommands, and user request.
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
+
+## Subcommand Structure Checks
+
+When a target skill has subcommands, choose the style guide's matching subcommand structure flavor.
+
+Use the collection-of-routines flavor when subcommands are peer routines, tools, or functions with no normal calling order. Keep one plain `## Subcommands` table for this flavor.
+
+Use the complex-procedure flavor when the skill describes a multi-step procedure, several steps have separate detail pages, predecessor artifacts matter, or shortcuts such as `fast-forward` and `step-by-step` are useful. For this flavor, split `## Subcommands` into:
+
+- `### Procedural Subcommands` for user-facing workflow steps.
+- `### Helper Subcommands` for lower-level implementation commands called by procedural subcommands.
+- `### Misc Subcommands` for `help` and public shortcuts.
+
+For the complex-procedure flavor, keep helper subcommands out of help output unless they are promoted to public workflow steps. If no helper subcommands exist, write `No helper subcommands are currently exposed.`
 
 ## Description Optimization
 
@@ -57,7 +72,8 @@ When `create` or `format` edits a skill, task-specific detail is welcome but mus
 
 - Keep the `## Workflow` as a concise numbered list of steps.
 - Move task-specific procedures, examples, edge cases, and configuration notes into dedicated detail sections.
-- If the skill has multiple modes, subcommands, or variants, create `references/<subcommand>.md` detail pages and link them from the workflow.
+- If the skill has multiple modes, subcommands, or variants, create `references/<subcommand>.md` detail pages when the routines have their own executable workflows, then link them from the workflow or subcommand table.
+- If the skill is a collection of peer routines, keep one plain `## Subcommands` table. If the skill is a complex procedure, use the three-type split from **Subcommand Structure Checks**.
 - Preserve all domain-specific content: examples, guardrails, success criteria, and output templates. Only the structure should change, not the substance.
 
 The goal is a skill that is both well-formatted and rich enough to execute the user's task correctly.
@@ -90,6 +106,7 @@ By default, `format` edits the target skill files in place and writes no analysi
 After validation, inspect changed files for:
 
 - stale links to moved or renamed files,
+- a subcommand structure flavor that does not match the skill functionality,
 - missing `## Workflow` sections in subcommand-like pages,
 - workflows without numbered steps,
 - workflows without a freeform fallback,
