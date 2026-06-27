@@ -75,6 +75,83 @@ Ask the user one routing question only when:
 
 - Two or more routes are equally plausible and the choice changes what evidence will be inspected or which artifact may be updated.
 
+### Routing Question Format
+
+When a routing question is required, present **exactly one question** using the same enforced format as the other exploration modes.
+
+#### For Multiple-Choice Routing Questions
+
+Before presenting the options, provide:
+
+1. **Motivation** — state the question clearly and explain why the chosen route materially impacts which evidence will be inspected and which artifact may be updated.
+2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows how each route would play out in practice.
+
+Then analyze the routes and determine the **proposed option** based on:
+
+- Which route unlocks the most blockers
+- Which route best matches the user's explicit focus
+- Which route reduces the risk of redundant or contradictory exploration
+
+Present your **proposed option** prominently at the top with:
+- The proposal itself.
+- **Why it is proposed** (1–2 sentences).
+- **Implication** — what happens downstream if this route is chosen (e.g., which mode's workflow will be followed, which artifacts may be updated).
+
+Format as:
+
+```
+**Proposed:** Option [X] - <why proposed>
+
+**Implication:** <downstream consequence>
+```
+
+Then render all options as a Markdown table that includes a **Pros/Cons** column:
+
+| Option | Description | Pros/Cons |
+| --- | --- | --- |
+| A | ... | Pros: ... Cons: ... |
+| B | ... | Pros: ... Cons: ... |
+| C | ... | Pros: ... Cons: ... |
+| Short | Provide a different answer (any length) | — |
+
+After the table, add:
+
+```
+You can reply with the option letter (e.g., "A"), accept the proposal by saying "yes" or "proposed", or provide your own answer.
+```
+
+#### For Short-Answer Routing Questions
+
+Before presenting the proposed answer, provide:
+
+1. **Motivation** — state the question clearly and explain why the chosen route materially impacts which evidence will be inspected and which artifact may be updated.
+2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows why the answer matters.
+
+Then provide your **proposed answer** with:
+- The proposal itself.
+- **Brief reasoning**.
+- **Implication** — what happens downstream if this answer is chosen.
+
+Format as:
+
+```
+**Proposed:** <your proposed answer> - <brief reasoning>
+
+**Implication:** <downstream consequence>
+```
+
+Then output:
+
+```
+Format: Short answer. You can accept the proposal by saying "yes" or "proposed", or provide your own answer.
+```
+
+### After the User Answers
+
+- If the user replies with "yes", "recommended", "suggested", or "proposed", use your previously stated proposal as the answer.
+- Otherwise, validate the answer maps to one option or is a valid custom answer.
+- If ambiguous, ask for a quick disambiguation before routing.
+
 Once routed, do not continue resolving the remaining open-question list inside `any-open-question`. Let the selected mode ask its own 1-5 material questions, write any durable artifacts, and hand back if a later answer reveals a different mode is needed.
 
 ## Completion Report

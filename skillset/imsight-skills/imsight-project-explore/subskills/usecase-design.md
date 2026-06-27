@@ -132,15 +132,83 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 
 Present **exactly one question at a time**.
 
-Follow the same multiple-choice and short-answer formats defined in `modes/design-choice.md`:
+#### For Multiple-Choice Questions
 
-- State the **motivation** and a concrete **example**.
-- Provide a **proposed option/answer** with **why it is proposed** and **downstream implications**.
-- Render multiple-choice options in a Markdown table with a **Pros/Cons** column and a **Short** row for custom answers.
-- After the user answers, validate it, record it, update the coverage map, and decide whether another question is needed. If another question is needed and fewer than 5 have been asked, generate the next single question from the updated coverage map.
+Before presenting the options, provide:
+
+1. **Motivation** — state the question clearly and explain why the answer materially impacts actor boundaries, scenario scope, success criteria, durable outputs, terminology, or acceptance criteria.
+2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows how each option would play out in practice.
+
+Then analyze all options and determine the **proposed option** based on:
+
+- Best practices for the project type
+- Common patterns in similar implementations
+- Risk reduction (security, performance, maintainability)
+- Alignment with any explicit project goals or constraints visible in the evidence
+
+Present your **proposed option** prominently at the top with:
+- The proposal itself.
+- **Why it is proposed** (1–2 sentences).
+- **Implication** — what happens downstream if this option is chosen (e.g., which use cases change, which actors or steps are affected, which assumptions hold).
+
+Format as:
+
+```
+**Proposed:** Option [X] - <why proposed>
+
+**Implication:** <downstream consequence>
+```
+
+Then render all options as a Markdown table that includes a **Pros/Cons** column:
+
+| Option | Description | Pros/Cons |
+| --- | --- | --- |
+| A | ... | Pros: ... Cons: ... |
+| B | ... | Pros: ... Cons: ... |
+| C | ... | Pros: ... Cons: ... |
+| Short | Provide a different answer (any length) | — |
+
+After the table, add:
+
+```
+You can reply with the option letter (e.g., "A"), accept the proposal by saying "yes" or "proposed", or provide your own answer.
+```
+
+#### For Short-Answer Questions
+
+Before presenting the proposed answer, provide:
+
+1. **Motivation** — state the question clearly and explain why the answer materially impacts actor boundaries, scenario scope, success criteria, durable outputs, terminology, or acceptance criteria.
+2. **Example** — give a concrete, hypothesized scenario drawn from the project context that shows why the answer matters.
+
+Then provide your **proposed answer** with:
+- The proposal itself.
+- **Brief reasoning**.
+- **Implication** — what happens downstream if this answer is chosen.
+
+Format as:
+
+```
+**Proposed:** <your proposed answer> - <brief reasoning>
+
+**Implication:** <downstream consequence>
+```
+
+Then output:
+
+```
+Format: Short answer. You can accept the proposal by saying "yes" or "proposed", or provide your own answer.
+```
+
+#### After the User Answers
+
+- If the user replies with "yes", "recommended", "suggested", or "proposed", use your previously stated proposal as the answer.
+- Otherwise, validate the answer maps to one option or is a valid custom answer.
+- If ambiguous, ask for a quick disambiguation (this still counts as the same question; do not advance the counter).
+- Once satisfactory, record it in working memory, update the exploration state and coverage map, and decide whether another question is needed.
+- If another question is needed and fewer than 5 have been asked, generate the next single question from the updated coverage map.
 
 **Stop asking** when:
-
 - No further material ambiguity remains that is worth asking about, **or**
 - The user signals completion ("done", "good", "no more", "stop", "proceed"), **or**
 - You reach 5 asked questions.
