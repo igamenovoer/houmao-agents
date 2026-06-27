@@ -8,7 +8,7 @@ When `review-decision` mode is selected, execute the following steps in order. D
 
 1. **Perform a Pre-Exploration Scan**. Gather existing decision artifacts and current evidence from the repo. See **Pre-Exploration Scan**.
 2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
-3. **Build 1-5 questions**. See **Question Constraints**.
+3. **Enter the adaptive questioning loop**. Prepare to ask up to 5 questions, generating each one from the current coverage map. See **Question Constraints**.
 4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
 5. **After each answer, integrate**. Note drift resolution, update ADRs, and maintain consistency across documents. See **Integration After Each Answer**.
 6. **When complete, produce a Completion Report**. Summarize consistent decisions, drift detected, stale assumptions, and next actions. See **Completion Report**.
@@ -55,7 +55,7 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 ## Question Constraints
 
 - Ask at least 1 question before updating, deprecating, reaffirming, or producing a final proposed direction about a decision, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
-- **Maximum 5 total questions** across the whole session.
+- **Maximum 5 total questions** across the whole session. Generate each question one at a time; do not build a fixed queue of 5 questions in advance.
 - Each question must be answerable with **either**:
   - A short multiple-choice selection (2–5 distinct, mutually exclusive options), **or**
   - A short-phrase answer. The agent's proposed answer should be concise, but the user may provide a custom answer of any length.
@@ -64,7 +64,7 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 - Exclude questions already answered by repo evidence or plan-level execution details (unless blocking correctness).
 - Favor clarifications that reduce risk of building on top of a stale or contradictory decision.
 - If more than 5 categories remain unresolved, select the top 5 by (Impact × Uncertainty) heuristic.
-- Do not reveal future queued questions in advance.
+- Do not reveal future questions in advance. Because each question is generated after the previous answer is integrated, there is no fixed queue to reveal.
 
 ## Sequential Questioning Loop
 
@@ -143,10 +143,11 @@ Format: Short answer. You can accept the proposal by saying "yes" or "proposed",
 - If the user replies with "yes", "recommended", "suggested", or "proposed", use your previously stated proposal as the answer.
 - Otherwise, validate the answer maps to one option or is a valid custom answer.
 - If ambiguous, ask for a quick disambiguation (this still counts as the same question; do not advance the counter).
-- Once satisfactory, record it in working memory, update the exploration state, and move to the next queued question.
+- Once satisfactory, record it in working memory, update the exploration state and coverage map, and decide whether another question is needed.
+- If another question is needed and fewer than 5 have been asked, generate the next single question from the updated coverage map.
 
 **Stop asking** when:
-- All critical ambiguities are resolved early (remaining queued items become unnecessary), **or**
+- No further material ambiguity remains that is worth asking about, **or**
 - The user signals completion ("done", "good", "no more", "stop", "proceed"), **or**
 - You reach 5 asked questions.
 

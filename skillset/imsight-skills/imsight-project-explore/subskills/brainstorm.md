@@ -12,7 +12,7 @@ When `brainstorm` is selected, execute the following steps in order:
 
 1. **Perform a Pre-Exploration Scan**. See **Pre-Exploration Scan**.
 2. **Run a Coverage Scan**. See **Coverage Scan**.
-3. **Build 1–5 clarification questions**. See **Question Constraints**.
+3. **Enter the adaptive questioning loop**. Prepare to ask up to 5 clarification questions, generating each one from the current coverage map. See **Question Constraints**.
 4. **Execute the Sequential Questioning Loop**. See **Sequential Questioning Loop**.
 5. **Propose 2–3 approaches**. See **Proposing Approaches**.
 6. **Present the design in sections**. See **Presenting the Design**.
@@ -71,14 +71,14 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 ## Question Constraints
 
 - Ask at least 1 question before proposing approaches, writing the design document, or producing a final proposed direction, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
-- **Maximum 5 total questions** across the whole session.
+- **Maximum 5 total questions** across the whole session. Generate each question one at a time; do not build a fixed queue of 5 questions in advance.
 - Each question must be answerable with **either**:
   - A short multiple-choice selection (2–5 distinct, mutually exclusive options), **or**
   - A short-phrase answer. The agent's proposed answer should be concise, but the user may provide a custom answer of any length.
 - Only ask questions whose answers materially impact architecture, component boundaries, data modeling, integration choices, UX behavior, operational readiness, or compliance validation.
 - Ensure category coverage balance: attempt to cover the highest-impact unresolved categories first.
 - Exclude questions already answered by repo evidence, trivial stylistic preferences, or plan-level execution details (unless blocking correctness).
-- Do not reveal future queued questions in advance.
+- Do not reveal future questions in advance. Because each question is generated after the previous answer is integrated, there is no fixed queue to reveal.
 
 ## Sequential Questioning Loop
 
@@ -89,11 +89,11 @@ Follow the same multiple-choice and short-answer formats defined in `modes/desig
 - State the **motivation** and a concrete **example**.
 - Provide a **proposed option/answer** with **why it is proposed** and **downstream implications**.
 - Render multiple-choice options in a Markdown table with a **Pros/Cons** column and a **Short** row for custom answers.
-- After the user answers, validate it, record it, update the coverage map, and move to the next question.
+- After the user answers, validate it, record it, update the coverage map, and decide whether another question is needed. If another question is needed and fewer than 5 have been asked, generate the next single question from the updated coverage map.
 
 **Stop asking** when:
 
-- All critical ambiguities are resolved early (remaining queued items become unnecessary), **or**
+- No further material ambiguity remains that is worth asking about, **or**
 - The user signals completion ("done", "good", "no more", "stop", "proceed"), **or**
 - You reach 5 asked questions.
 

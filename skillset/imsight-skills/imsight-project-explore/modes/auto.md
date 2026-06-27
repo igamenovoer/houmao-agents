@@ -9,9 +9,9 @@ When `auto` mode is selected, execute the following steps in order. Detailed rul
 1. **Perform a Pre-Exploration Scan**. Spend ~2 minutes gathering evidence from the repo. See **Pre-Exploration Scan** for the ordered checklist.
 2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
 3. **Choose the exploration type**. Based on the scan, select the most relevant mode or topic and state the routing choice to the user. This routing choice does not require user confirmation.
-4. **Build 1-5 questions**. See **Question Constraints**.
+4. **Enter the adaptive questioning loop**. Prepare to ask up to 5 questions, generating each one from the current coverage map. See **Question Constraints**.
 5. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
-6. **After each answer, integrate**. Update the coverage map, re-prioritize remaining questions, and pivot to a focused mode if the answer reveals one is needed. See **Integration After Each Answer**.
+6. **After each answer, integrate**. Update the coverage map, decide whether another question is needed, generate the next single question from the updated map if so, and pivot to a focused mode if the answer reveals one is needed. See **Integration After Each Answer**.
 7. **When complete, produce a Completion Report**. Summarize what was explored, what remains open, and what to do next. See **Completion Report**.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
@@ -52,13 +52,13 @@ Perform a structured scan across these categories. For each, mark status: **Clea
 ## Question Constraints
 
 - Ask at least 1 question after choosing the exploration type and before making any substantive project decision, writing artifacts, or producing a final proposed direction, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
-- **Maximum 5 total questions** across the whole session.
+- **Maximum 5 total questions** across the whole session. Generate each question one at a time; do not build a fixed queue of 5 questions in advance.
 - Each question must be answerable with **either**:
   - A short multiple-choice selection (2–5 distinct, mutually exclusive options), **or**
   - A short-phrase answer. The agent's proposed answer should be concise, but the user may provide a custom answer of any length.
 - Only ask questions whose answers materially impact project scope, terminology, decision status, what to explore first within the selected type, or whether the request is actionable.
 - If more than 5 candidate questions remain, select the top 5 by (Impact × Uncertainty) heuristic.
-- Do not reveal future queued questions in advance.
+- Do not reveal future questions in advance. Because each question is generated after the previous answer is integrated, there is no fixed queue to reveal.
 
 ## Sequential Questioning Loop
 
@@ -137,10 +137,11 @@ Format: Short answer. You can accept the proposal by saying "yes" or "proposed",
 - If the user replies with "yes", "recommended", "suggested", or "proposed", use your previously stated proposal as the answer.
 - Otherwise, validate the answer maps to one option or is a valid custom answer.
 - If ambiguous, ask for a quick disambiguation (this still counts as the same question; do not advance the counter).
-- Once satisfactory, record it in working memory, update the exploration state, and move to the next queued question.
+- Once satisfactory, record it in working memory, update the exploration state and coverage map, and decide whether another question is needed.
+- If another question is needed and fewer than 5 have been asked, generate the next single question from the updated coverage map.
 
 **Stop asking** when:
-- All critical ambiguities are resolved early (remaining queued items become unnecessary), **or**
+- No further material ambiguity remains that is worth asking about, **or**
 - The user signals completion ("done", "good", "no more"), **or**
 - You reach 5 asked questions.
 
@@ -149,7 +150,7 @@ Do not use "no valid questions exist" as a reason to skip the first user interac
 ## Integration After Each Answer
 
 - Maintain an in-memory exploration state plus the raw evidence set.
-- After each accepted answer, update the coverage map and re-prioritize remaining questions.
+- After each accepted answer, update the coverage map, decide whether another question is needed, and generate the next single question from the updated map if so and fewer than 5 have been asked.
 - If the answer redirects the request toward a different focused mode (`any-open-question`, `design-choice`, `domain-language`, `review-decision`, `brainstorm`, or `usecase-design`), state the pivot explicitly and hand off to that mode's page.
 - Do not write to disk in `auto` unless the user explicitly requests a written result. If they do, write it to `<output-dir>/design-choice/design-<what>.md`, `<output-dir>/domain-concepts/dc-<what>.md`, `<output-dir>/designs/YYYY-MM-DD-<topic>-design.md`, or `<output-dir>/use-cases/uc-<NN>-<what>.md` depending on the dominant concern, following the output directory discovery contract. If the target directory does not yet contain a `README.md`, create one as an index.
 - After writing any artifact, scan all other documents under `<output-dir>/` for references to the same concepts or decisions. Update affected documents to restore consistency.

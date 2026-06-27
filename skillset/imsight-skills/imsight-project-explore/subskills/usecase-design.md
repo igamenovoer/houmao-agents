@@ -86,7 +86,7 @@ Use `clarify-and-refine` to improve existing use cases by inspecting project con
 1. **Load existing use cases** from `<output-dir>/use-cases/` or from paths the user referenced.
 2. **Inspect project context**. See **Context Gathering**. Pay special attention to system design, domain language, and behavior surfaces that may conflict with or extend the existing use cases.
 3. **Run a Coverage & Clarity Scan**. See **Coverage & Clarity Scan**.
-4. **Build 1–5 clarification questions**. See **Question Constraints**.
+4. **Enter the adaptive questioning loop**. Prepare to ask up to 5 clarification questions, generating each one from the current coverage map. See **Question Constraints**.
 5. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop**.
 6. **After each answer, integrate**. Update the coverage map, note decisions, and revise the affected use cases. See **Integration After Each Answer**.
 7. **Present revised drafts for review**. Show the user the updated user stories, scenarios, and flow summaries. Ask for edits, additions, or approval.
@@ -119,14 +119,14 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 ### Question Constraints
 
 - Ask at least 1 question before finalizing revised use cases, writing artifacts, or producing a final proposed direction, unless the user explicitly requested a non-interactive audit, explicitly asked the agent to make reasonable assumptions, or provided all required decisions in the prompt.
-- **Maximum 5 total questions** across the whole session.
+- **Maximum 5 total questions** across the whole session. Generate each question one at a time; do not build a fixed queue of 5 questions in advance.
 - Each question must be answerable with **either**:
   - A short multiple-choice selection (2–5 distinct, mutually exclusive options), **or**
   - A short-phrase answer. The agent's proposed answer should be concise, but the user may provide a custom answer of any length.
 - Only include questions whose answers materially impact actor boundaries, scenario scope, success criteria, durable outputs, terminology, or acceptance criteria.
 - Ensure category coverage balance: attempt to cover the highest-impact unresolved categories first.
 - Exclude questions already answered by repo evidence, trivial stylistic preferences, or plan-level execution details (unless blocking correctness).
-- Do not reveal future queued questions in advance.
+- Do not reveal future questions in advance. Because each question is generated after the previous answer is integrated, there is no fixed queue to reveal.
 
 ### Sequential Questioning Loop
 
@@ -137,11 +137,11 @@ Follow the same multiple-choice and short-answer formats defined in `modes/desig
 - State the **motivation** and a concrete **example**.
 - Provide a **proposed option/answer** with **why it is proposed** and **downstream implications**.
 - Render multiple-choice options in a Markdown table with a **Pros/Cons** column and a **Short** row for custom answers.
-- After the user answers, validate it, record it, update the coverage map, and move to the next question.
+- After the user answers, validate it, record it, update the coverage map, and decide whether another question is needed. If another question is needed and fewer than 5 have been asked, generate the next single question from the updated coverage map.
 
 **Stop asking** when:
 
-- All critical ambiguities are resolved early (remaining queued items become unnecessary), **or**
+- No further material ambiguity remains that is worth asking about, **or**
 - The user signals completion ("done", "good", "no more", "stop", "proceed"), **or**
 - You reach 5 asked questions.
 
