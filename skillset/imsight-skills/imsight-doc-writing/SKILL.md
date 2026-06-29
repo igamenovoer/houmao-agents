@@ -1,6 +1,6 @@
 ---
 name: imsight-doc-writing
-description: Imsight-authored documentation-writing router for drafting, revising, structuring, and polishing technical Markdown documentation, project notes, design docs, usage guides, architecture explanations, and Mermaid diagrams. Use when explicitly invoked as imsight-doc-writing, routed from another Imsight skill, or when an Imsight-scoped request asks for documentation writing, documentation structure, Markdown deliverables, doc review, diagramming, or the mermaid-graphing subskill.
+description: Imsight-authored documentation-writing router for drafting, revising, structuring, and polishing technical Markdown documentation, project notes, design docs, usage guides, architecture explanations, and Mermaid diagrams. Use when explicitly invoked as imsight-doc-writing, routed from another Imsight skill, or when an Imsight-scoped request asks for documentation writing, documentation structure, Markdown deliverables, doc review, diagramming, formatting existing Mermaid diagrams, or the mermaid-graphing subskill.
 ---
 
 # Imsight Doc Writing
@@ -35,6 +35,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 | --- | --- | --- |
 | `help` | Explain this documentation-writing skill and list available subskills | This entrypoint |
 | `mermaid-graphing` | Create, revise, troubleshoot, or style Mermaid diagrams in Markdown, including flowcharts, sequence diagrams, state diagrams, class diagrams, ER diagrams, timelines, and Gantt charts | [subskills/mermaid-graphing.md](subskills/mermaid-graphing.md) |
+| `format-mermaid` | Reformat existing Mermaid diagrams in one or more Markdown documents to match the `mermaid-graphing` portable style | [subskills/format-mermaid.md](subskills/format-mermaid.md) |
 
 ## General Documentation Pass
 
