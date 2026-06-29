@@ -89,7 +89,7 @@ Rules for the frontmatter:
 3. **## Workflow** or **Core Pattern** — the technique, pattern, or rule the agent must follow.
 4. **## Common Mistakes** — what goes wrong and how to fix it.
 
-Write the workflow as numbered steps. Keep each step concise and point to a detail section when it needs more explanation. End with a fallback for freeform tasks. Move long procedural detail, examples, edge cases, and configuration notes out of the workflow into dedicated sections or `references/<page>.md` files.
+Write the workflow as numbered steps. Keep each step concise and point to a detail section when it needs more explanation. If a main step has several internal branches or substeps, present them as a nested list under that step instead of a long paragraph. Keep the nesting depth to three levels or fewer. End with a fallback for freeform tasks. Move long procedural detail, examples, edge cases, and configuration notes out of the workflow into dedicated sections or `references/<page>.md` files.
 
 When the skill has subcommands, apply **Subcommand Structure** before writing the `## Subcommands` section. Do not use the three-type split for a simple collection of unordered routines.
 

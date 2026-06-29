@@ -24,6 +24,7 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - The file has a `## Workflow` section near the top.
 - The workflow is written as numbered steps.
 - Each workflow step is concise and points to a detailed section when it needs more explanation.
+- Steps with several internal branches or substeps use a nested list under the main step instead of a long paragraph. Keep the nesting depth to three levels or fewer.
 - Multiple-choice steps tell the agent which table, mode list, subcommand list, or procedure set to choose from.
 - Multiple-choice steps let the agent choose the option that fits the user's task; they do not hardcode one option without evidence.
 - Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subcommands, and user request.
@@ -71,6 +72,7 @@ If the current description violates these rules, rewrite it.
 When `create` or `format` edits a skill, task-specific detail is welcome but must live in the right place:
 
 - Keep the `## Workflow` as a concise numbered list of steps.
+- If a main step has several internal branches or substeps, present them as a nested list under that step instead of a long paragraph. Keep the nesting depth to three levels or fewer.
 - Move task-specific procedures, examples, edge cases, and configuration notes into dedicated detail sections.
 - If the skill has multiple modes, subcommands, or variants, create `references/<subcommand>.md` detail pages when the routines have their own executable workflows, then link them from the workflow or subcommand table.
 - If the skill is a collection of peer routines, keep one plain `## Subcommands` table. If the skill is a complex procedure, use the three-type split from **Subcommand Structure Checks**.
