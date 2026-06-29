@@ -1,20 +1,20 @@
 ---
 name: imsight-agent-skill-handling
-description: Manual invocation only; Imsight-authored command skill for analyzing, creating, testing, hardening, or formatting agent skills. Use only when the user explicitly invokes imsight-agent-skill-handling or asks to use this exact skill. Its subcommands are help, analyze, create, test, harden, and format. Do not invoke implicitly for generic skill creation, skill audits, skill updates, skill-format work, routing from another skill, generic coding tasks, or ordinary use of a domain skill.
+description: Manual invocation only; Imsight-authored command skill for analyzing, deep-inspecting, creating, testing, hardening, or formatting agent skills. Use only when the user explicitly invokes imsight-agent-skill-handling or asks to use this exact skill. Its subcommands are help, analyze, deep-inspect, create, test, harden, and format. Do not invoke implicitly for generic skill creation, skill audits, skill updates, skill-format work, routing from another skill, generic coding tasks, or ordinary use of a domain skill.
 ---
 
 # Imsight Agent Skill Handling
 
 ## Overview
 
-Use this skill as the manual entrypoint for analyzing, creating, testing, hardening, and formatting agent skills. It reconstructs a skill's operational logic and durable outputs, writes analysis report sets, creates new skills from user requests, runs pressure scenarios to baseline or verify skills, hardens discipline skills against rationalization, and revises skills so their structure and descriptions conform to the bundled style guide.
+Use this skill as the manual entrypoint for analyzing, deep-inspecting, creating, testing, hardening, and formatting agent skills. It reconstructs a skill's operational logic and durable outputs, writes analysis report sets, creates self-contained skill-process design documents, creates new skills from user requests, runs pressure scenarios to baseline or verify skills, hardens discipline skills against rationalization, and revises skills so their structure and descriptions conform to the bundled style guide.
 
 ## Workflow
 
 When this skill is invoked, execute the following steps in order.
 
 1. **Select the subcommand** from the **Subcommands** table. If no subcommand or actionable task is present, handle `help`.
-2. **Resolve the target skill folder** when the subcommand is `analyze`, `create`, `test`, `harden`, or `format`. See **Target Skill Folder**.
+2. **Resolve the target skill folder** when the subcommand is `analyze`, `deep-inspect`, `create`, `test`, `harden`, or `format`. See **Target Skill Folder**.
 3. **Load the selected reference** and follow its `## Workflow`.
 4. **Produce the requested result** following the selected subcommand's workflow and output contract.
 
@@ -33,7 +33,8 @@ If the user's task does not map cleanly to these steps, use your native planning
 | Subcommand | Use For | Load |
 | --- | --- | --- |
 | `help` | Explain this skill and list available subcommands | This entrypoint |
-| `analyze` | Analyze a given skill's workflow logic and durable outputs, then write Mermaid-based Markdown reports and return a brief ASCII workflow summary in chat | `references/analyze.md` |
+| `analyze` | Default path when the user wants to understand a given skill's working logic; writes Mermaid-based Markdown reports and returns a brief ASCII workflow summary in chat | `references/analyze.md` |
+| `deep-inspect` | Generate one self-contained skill-process design document for a given skill, with concepts, high-level process, skill call graph, formal process, explanation, and evidence handoffs | `references/deep-inspect.md` |
 | `create` | Create a new skill from a user request; pressure testing is handled by the explicit `test` subcommand | `references/create.md` |
 | `test` | Run pressure scenarios with subagents to baseline or verify a skill | `references/test.md` |
 | `harden` | Add rationalization tables, red flags, and explicit counters to a discipline skill | `references/harden.md` |
@@ -51,4 +52,4 @@ Do not analyze or format a parent skillset directory as a single skill unless th
 
 ## Maintenance
 
-Keep this entrypoint as a small router. Add detailed procedures to subcommand references. Keep the bundled style rules in `references/imsight-skill-style-guide.md` so this skill does not depend on files outside its own directory.
+Keep this entrypoint as a small router. Add detailed procedures to subcommand references. Keep bundled prose style rules in `references/imsight-skill-style-guide.md` and shared Mermaid style rules in `references/mermaid-style.md` so this skill does not depend on files outside its own directory.

@@ -1,6 +1,6 @@
 # Markdown Output Template
 
-Use this template for every Markdown report file written by `analyze`. Keep the section names below. Use Mermaid for the workflow diagram, but name the section `Workflow Overview`, not `Mermaid UML Workflow`.
+Use this template for every Markdown report file written by `analyze`. Keep the section names below. Use Mermaid for the workflow diagram, follow `references/mermaid-style.md`, but name the section `Workflow Overview`, not `Mermaid UML Workflow`.
 
 ````md
 # {{REPORT_UNIT_TITLE}} Skill Analysis
@@ -21,6 +21,7 @@ Purpose: {{ONE_SENTENCE_PURPOSE}}
 Fill with a Mermaid state diagram or flowchart for the report unit's workflow.
 Use the analyzed skill's own terminology for nodes and transitions.
 Show major decisions, loops, handoffs, and terminal states.
+Follow references/mermaid-style.md for diagram syntax and styling.
 Do not title this section "Mermaid UML Workflow".
 -->
 
@@ -63,7 +64,7 @@ Use "Explicit" when the skill states the artifact directly and "Inferred" when t
 <!--
 Include this section when the analyzed skill routes work to subskills, subcommands, modes, or external skills.
 Use a Mermaid flowchart TD diagram to show caller-to-callee relationships.
-Keep IDs short; put readable names in quoted labels. Wrap multi-word labels with <br/>.
+Follow references/mermaid-style.md for callgraph syntax and styling.
 Label edges with the trigger condition or explicit invocation form.
 Omit this section entirely when the report unit has no runtime skill routing.
 -->

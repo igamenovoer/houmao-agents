@@ -239,6 +239,7 @@ For each use case, prepare:
 - **Identifier** — assign the next available number in the form `uc-<NN>-<kebab-title>`.
 - **User Story** — one sentence in "As a <actor>, I want <goal>, so that <benefit>" form when it fits.
 - **Scenario** — a short paragraph describing the situation and the system's role.
+- **Supported User Actions** — a set of concrete actions the user can perform if the use case is implemented. Each action uses an H3 title, a brief description, and first-level `context`, `intent`, `action`, and `result` list items with nested content. The `context` item must include at least one `User **has** ...` precondition and one `System **has** ...` precondition. The `intent` item must include one `User **wants** ...` statement and one concrete `User **wonders** "..."` example phrased as something in the user's mind. The `action` item must include `User then **asks** the system to ...`. The `result` item must include `User **gets** ...`.
 - **Step-by-Step Description** — a numbered list of actor-system interactions for the main success scenario. Use substages for complex flows.
 - **Mermaid Use Case Diagram** — a `flowchart LR` or `flowchart TD` showing actors, the system boundary, and the use cases they participate in.
 - **Mermaid System Sequence Diagram** — a `sequenceDiagram` showing the concrete message flow among actors and system components. Include autonumber.
@@ -246,12 +247,31 @@ For each use case, prepare:
 
 Keep each use case focused enough to describe in a single artifact. If a scenario has many independent branches, split it into multiple use cases and note their relationship.
 
+Use this shape for each Supported User Action:
+
+```markdown
+### <Action Title>
+
+<Briefly describe what this action is.>
+
+- context
+  - User **has** <user-side precondition or material at hand>.
+  - System **has** <system-side precondition or capability already available>.
+- intent
+  - User **wants** <desired outcome>.
+  - User **wonders** "<concrete question in the user's mind, using an example when helpful>"
+- action
+  - User then **asks** the system to <perform the action>.
+- result
+  - User **gets** <observable output, decision, artifact, status, or next-step guidance>.
+```
+
 ## Presenting Revised Drafts for Review
 
 In `clarify-and-refine` mode, present the revised use cases to the user in a compact form:
 
 1. Show the list of use-case titles and identifiers.
-2. For each use case, show the user story, scenario, and a summary of the main flow.
+2. For each use case, show the user story, scenario, supported user actions, and a summary of the main flow.
 3. Highlight what changed because of the user's answers.
 4. Ask the user to approve, revise, add, or remove use cases before the artifacts are written.
 
@@ -279,7 +299,8 @@ After writing the use-case artifacts, review them with fresh eyes:
 2. **Internal consistency** — ensure actor names, entity names, and flow steps match across use cases and prior artifacts.
 3. **Domain language check** — confirm that terms match the established `domain-concepts/` baseline or the dominant project vocabulary.
 4. **Scope check** — confirm each use case describes an actor-system interaction, not an implementation plan.
-5. **Diagram accuracy** — ensure Mermaid diagrams reflect the step-by-step description and durable outputs.
+5. **Supported action check** — ensure each use case includes concrete supported user actions with user/system context, user wants/wonders intent, user asks action, and user gets result.
+6. **Diagram accuracy** — ensure Mermaid diagrams reflect the step-by-step description and durable outputs.
 
 Fix issues inline. No need to re-review; just fix and move on.
 
@@ -326,6 +347,38 @@ As a registered customer, I want to buy products and pay for them in one checkou
 ## Scenario
 
 A logged-in customer has items in a shopping cart. The customer reviews the cart, enters shipping and payment details, confirms the order, and the system creates a confirmed order and sends a confirmation email.
+
+## Supported User Actions
+
+### Review Cart Before Checkout
+
+Let the customer inspect the current cart contents before committing to shipping, payment, or inventory reservation.
+
+- context
+  - User **has** a shopping cart with one or more items at hand.
+  - System **has** product, price, quantity, and availability information for the cart items.
+- intent
+  - User **wants** to confirm that the cart contains the right items before checkout.
+  - User **wonders** "Is my `running-shoes` item still in stock at the displayed price before I pay?"
+- action
+  - User then **asks** the system to show the cart summary and proceed to checkout.
+- result
+  - User **gets** a checkout-ready cart summary with item totals, availability status, and the next checkout step.
+
+### Confirm Order
+
+Let the customer submit the final order after shipping, payment, and inventory checks have succeeded.
+
+- context
+  - User **has** reviewed the cart, selected a shipping address, and provided a payment method.
+  - System **has** validated payment details and reserved the required inventory.
+- intent
+  - User **wants** to complete the purchase and receive confirmation.
+  - User **wonders** "If I confirm this order now, will the system charge my card and reserve delivery for the selected address?"
+- action
+  - User then **asks** the system to confirm the order.
+- result
+  - User **gets** a confirmed order summary with payment status, reserved items, and an estimated delivery date.
 
 ## Step-by-Step Description
 

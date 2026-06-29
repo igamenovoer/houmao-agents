@@ -14,9 +14,10 @@ Use this reference to analyze a given agent skill from the skill files themselve
 8. **Infer workflow logic**. Build a step model from frontmatter, invocation contract, workflow sections, subcommands, routing rules, guardrails, output contracts, and linked task pages.
 9. **Map skill routing**. Identify calls to subskills, subcommands, modes, and external skills. Record the caller, callee, trigger condition, and whether the call is explicit (e.g., `$skill-name use <subskill>`) or implicit (e.g., routed by task type or mode table). Include skill-owned references and linked workflow pages only when they are invoked as runtime routing targets, not when they are merely read for context.
 10. **Infer durable outputs**. Extract explicit artifact paths, reports, manifests, generated files, modified files, branches, worktrees, messages, or other durable side effects. Label inferred outputs as inferred when no explicit path is stated.
-11. **Fill the Markdown output template**. Use `references/md-output-template.md` for every report file.
-12. **Write report files** using **Report Files** and **Output Formats**.
-13. **Return a brief in-chat response** using `references/chat-response-template.md`.
+11. **Load shared Mermaid style**. Read `references/mermaid-style.md` before drafting Markdown workflow diagrams or skill routing callgraphs.
+12. **Fill the Markdown output template**. Use `references/md-output-template.md` for every report file.
+13. **Write report files** using **Report Files** and **Output Formats**.
+14. **Return a brief in-chat response** using `references/chat-response-template.md`.
 
 If a skill has multiple subcommands or modes, write `ENTRYPOINT.md` for the top-level routing flow, then write one Markdown file for each analyzed subcommand or mode. If no specific subcommand is requested, analyze all public subcommands at a concise level.
 
@@ -71,11 +72,11 @@ Use two templates:
 
 The chat response is brief and contains only `Workflow Overview`, `Step Explanation`, and `Durable Outputs`. Use an ASCII diagram in `Workflow Overview`.
 
-The Markdown report files use the same core section names: `Workflow Overview`, `Step Explanation`, and `Durable Outputs`. They also include `Inner Workings` and `Key Constraints`. Use Mermaid diagrams in Markdown report files, but do not name the section `Mermaid UML Workflow`.
+The Markdown report files use the same core section names: `Workflow Overview`, `Step Explanation`, and `Durable Outputs`. They also include `Inner Workings` and `Key Constraints`. Use Mermaid diagrams in Markdown report files, follow `references/mermaid-style.md`, but do not name the section `Mermaid UML Workflow`.
 
 For `ENTRYPOINT.md`, add the Markdown template's `## Per-Part Reports` section when additional report files exist. Prefer exact paths and command names over broad descriptions.
 
-When the analyzed skill routes work to subskills, subcommands, modes, or external skills, also include a `Skill Routing Callgraph` section. See **Skill Routing Callgraph** for the required Mermaid style.
+When the analyzed skill routes work to subskills, subcommands, modes, or external skills, also include a `Skill Routing Callgraph` section. See **Skill Routing Callgraph** for what the graph must represent.
 
 ## Workflow Diagrams
 
@@ -136,24 +137,11 @@ For branching, use compact decision boxes:
 +--------------+
 ```
 
-Use this Mermaid style for Markdown report files:
-
-```mermaid
-stateDiagram-v2
-    [*] --> Resolve_Input
-    Resolve_Input --> Select_Path
-    Select_Path --> Execute_Workflow
-    Execute_Workflow --> Produce_Durable_Outputs
-    Produce_Durable_Outputs --> [*]
-```
-
-Do not overdraw every minor validation step. The diagram should make the control flow clear.
+For Markdown output, follow `references/mermaid-style.md`. Prefer `stateDiagram-v2` for lifecycle or control flow and `flowchart TD` when routing or handoffs matter more than state.
 
 ## Skill Routing Callgraph
 
-When the analyzed skill routes work to subskills, subcommands, modes, or external skills, produce a Mermaid callgraph in the report. Use the callgraph to show which skill or subcommand calls which other skill or subcommand, and under what condition.
-
-Use `flowchart TD` for the callgraph. Keep IDs short and stable; put readable names in quoted labels. Wrap labels with `<br/>` when they contain multiple words. Quote labels whenever they contain punctuation, slashes, parentheses, or `<br/>`. Follow the same portable style used by `imsight-doc-writing`'s `mermaid-graphing` subskill.
+When the analyzed skill routes work to subskills, subcommands, modes, or external skills, produce a Mermaid callgraph in the report. Use the callgraph to show which skill or subcommand calls which other skill or subcommand, and under what condition. Follow `references/mermaid-style.md` for graph syntax and styling.
 
 Represent:
 
@@ -162,19 +150,6 @@ Represent:
 - Each invoked subskill as a child of the caller that routes to it.
 - Each external skill as a separate node, grouped visually by caller when helpful.
 - Edges labeled with the trigger condition or explicit invocation form.
-
-Example for a skill that owns subcommands and also calls external skills:
-
-```mermaid
-flowchart TD
-    Entry["imsight-agent-skill-handling<br/>entrypoint"] --> Analyze["analyze"]
-    Entry --> Create["create"]
-    Entry --> Test["test"]
-    Analyze -->|"reads"| SkillMd["SKILL.md"]
-    Analyze -->|"loads"| SubRef["references/<br/>analyze.md"]
-    Create -->|"delegates formatting"| DocWrite["imsight-doc-writing"]
-    Test -->|"uses"| Runner["houmao-agent-instance"]
-```
 
 When a subskill is invoked from multiple callers, draw one node per subskill and multiple edges. When a call is conditional, label the edge with the condition. When a call is explicit (e.g., `$skill-name subcommand`), include the invocation form in the label. When a call is implicit (e.g., routed by task type), label the edge with the routing rule.
 
