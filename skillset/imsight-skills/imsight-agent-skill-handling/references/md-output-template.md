@@ -58,6 +58,21 @@ Use "Explicit" when the skill states the artifact directly and "Inferred" when t
 | --- | --- | --- | --- | --- |
 | {{ARTIFACT_NAME}} | {{PATH_OR_DESTINATION}} | {{STEP_NAME}} | {{FILE_OR_SECTION}} | {{Explicit | Inferred}} |
 
+## Skill Routing Callgraph
+
+<!--
+Include this section when the analyzed skill routes work to subskills, subcommands, modes, or external skills.
+Use a Mermaid flowchart TD diagram to show caller-to-callee relationships.
+Keep IDs short; put readable names in quoted labels. Wrap multi-word labels with <br/>.
+Label edges with the trigger condition or explicit invocation form.
+Omit this section entirely when the report unit has no runtime skill routing.
+-->
+
+```mermaid
+flowchart TD
+    {{CALLER_NODE_ID}}["{{CALLER_LABEL}}"] --> {{CALLEE_NODE_ID}}["{{CALLEE_LABEL}}"]
+```
+
 ## Inner Workings
 
 <!--
