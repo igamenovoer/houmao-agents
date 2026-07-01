@@ -74,13 +74,13 @@ If the project already has an established domain language document that the user
 
 | Mode | Use For | Detail |
 | --- | --- | --- |
-| `auto` | Let the agent choose the exploration type from the prompt, repo evidence, and highest-risk uncertainty | [modes/auto.md](modes/auto.md) |
-| `any-open-question` | Identify unresolved questions in given material, classify them by type, and route each material question to the matching non-brainstorm exploration mode | [modes/any-open-question.md](modes/any-open-question.md) |
-| `design-choice` | Clarify a design decision: features, scopes, protocols, conventions, patterns, interfaces, acceptance criteria, and tradeoffs | [modes/design-choice.md](modes/design-choice.md) |
-| `domain-language` | Resolve project-specific terms and terminology conflicts | [modes/domain-language.md](modes/domain-language.md) |
-| `review-decision` | Review existing decisions for consistency, drift, stale assumptions, and missing trade-offs | [modes/review-decision.md](modes/review-decision.md) |
-| `brainstorm` | Turn a vague idea or product concept into an approved system design before implementation | [subskills/brainstorm.md](subskills/brainstorm.md) |
-| `usecase-design` | Create use cases from project context, or clarify and refine existing use cases against system design and domain language | [subskills/usecase-design.md](subskills/usecase-design.md) |
+| `auto` | Let the agent choose the exploration type from the prompt, repo evidence, and highest-risk uncertainty | [commands/auto.md](commands/auto.md) |
+| `any-open-question` | Identify unresolved questions in given material, classify them by type, and route each material question to the matching non-brainstorm exploration mode | [commands/any-open-question.md](commands/any-open-question.md) |
+| `design-choice` | Clarify a design decision: features, scopes, protocols, conventions, patterns, interfaces, acceptance criteria, and tradeoffs | [commands/design-choice.md](commands/design-choice.md) |
+| `domain-language` | Resolve project-specific terms and terminology conflicts | [commands/domain-language.md](commands/domain-language.md) |
+| `review-decision` | Review existing decisions for consistency, drift, stale assumptions, and missing trade-offs | [commands/review-decision.md](commands/review-decision.md) |
+| `brainstorm` | Turn a vague idea or product concept into an approved system design before implementation | [commands/brainstorm.md](commands/brainstorm.md) |
+| `usecase-design` | Create use cases from project context, or clarify and refine existing use cases against system design and domain language | [commands/usecase-design.md](commands/usecase-design.md) |
 
 Use `auto` as the default exploration mode. In `auto`, inspect the prompt and early repo evidence, choose the most relevant exploration type, state that routing choice, and proceed into that mode's questioning loop. The routing choice itself does not require user confirmation. Any substantive product, terminology, scope, ADR, artifact, or implementation-impacting decision after routing requires user consent. Choose another mode from the user's prompt, explicit mode names, requests to find any open or unresolved questions, direct requests about feature scope, terminology, decision review, system design brainstorming, or use-case design, wording that clearly maps to one focused mode, or the agent's evidence-based routing judgment in `auto`. Combine modes only when the request naturally spans them.
 
@@ -117,8 +117,8 @@ Update durable project artifacts inline when the session resolves durable knowle
 | Domain concepts | `domain-concepts/dc-<what>.md` | `references/DOMAIN-CONCEPTS-FORMAT.md` |
 | ADRs | `adrs/<index>-<what>.md` | `references/ADR-FORMAT.md` |
 | Design choice | `design-choice/design-<what>.md` | — |
-| Design | `designs/YYYY-MM-DD-<topic>-design.md` | `subskills/brainstorm.md` |
-| Use cases | `use-cases/uc-<NN>-<what>.md` | `subskills/usecase-design.md` |
+| Design | `designs/YYYY-MM-DD-<topic>-design.md` | `commands/brainstorm.md` |
+| Use cases | `use-cases/uc-<NN>-<what>.md` | `commands/usecase-design.md` |
 
 When creating the first file in `domain-concepts/`, `design-choice/`, `designs/`, or `use-cases/`, also create a `README.md` index in that directory. ADRs are durable project content; whether they are version-controlled depends on whether `<output-dir>` itself is tracked. Only write to `docs/design/` if the user explicitly requests tracked project docs.
 

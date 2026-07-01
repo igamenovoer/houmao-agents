@@ -31,16 +31,16 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 ## Subcommands
 
 - `help`: Explain this slave request-processing skill and list available subcommands.
-- `openspec-one-pass`: Given one master-provided development request, run an OpenSpec lifecycle in one pass: explore, propose, apply, sync, and archive. Use [subskills/openspec-one-pass.md](subskills/openspec-one-pass.md).
-- `init-openspec`: Initialize `openspec/` in the slave's current target workdir when missing. Use [subskills/init-openspec.md](subskills/init-openspec.md).
+- `openspec-one-pass`: Given one master-provided development request, run an OpenSpec lifecycle in one pass: explore, propose, apply, sync, and archive. Use [commands/openspec-one-pass.md](commands/openspec-one-pass.md).
+- `init-openspec`: Initialize `openspec/` in the slave's current target workdir when missing. Use [commands/init-openspec.md](commands/init-openspec.md).
 
 ## Workflow
 
 1. Read the master's request and identify the requested slave subcommand.
 2. If no subcommand or actionable task is present, handle `help`: summarize this skill and list the subcommands.
 3. If the request is task-only, choose the applicable subcommand from the task.
-4. If the subcommand is `openspec-one-pass`, read [subskills/openspec-one-pass.md](subskills/openspec-one-pass.md).
-5. If the subcommand is `init-openspec`, read [subskills/init-openspec.md](subskills/init-openspec.md).
+4. If the subcommand is `openspec-one-pass`, read [commands/openspec-one-pass.md](commands/openspec-one-pass.md).
+5. If the subcommand is `init-openspec`, read [commands/init-openspec.md](commands/init-openspec.md).
 6. If the subcommand or required request body is ambiguous, ask for the smallest clarification needed.
 7. Do not invent additional workflow stages in this entrypoint; add a new subskill page when a new slave operation becomes reusable.
 

@@ -10,7 +10,7 @@ This dispatch invokes the predefined `imsight-autodev-slave init-openspec` opera
 
 - A selected Houmao-managed slave.
 - A clear target workdir hint or confidence that the slave's current working directory is the desired target.
-- Tool lane metadata from [../../primitives/inspect-slave.md](../../primitives/inspect-slave.md).
+- Tool lane metadata from [../../../references/primitives/inspect-slave.md](../../../references/primitives/inspect-slave.md).
 
 ## Implications
 
@@ -31,10 +31,10 @@ This dispatch invokes the predefined `imsight-autodev-slave init-openspec` opera
 
 ## Workflow
 
-1. Read [../../primitives/inspect-slave.md](../../primitives/inspect-slave.md).
+1. Read [../../../references/primitives/inspect-slave.md](../../../references/primitives/inspect-slave.md).
 2. Preserve any target-workdir hint from the master request.
-3. Render the command using [../../primitives/render-invocation.md](../../primitives/render-invocation.md).
-4. Deliver with [../../primitives/deliver-to-slave.md](../../primitives/deliver-to-slave.md).
+3. Render the command using [../../../references/primitives/render-invocation.md](../../../references/primitives/render-invocation.md).
+4. Deliver with [../../../references/primitives/deliver-to-slave.md](../../../references/primitives/deliver-to-slave.md).
 5. After delivery is accepted, finish the turn by default.
 
 ## Guardrails

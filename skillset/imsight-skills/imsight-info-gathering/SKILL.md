@@ -37,7 +37,7 @@ When this skill writes hints, downloaded source corpora, source packs, reports, 
 | `source-pack` | Produce a local source pack with raw files, processed notes, and a manifest | `references/source-handling.md` and `references/report-synthesis.md` |
 | `synthesize-report` | Produce a synthesized cited report, comparison, recommendation, market scan, or literature scan | `references/report-synthesis.md` |
 | `find-hint` | Research a problem or topic and create a durable hint guide with source links and concise snippets | `references/find-hint.md` |
-| `find-libgen` | Search a provided LibGen-style mirror and produce direct download links or wget commands using the bundled stdlib script | `subskills/find-libgen.md` |
+| `find-libgen` | Search a provided LibGen-style mirror and produce direct download links or wget commands using the bundled stdlib script | `commands/find-libgen.md` |
 
 ## Workflow
 
@@ -50,7 +50,7 @@ When this skill writes hints, downloaded source corpora, source packs, reports, 
 7. Download or extract durable source material when the user asks for downloads, when sources are likely to move, or when a report needs an auditable local corpus.
 8. Synthesize across sources. Separate findings, conflicts, uncertainty, and recommendations. Do not pad the report with source-by-source summaries unless the user asked for an annotated bibliography.
 9. If writing a durable hint, report, source pack narrative, comparison, or other documentation artifact that needs structure, prose style, Markdown conventions, diagrams, or a particular document style, route to `imsight-doc-writing` for the writing-specific rules, then return to this skill for evidence and source-handling rules.
-10. If the task asks for LibGen mirror search, direct download links, or wget-ready commands, load `subskills/find-libgen.md` and use that workflow.
+10. If the task asks for LibGen mirror search, direct download links, or wget-ready commands, load `commands/find-libgen.md` and use that workflow.
 
 ## Routing
 
@@ -74,7 +74,7 @@ Load `references/find-hint.md` when the user asks to find or create a hint, guid
 
 ## LibGen Link Finding
 
-Load `subskills/find-libgen.md` when the user asks to search a LibGen mirror, resolve LibGen result pages into direct download URLs, or produce wget commands from found LibGen entries.
+Load `commands/find-libgen.md` when the user asks to search a LibGen mirror, resolve LibGen result pages into direct download URLs, or produce wget commands from found LibGen entries.
 
 ## Defaults
 

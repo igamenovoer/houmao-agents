@@ -6,7 +6,7 @@ Use this reference to generate one self-contained skill-process design document 
 
 1. **Locate the skill folder**. Resolve the target folder from the user's request, then confirm it contains `SKILL.md`.
 2. **Resolve the output file** using **Output Contract**.
-3. **Read the target skill completely**. Read `SKILL.md`, `agents/openai.yaml` when present, and every directly linked reference page that defines public subcommands, modes, workflows, primitives, or routing behavior.
+3. **Read the target skill completely and inventory its files**. Read `SKILL.md`, `agents/openai.yaml` when present, and every directly linked reference page that defines public subcommands, modes, workflows, primitives, or routing behavior. Then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, script, asset, or other), and a one-sentence explanation of its purpose.
 4. **Load local supporting references**. Read `references/skill-pseudo-lang.md` before drafting `## Formal Skill Process`, and read `references/mermaid-style.md` before drafting Mermaid diagrams.
 5. **Map the process model**. Extract entrypoints, public subcommands, internal stages, external skill calls, input evidence, output evidence, durable side effects, blockers, and ownership boundaries.
 6. **Choose the important concepts**. Select terms a reader must know to understand the process, then define them inside the generated document. Prefer terms from the target skill itself; do not require the reader to open another glossary.
@@ -39,6 +39,14 @@ Use this template as the default scaffold. Replace placeholders with concrete co
 This note explains how `<target-skill-id>` operates as a skill process. It aligns `<target-skill-path>/SKILL.md`, its public subcommands or modes, and the directly linked workflow references that affect runtime behavior.
 
 The key orchestration rule is: <one sentence describing who owns routing, evidence, blockers, and final output>.
+
+## File Inventory
+
+| Relative Path | Category | Purpose |
+| --- | --- | --- |
+| `<target-skill-path>/SKILL.md` | Entrypoint | <One-sentence explanation of the skill entrypoint.> |
+| `<target-skill-path>/agents/openai.yaml` | Agent config | <One-sentence explanation of the agent configuration, if present.> |
+| `<target-skill-path>/references/<file>.md` | Reference | <One-sentence explanation of the reference file.> |
 
 ## Concepts
 
@@ -164,6 +172,10 @@ The formal process is easier to read if each stage is understood as a handoff of
 ### Purpose
 
 State what the inspected skill coordinates, which skill files or subcommands the design document aligns, and the one most important orchestration rule. Mention the target skill path.
+
+### File Inventory
+
+Include a table that lists every file in the target skill directory. For each file, give its path relative to the skill folder, a category such as entrypoint, reference, agent config, subcommand, script, asset, or other, and a one-sentence explanation of its purpose.
 
 ### Concepts
 

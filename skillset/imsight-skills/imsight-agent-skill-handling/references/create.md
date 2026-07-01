@@ -8,9 +8,10 @@ Use this reference to create a new skill from a user request. Because `imsight-a
 2. **Capture intent** from the user's request and conversation history. See **Intent Capture**.
 3. **Classify the skill type** based on what it must do. See **Skill Type**.
 4. **Choose the subcommand structure flavor** if the skill needs subcommands. See **Subcommand Structure**.
-5. **Author a minimal `SKILL.md`** that captures the requested behavior and is already format-compliant. See **Authoring the Skill**.
-6. **Validate** the skill frontmatter and structure. See **Validation**.
-7. **Return a brief in-chat summary** that lists the files written and the validation result.
+5. **Initialize the standard skill layout** in the skill home. See **Skill Layout**. Create only the directories and files the skill's shape requires; skip anything that already exists and never overwrite existing files.
+6. **Author a minimal `SKILL.md`** that captures the requested behavior and is already format-compliant. See **Authoring the Skill**.
+7. **Validate** the skill frontmatter and structure. See **Validation**.
+8. **Return a brief in-chat summary** that lists the files written and the validation result.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan from the available writing guidance and the user's request, then execute the plan.
 
@@ -60,6 +61,21 @@ Use the complex-procedure flavor when the skill describes a multi-step procedure
 - `### Misc Subcommands` for `help` and public shortcuts such as `fast-forward` or `step-by-step`.
 
 For complex-procedure skills, put procedural subcommands in user-facing workflow order, keep helper subcommands out of help output unless promoted, and say `No helper subcommands are currently exposed.` when the helper group is empty.
+
+## Skill Layout
+
+A skill folder follows the OpenAI skill-creator layout: a required `SKILL.md`, a recommended `agents/openai.yaml`, and optional bundled resource directories (`scripts/`, `references/`, `assets/`). See [skill-layout.md](skill-layout.md) for the full layout, including the Imsight `commands/` convention for subcommand detail pages.
+
+When initializing a skill:
+
+- Always create `SKILL.md`.
+- Create `agents/openai.yaml` unless it already exists. Generate it from the skill content.
+- Create `scripts/` only when the skill bundles executable code.
+- Create `references/` only when the skill has detail pages, style guides, schemas, or other reference material.
+- Create `assets/` only when the skill bundles static resources used in output.
+- Create `commands/` only when the skill has subcommand detail pages.
+- Do not create empty directories purely for symmetry.
+- If the target skill home already exists, do not overwrite or remove any existing files or directories. If a required file such as `SKILL.md` already exists and conflicts with the new skill, stop and report the conflict.
 
 ## Authoring the Skill
 

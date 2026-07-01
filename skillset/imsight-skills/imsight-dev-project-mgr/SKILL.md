@@ -29,8 +29,8 @@ Worktree paths and implementation branches follow their own subskill defaults, w
 ## Subcommands
 
 - `help`: Explain this skill and list available subcommands.
-- `create-worktree`: Create a clean git worktree with shared local-state symlinks. See [subskills/create-worktree.md](subskills/create-worktree.md).
-- `impl-in-worktree`: Implement a change on a fresh local branch inside an isolated worktree. See [subskills/impl-in-worktree.md](subskills/impl-in-worktree.md).
+- `create-worktree`: Create a clean git worktree with shared local-state symlinks. See [commands/create-worktree.md](commands/create-worktree.md).
+- `impl-in-worktree`: Implement a change on a fresh local branch inside an isolated worktree. See [commands/impl-in-worktree.md](commands/impl-in-worktree.md).
 
 ## Workflow
 

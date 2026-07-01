@@ -43,8 +43,8 @@ For this flavor, one table is enough:
 
 | Subcommand | Use For | Detail |
 | --- | --- | --- |
-| `analyze` | Analyze existing data | [modes/analyze.md](modes/analyze.md) |
-| `generate` | Generate new artifacts | [modes/generate.md](modes/generate.md) |
+| `analyze` | Analyze existing data | `commands/analyze.md` |
+| `generate` | Generate new artifacts | `commands/generate.md` |
 
 ### Complex-procedure flavor
 
@@ -129,8 +129,8 @@ constraints provided by this skill, then execute the plan.
 
 | Subcommand | Use For | Detail |
 | --- | --- | --- |
-| `analyze` | Analyze existing data | [modes/analyze.md](modes/analyze.md) |
-| `generate` | Generate new artifacts | [modes/generate.md](modes/generate.md) |
+| `analyze` | Analyze existing data | `commands/analyze.md` |
+| `generate` | Generate new artifacts | `commands/generate.md` |
 | `help` | Explain this skill and list public subcommands | This entrypoint |
 
 ## Project Directory

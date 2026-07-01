@@ -34,8 +34,8 @@ If the user's task does not map cleanly to these steps, use your native planning
 | Subskill | Use For | Load |
 | --- | --- | --- |
 | `help` | Explain this documentation-writing skill and list available subskills | This entrypoint |
-| `mermaid-graphing` | Create, revise, troubleshoot, or style Mermaid diagrams in Markdown, including flowcharts, sequence diagrams, state diagrams, class diagrams, ER diagrams, timelines, and Gantt charts | [subskills/mermaid-graphing.md](subskills/mermaid-graphing.md) |
-| `format-mermaid` | Reformat existing Mermaid diagrams in one or more Markdown documents to match the `mermaid-graphing` portable style | [subskills/format-mermaid.md](subskills/format-mermaid.md) |
+| `mermaid-graphing` | Create, revise, troubleshoot, or style Mermaid diagrams in Markdown, including flowcharts, sequence diagrams, state diagrams, class diagrams, ER diagrams, timelines, and Gantt charts | [commands/mermaid-graphing.md](commands/mermaid-graphing.md) |
+| `format-mermaid` | Reformat existing Mermaid diagrams in one or more Markdown documents to match the `mermaid-graphing` portable style | [commands/format-mermaid.md](commands/format-mermaid.md) |
 
 ## General Documentation Pass
 

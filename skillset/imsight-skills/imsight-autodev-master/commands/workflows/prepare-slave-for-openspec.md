@@ -8,11 +8,11 @@ The slave owns the filesystem check because it may be running in an isolated env
 
 ## Workflow
 
-1. Read [../primitives/inspect-slave.md](../primitives/inspect-slave.md) and recover slave metadata.
+1. Read [../../references/primitives/inspect-slave.md](../../references/primitives/inspect-slave.md) and recover slave metadata.
 2. Preserve the target workdir hint from the request when provided.
 3. Read [../invocations/slave-skill/init-openspec.md](../invocations/slave-skill/init-openspec.md) for command semantics.
-4. Render the `imsight-autodev-slave init-openspec` command with [../primitives/render-invocation.md](../primitives/render-invocation.md).
-5. Deliver with [../primitives/deliver-to-slave.md](../primitives/deliver-to-slave.md).
+4. Render the `imsight-autodev-slave init-openspec` command with [../../references/primitives/render-invocation.md](../../references/primitives/render-invocation.md).
+5. Deliver with [../../references/primitives/deliver-to-slave.md](../../references/primitives/deliver-to-slave.md).
 6. After delivery is accepted, finish the turn by default.
 
 ## Guardrails

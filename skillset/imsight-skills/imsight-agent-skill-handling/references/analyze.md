@@ -8,7 +8,7 @@ Use this reference to analyze a given agent skill from the skill files themselve
 2. **Resolve `<output-dir>`** using **Output Contract**.
 3. **Read the entrypoint completely**. Read `SKILL.md` from start to finish.
 4. **Inspect runtime metadata**. Read `agents/openai.yaml` when present.
-5. **Map linked resources**. Identify directly linked `references/`, `subcommands/`, `scripts/`, `assets/`, and workflow pages.
+5. **Map linked resources and inventory files**. Identify directly linked `references/`, `commands/`, `scripts/`, `assets/`, and workflow pages, then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, script, asset, or other), and a one-sentence explanation of its purpose. Include this inventory table in the entrypoint report.
 6. **Choose report units**. Always create an entrypoint report for `SKILL.md`. For multi-part skills, choose one report unit for each public subcommand, mode, workflow, or primitive page that has distinct workflow logic.
 7. **Load workflow-critical resources** for each report unit. Read the linked pages needed to reconstruct execution flow and output artifacts. Do not load unrelated references just because they exist.
 8. **Infer workflow logic**. Build a step model from frontmatter, invocation contract, workflow sections, subcommands, routing rules, guardrails, output contracts, and linked task pages.

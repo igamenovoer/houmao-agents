@@ -11,7 +11,7 @@ This dispatch invokes the slave-local OpenSpec apply-change skill directly. It i
 - A selected Houmao-managed slave.
 - A target repository or workspace.
 - An existing OpenSpec change id, path, or unambiguous implementation request.
-- Tool lane metadata from [../../primitives/inspect-slave.md](../../primitives/inspect-slave.md).
+- Tool lane metadata from [../../../references/primitives/inspect-slave.md](../../../references/primitives/inspect-slave.md).
 
 ## Implications
 
@@ -32,10 +32,10 @@ This dispatch invokes the slave-local OpenSpec apply-change skill directly. It i
 
 ## Workflow
 
-1. Read [../../primitives/inspect-slave.md](../../primitives/inspect-slave.md).
+1. Read [../../../references/primitives/inspect-slave.md](../../../references/primitives/inspect-slave.md).
 2. Preserve the implementation request, including change name/path, repository/workspace, verification expectations, and constraints.
-3. Render the command using [../../primitives/render-invocation.md](../../primitives/render-invocation.md).
-4. Deliver with [../../primitives/deliver-to-slave.md](../../primitives/deliver-to-slave.md).
+3. Render the command using [../../../references/primitives/render-invocation.md](../../../references/primitives/render-invocation.md).
+4. Deliver with [../../../references/primitives/deliver-to-slave.md](../../../references/primitives/deliver-to-slave.md).
 5. After delivery is accepted, finish the turn by default.
 
 ## Guardrails
