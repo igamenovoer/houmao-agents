@@ -1,5 +1,5 @@
 interface:
-  display_name: "Imsight Dev Box Network"
+  display_name: "imsight-dev-box-network"
   short_description: "Set up dev box networking and tunnels"
   default_prompt: "Use $imsight-dev-box-network use help to see Imsight networking, proxy, and tunnel subcommands."
 policy:

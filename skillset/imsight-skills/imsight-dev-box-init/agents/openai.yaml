@@ -1,5 +1,5 @@
 interface:
-  display_name: "Imsight Dev Box Init"
+  display_name: "imsight-dev-box-init"
   short_description: "Preferred development host and agent setup guides"
   default_prompt: "Use $imsight-dev-box-init use help to see Imsight dev-box setup subcommands."
 policy:

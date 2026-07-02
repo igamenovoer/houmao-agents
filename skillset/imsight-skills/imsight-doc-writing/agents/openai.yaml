@@ -1,5 +1,5 @@
 interface:
-  display_name: "Imsight Doc Writing"
+  display_name: "imsight-doc-writing"
   short_description: "Write structured Imsight documentation"
   default_prompt: "Use $imsight-doc-writing mermaid-graphing to draft a compact Mermaid diagram for this workflow."
 policy:

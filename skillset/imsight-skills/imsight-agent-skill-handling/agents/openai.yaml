@@ -1,5 +1,5 @@
 interface:
-  display_name: "Imsight Agent Skill Handling"
+  display_name: "imsight-agent-skill-handling"
   short_description: "Analyze, deep-inspect, create, test, harden, and format skills"
   default_prompt: "Use $imsight-agent-skill-handling use help to see Imsight agent skill handling subcommands."
 policy:

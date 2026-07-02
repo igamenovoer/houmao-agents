@@ -1,5 +1,5 @@
 interface:
-  display_name: "Imsight Project Misc"
+  display_name: "imsight-project-misc"
   short_description: "Generic project setup helpers"
   default_prompt: "Use $imsight-project-misc to set up a Docker service in this project."
 policy:
