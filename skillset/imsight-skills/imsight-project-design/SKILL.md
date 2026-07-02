@@ -1,0 +1,76 @@
+---
+name: imsight-project-design
+description: Imsight-style staged feature-design planning. Use when explicitly asked to use Imsight project design, Imsight SOP, this skill, or an Imsight-authored process to scaffold or revise feature planning artifacts, define a feature, design use cases, design interfaces or contracts, or write implementation handoffs. Supports command-style invocation such as `$imsight-project-design use define-feature to ...`.
+---
+
+# Imsight Feature Design
+
+## Overview
+
+Use this skill to create or revise staged feature-design planning artifacts. The skill behaves like a main command with subcommands: complete the requested feature-design stage, report what changed, then pause unless the user explicitly asks for another stage.
+
+This skill is portable across host projects. Do not assume a specific repository layout, package name, planning framework, or source tree beyond files the user provides or files discovered in the active host project.
+
+## Entry Workflow
+
+When this skill is invoked, execute these steps in order.
+
+1. **Select a subcommand** from the **Subcommands** table. If the user wrote `use <subcommand>`, use that subcommand. If the user provided a task prompt without a subcommand, infer the narrowest applicable subcommand. If no subcommand is named and the task is ambiguous, run `help`.
+2. **Resolve the feature design directory** when the subcommand writes artifacts. See **Output Directory**.
+3. **Load the command detail page** from the **Subcommands** table and execute its workflow.
+4. **Pause after the subcommand**. Summarize created or changed files, unresolved decisions, and the likely next subcommand. Do not continue into another stage unless the user explicitly asks.
+
+If the task does not map cleanly to a feature-design artifact workflow, explain the closest available subcommand and ask for the missing decision before writing artifacts.
+
+## Subcommands
+
+| Subcommand | Use For | Detail |
+| --- | --- | --- |
+| `help` | Explain this skill and list subcommands | `commands/help.md` |
+| `scaffold` | Create a feature design directory and placeholder planning skeleton | `commands/scaffold.md` |
+| `define-feature` | Create or update `<feature-dir>/feature-requirement.md` | `commands/define-feature.md` |
+| `design-usecase` | Create or update one matched use case under `<feature-dir>/usecases/` | `commands/design-usecase.md` |
+| `design-interface` | Create or update interface and contract docs under `<feature-dir>/design/` | `commands/design-interface.md` |
+| `design-agent-task` | Create or update `<feature-dir>/agent-task.md` as an implementation handoff | `commands/design-agent-task.md` |
+
+## Output Directory
+
+When output artifacts are involved, resolve the feature design directory in this order:
+
+1. Use an absolute or host-project-relative output location explicitly provided by the user.
+2. If no user location is provided and `IMSIGHT_SKILL_OUTPUT_DIR` is set, use that directory. Resolve relative values against the active host project directory.
+3. If neither is provided, use `<host-project-dir>/.imsight-arts/feature-design/<YYYY-MM-DD-kebab-feature-name>/` with the current local date.
+
+If the user gives an artifact root and a feature name, create or update `<artifact-root>/<YYYY-MM-DD-kebab-feature-name>/` unless the root already names the intended feature design directory. If the task appears to continue an existing feature, search the user-provided location, then `IMSIGHT_SKILL_OUTPUT_DIR`, then `.imsight-arts/feature-design/` for matching directory names, README titles, feature requirement titles, or use case summaries before creating a new directory.
+
+Do not overwrite an existing feature design folder during `scaffold` unless the user explicitly asks. For update subcommands, preserve unrelated sections and revise only the target artifact.
+
+## Artifact Contracts
+
+`README.md`: Feature design index with purpose, status, artifact map, related context, and open questions.
+
+`feature-requirement.md`: Feature requirement baseline with goal, non-goals, users or stakeholders, workflows, functional requirements, system boundaries, operational constraints, assumptions, and open questions.
+
+`usecases/README.md`: Use-case index with identifiers, titles, status, and notes.
+
+`usecases/uc-XX-<slug>.md`: One feature use case describing an actor-system or system-system workflow, supported actions, main flow, alternative/error flows, durable outputs, assumptions, and open questions.
+
+`design/README.md`: Design index and module/interface map.
+
+`design/public-interfaces.md`: Default public interface and contract design file. Split into module-specific files only when the interface surface becomes large, files already exist, or the user asks for module files.
+
+`agent-task.md`: Compact implementation handoff with objective, use case references, design references, implementation instructions, verification expectations, required evidence, out-of-scope work, and open questions.
+
+## Templates
+
+Use placeholder templates from `assets/templates/feature/` when creating new files. `scaffold` copies only the baseline folder skeleton templates. Design subcommands may copy the more specific templates before replacing placeholders with substantive content.
+
+## Common Mistakes
+
+- Running every subcommand end to end. Fix by completing the requested subcommand and pausing for review.
+- Treating `scaffold` as design. Fix by copying placeholder templates only.
+- Ignoring the Imsight output contract. Fix by resolving explicit user location, then `IMSIGHT_SKILL_OUTPUT_DIR`, then `.imsight-arts/feature-design/`.
+- Creating duplicate use cases for the same workflow. Fix by matching existing use case titles, slugs, actors, goals, and summaries before choosing the next identifier.
+- Designing interfaces without reading use cases. Fix by deriving commands, routes, schemas, files, events, storage contracts, or service boundaries from actual use case flows.
+- Making `agent-task.md` too broad. Fix by writing minimal implementation instructions tied to stabilized feature, use case, and interface artifacts.
+- Assuming a specific host project layout. Fix by inspecting the active project and using neutral project language unless the user provides project-specific conventions.
