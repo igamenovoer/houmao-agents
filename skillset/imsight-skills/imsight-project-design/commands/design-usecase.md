@@ -53,6 +53,7 @@ Check these categories before writing or refining. Mark each internally as **Cle
 | System Boundaries | What is inside the planned system, outside it, and which external services or interfaces are touched. |
 | Terminology & Consistency | Whether actor, entity, and action names match established feature language. |
 | Relationship to Existing Work | How the use case relates to prior use cases, requirements, design docs, decisions, or implementation surfaces. |
+| Agent Skill Examples | For agent-skill designs, whether the use case includes at least one example user prompt and the expected example AI response shape. |
 | Open Questions / Gaps | Missing information affecting scope, acceptance criteria, diagrams, or durable outputs. |
 
 ## Create Mode
@@ -91,6 +92,7 @@ Each use case must include:
 - **Mermaid Flow Diagram** showing actors, system boundary, and key interactions when useful.
 - **Mermaid Sequence Diagram** with `sequenceDiagram` and `autonumber` when interaction ordering matters.
 - **Durable Outputs** listing artifacts, records, decisions, state changes, retained outputs, or side effects.
+- **Example Prompt And Expected AI Response** when the planned feature is an agent skill, AI assistant skill, or agent-facing instruction workflow.
 - **Assumptions And Open Questions** when relevant.
 
 Supported actions must use this shape:
@@ -116,6 +118,33 @@ Supported actions must use this shape:
 
 Do not create a new use case file when the topic is already represented. Prefer updating an existing file if its title, slug, actor goal, prompt phrase, generated artifact, supported action, or summary overlaps the request.
 
+## Agent Skill Use Cases
+
+When the feature being designed is an agent skill, AI assistant skill, or agent-facing instruction workflow, each use case should include an `## Example Prompt And Expected AI Response` section. This section grounds the workflow in the actual conversational contract the skill must satisfy.
+
+Include:
+
+- **Example Prompt**: one realistic user invocation or request that triggers the use case.
+- **Expected AI Response**: the observable response shape, decisions, files, commands, diagnostics, or next-step guidance the agent should produce.
+- **Notes**: any constraints on tone, refusal, validation, mutation, or follow-up questions that make the response acceptable.
+
+Format examples as compact event records:
+
+```markdown
+### Event 001 - <Short Scenario Title>
+
+> Time: `<example-or-placeholder-time>` · Session: `<example-session-or-context>`
+
+User Prompt:
+
+> <realistic user invocation>
+
+AI:
+> <expected response shape or illustrative response>
+```
+
+Use `User Action:` instead of `User Prompt:` when the triggering input is a slash command, skill activation, button, or other non-freeform user action. Keep examples concrete enough to guide implementation and review, but avoid turning them into brittle full transcripts. The AI block should describe the response contract and may include a short illustrative snippet when wording matters.
+
 ## Use Case Self-Review
 
 After writing or updating artifacts, fix issues inline:
@@ -127,6 +156,7 @@ After writing or updating artifacts, fix issues inline:
 5. Supported action check: verify each action includes context, intent, action, and result.
 6. Diagram accuracy: ensure Mermaid diagrams reflect the main flow and durable outputs.
 7. Index check: ensure `usecases/README.md` links to the created or updated file.
+8. Agent skill example check: when the planned feature is an agent skill, confirm the use case includes an example prompt and expected example AI response.
 
 ## Completion Report
 

@@ -55,7 +55,7 @@ Do not overwrite an existing feature design folder during `scaffold` unless the 
 
 `usecases/README.md`: Use-case index with identifiers, titles, status, and notes.
 
-`usecases/uc-XX-<slug>.md`: One feature use case describing an actor-system or system-system workflow, supported actions, main flow, alternative/error flows, durable outputs, assumptions, and open questions.
+`usecases/uc-XX-<slug>.md`: One feature use case describing an actor-system or system-system workflow, supported actions, main flow, alternative/error flows, durable outputs, assumptions, and open questions. For agent-skill designs, include an example prompt and expected example AI response.
 
 `design/README.md`: Design index and module/interface map.
 
