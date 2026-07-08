@@ -128,6 +128,16 @@ Choose the guidance form based on what the skill must prevent or produce:
 
 Keep the skill concise. One excellent example beats many mediocre ones.
 
+### Skill-Based Use Case Examples
+
+When the user asks for a skill-based use case, or when a new skill includes use-case or chat-turn examples, design the example around the visible conversational contract:
+
+- Show the triggering user prompt or user action.
+- Show the expected final AI response shape: decisions, files, commands, diagnostics, durable outputs, validation, or next-step guidance.
+- Do not show hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or a thinking process as part of the AI response unless the user explicitly asks the skill to document that process.
+- If process context matters, express it as observable actions or decisions, such as "I will inspect the manifest, then run validation," rather than internal thoughts.
+- Keep the example concrete enough to guide implementation, but avoid a brittle full transcript unless the user requests transcript fidelity.
+
 ## Validation
 
 Validate the skill before finishing:
@@ -139,7 +149,8 @@ Validate the skill before finishing:
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long detail has been moved out of the workflow into dedicated sections or reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the skill functionality.
-8. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
+8. If the skill includes use-case or chat-turn examples, confirm AI response examples show only visible response content and do not expose hidden reasoning or thinking process unless the user explicitly requested that.
+9. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
 
 Report any validation failures and fix them before returning the summary.
 

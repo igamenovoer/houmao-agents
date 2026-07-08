@@ -29,6 +29,7 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - Multiple-choice steps let the agent choose the option that fits the user's task; they do not hardcode one option without evidence.
 - Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subcommands, and user request.
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
+- Skill-based use cases and chat-turn examples show the visible user prompt or user action and the expected final AI response shape; they do not include hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or thinking process unless the user explicitly asks for that process to be documented.
 
 ## Subcommand Structure Checks
 
@@ -77,6 +78,7 @@ When `create` or `format` edits a skill, task-specific detail is welcome but mus
 - If the skill has multiple modes, subcommands, or variants, create `references/<subcommand>.md` detail pages when the routines have their own executable workflows, then link them from the workflow or subcommand table.
 - If the skill is a collection of peer routines, keep one plain `## Subcommands` table. If the skill is a complex procedure, use the three-type split from **Subcommand Structure Checks**.
 - Preserve all domain-specific content: examples, guardrails, success criteria, and output templates. Only the structure should change, not the substance.
+- When examples expose hidden reasoning or thinking process, revise them into observable response contracts: decisions, commands, diagnostics, files, validation, or next-step guidance.
 
 The goal is a skill that is both well-formatted and rich enough to execute the user's task correctly.
 
@@ -113,3 +115,4 @@ After validation, inspect changed files for:
 - workflows without numbered steps,
 - workflows without a freeform fallback,
 - accidental changes to trigger or output semantics.
+- AI response examples that expose hidden reasoning or thinking process without an explicit user request.
