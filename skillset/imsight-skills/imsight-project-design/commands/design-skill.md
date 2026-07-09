@@ -1,10 +1,8 @@
 # Design Skill
 
-Use this reference when `design-interface` detects that the feature being designed is an agent skill, AI assistant skill, or agent-facing instruction workflow. It generates a `design-overview.md` document inside the project-design feature directory without routing to an external skill.
-
 ## Workflow
 
-When this reference is loaded, execute the following steps in order.
+When this subcommand is invoked, execute the following steps in order.
 
 1. **Confirm the task and capture intent**. See **Intent Capture**.
 2. **Classify the skill type** based on what it must do. See **Skill Type**.
@@ -21,7 +19,7 @@ If the user's task does not map cleanly to these steps, make reasonable assumpti
 
 Start by understanding what the user wants the proposed skill to do. If the current conversation already contains a workflow the user wants to capture, extract answers from the conversation history first: the tools used, the sequence of steps, corrections the user made, and input/output formats observed.
 
-Resolve these questions before drafting:
+If the user did not already provide the following, ask before drafting:
 
 1. What should this skill enable the agent to do?
 2. When should this skill be invoked? (user phrases or contexts)
@@ -94,10 +92,9 @@ For discipline-enforcing skills, also include:
 
 ## Output Contract
 
-By default, this reference writes one Markdown document named `design-overview.md` inside the project-design feature directory. Resolve the output directory in this order:
+By default, this subcommand writes one Markdown document named `design-overview.md` inside the already-resolved project-design feature directory. The feature directory is resolved by the entry workflow before this subcommand runs; do not re-resolve it.
 
-1. Use the file path explicitly provided by the user. If the user provides a directory, write `<provided-dir>/design-overview.md`.
-2. Otherwise, use the resolved project-design feature directory and write `<feature-dir>/design/<slug>/design-overview.md`, where `<slug>` is derived from the proposed skill name and contains no more than six words.
+Write the design overview to `<feature-dir>/design/<slug>/design-overview.md`, where `<slug>` is derived from the proposed skill name and contains no more than six words.
 
 Derive `<slug>` from the proposed skill `name` by taking up to the first six meaningful words, lowercasing, and joining with hyphens. If the skill name is shorter than six words, use the full name.
 
@@ -318,7 +315,7 @@ Validate the design document before writing the output file:
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long procedural detail has been moved out of the workflow into dedicated sections or reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the proposed skill functionality.
-8. Confirm the output location is inside the project-design feature directory.
+8. Confirm the output location is inside the already-resolved project-design feature directory.
 9. Confirm the design document does not propose writing actual skill files.
 10. If the design includes user/AI chat examples, confirm they include the example-content warning.
 
