@@ -6,6 +6,8 @@ Use `any-open-question` when the user asks whether given material has unresolved
 
 When `any-open-question` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
 
+**Critical guard**: The open-question map is a report, not a questionnaire. After reporting it, route to the highest-priority matching mode automatically, or ask exactly one routing question if the route is unclear. Never ask the user to answer all listed questions at once.
+
 1. **Collect the material to inspect**. Use the user's prompt, named files, current OpenSpec change artifacts, prior exploration artifacts, and nearby repository evidence. See **Input Material**.
 2. **Find candidate open questions**. Scan for explicit questions, TODOs, placeholders, contradictions, missing acceptance criteria, undefined terms, and unstated choices. See **Open Question Scan**.
 3. **Classify and prioritize**. Assign each material question a route type and priority. See **Route Classification**.
@@ -60,6 +62,23 @@ Before routing, report a compact open-question map:
 | Priority | Open Question | Evidence | Recommended Route |
 | --- | --- | --- | --- |
 | Blocker | ... | `path:line` | `design-choice` |
+
+This map is for visibility only. Do not present it as a list of questions for the user to answer in this message. After the map, either route automatically to the highest-priority mode or ask exactly one routing question.
+
+**Incorrect follow-up**:
+
+```
+Please answer these questions:
+1. Should the feature be Project-scope or Topic-scope?
+2. What validation rules apply?
+3. ...
+```
+
+**Correct follow-up**:
+
+```
+The highest-priority blocker is a scope decision, so I will enter `design-choice` mode to resolve it. (Or, if the route is unclear: "Should we resolve the scope question first, or the terminology conflict?")
+```
 
 If no material open questions are found, say so, list the evidence inspected, and stop with a suggested next action. Do not invent questions to force a route.
 

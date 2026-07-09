@@ -6,8 +6,10 @@ Use `design-choice` when the user's prompt is about a design decision: a feature
 
 When `design-choice` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
 
+**Critical guard**: Ask exactly one question per message. Never list multiple questions in the same response. If several ambiguities exist, ask the single highest-impact question first and wait for the answer before generating the next one.
+
 1. **Perform a Pre-Exploration Scan**. Gather repo evidence about similar design decisions, behavior surfaces, product material, and domain memory. See **Pre-Exploration Scan**.
-2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**.
+2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**. This map is internal; do not output it as a list of questions.
 3. **Enter the adaptive questioning loop**. Prepare to ask up to 5 questions, generating each one from the current coverage map. See **Question Constraints**.
 4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
 5. **After each answer, integrate**. Update choice notes, write ADRs for hard decisions, and update the design-choice doc. See **Integration After Each Answer**.
@@ -37,7 +39,7 @@ Cite file paths and line numbers when reporting evidence.
 
 ## Coverage Scan
 
-Perform a structured ambiguity & coverage scan across this taxonomy. For each category, mark status: **Clear** / **Partial** / **Missing**. Produce an internal coverage map (do not output the raw map unless no questions will be asked).
+Perform a structured ambiguity & coverage scan across this taxonomy. For each category, mark status: **Clear** / **Partial** / **Missing**. Produce an internal coverage map. Do not output the raw map to the user unless no questions will be asked. If questions remain, output only the first question with its proposed option.
 
 | Category | What to Check |
 | --- | --- |
@@ -77,6 +79,36 @@ For each category with **Partial** or **Missing** status, add a candidate questi
 ## Sequential Questioning Loop
 
 Present **exactly one question at a time**.
+
+### Correct and Incorrect Response Shapes
+
+**Incorrect** — listing all questions at once:
+
+```
+Here are the open design questions:
+1. Should the feature be Project-scope or Topic-scope?
+2. What validation rules apply?
+3. Should we store state in the manifest or a separate file?
+4. ...
+```
+
+This is wrong because it forces the user to answer everything at once, ignores dependencies between answers, and provides no proposed option or trade-offs.
+
+**Correct** — one question with a proposed option:
+
+```
+**Proposed:** Option A — Project-scope default with optional topic override.
+
+**Implication:** If we choose this, the skill can assume Project scope unless the user passes `--topic`, which simplifies the happy path but requires explicit narrowing for per-topic behavior.
+
+| Option | Description | Pros/Cons |
+| --- | --- | --- |
+| A | Project-scope default, topic override | Pros: simpler common case. Cons: topic users must remember to narrow. |
+| B | Topic-scope default | Pros: safer for multi-topic projects. Cons: more verbose for project-wide behavior. |
+| Short | Provide a different answer | — |
+
+You can reply with the option letter (e.g., "A"), accept the proposal by saying "yes" or "proposed", or provide your own answer.
+```
 
 ### For Multiple-Choice Questions
 
