@@ -54,9 +54,9 @@ For complex-procedure skills, put procedural subcommands in user-facing workflow
 
 Override the multi-subcommand default only when the task clearly maps to a single technique or pattern with no meaningful subcommands. Document the override reason in the design overview.
 
-## Authoring the Proposed SKILL.md
+## Authoring the Proposed Skill
 
-Draft the proposed `SKILL.md` content inside the design document. Follow the format rules in `references/create.md`:
+Define the proposed skill's frontmatter and core sections. Do not embed a full `SKILL.md` draft inside the design document; instead, capture the skill shape concisely and list subcommands in `## Subcommands Included`. For detailed skill-format rules, see `references/create.md`.
 
 ### Required Frontmatter
 
@@ -75,14 +75,15 @@ Rules for the frontmatter:
 - Write in third person.
 - Include keywords agents would search for: error messages, symptoms, tools, library names.
 
-### Required Sections
+### Core Sections to Define
 
-1. **## Overview** — core principle in 1-2 sentences.
-2. **## When to Use** — symptoms and contexts that trigger this skill. Include when NOT to use.
-3. **## Workflow** or **## Core Pattern** — the technique, pattern, or rule the agent must follow.
-4. **## Common Mistakes** — what goes wrong and how to fix it.
+1. **Overview** — core principle in 1-2 sentences.
+2. **When to Use** — symptoms and contexts that trigger this skill. Include when NOT to use.
+3. **Workflow** or **Core Pattern** — the technique, pattern, or rule the agent must follow.
+4. **Subcommands Included** — list of subcommands derived from **Subcommand Structure**.
+5. **Common Mistakes** — what goes wrong and how to fix it.
 
-When the proposed skill has subcommands, apply **Subcommand Structure** before writing the `## Subcommands` section.
+When the proposed skill has subcommands, apply **Subcommand Structure** before writing `## Subcommands Included`.
 
 For discipline-enforcing skills, also include:
 
@@ -129,46 +130,39 @@ The key orchestration rule is: <one sentence describing who owns routing, eviden
 - **<Artifact or Evidence Name>**: <One-sentence definition, including path or owner when relevant.>
 - **<External Actor or Skill>**: <One-sentence definition of its role in this process.>
 
-## Draft SKILL.md
+## Subcommands Included
 
-```yaml
----
-name: <skill-name>
-description: Use when <specific triggering conditions and symptoms>
----
+List every subcommand the proposed skill exposes. Use the structure chosen in **Subcommand Structure**.
 
-# <Readable Skill Name>
+For a **collection-of-routines** flavor, write one table:
 
-## Overview
-
-<core principle in 1-2 sentences>
-
-## When to Use
-
-<symptoms and contexts that trigger this skill>
-
-## Workflow
-
-When this skill is invoked, execute the following steps in order.
-
-1. **<Step name>**. See **<Section>**.
-2. **<Step name>**. See **<Section>**.
-3. **<Step name>**.
-
-If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan from the subcommands and constraints in this skill, then execute the plan.
-
-## Subcommands
-
-| Subcommand | Use For | Load |
+| Subcommand | Use For | Load / Detail |
 | --- | --- | --- |
 | `help` | Explain this skill and list available subcommands | This entrypoint |
-| `<subcommand>` | <purpose> | `<references/file.md>` |
+| `<subcommand>` | <purpose> | `<references/file.md>` or inline workflow |
 
-## Common Mistakes
+For a **complex-procedure** flavor, split into subsections:
 
-- <mistake and fix>
-- <mistake and fix>
-```
+### Procedural Subcommands
+
+| Subcommand | Use For | Load / Detail |
+| --- | --- | --- |
+| `<subcommand>` | <purpose> | `<references/file.md>` or inline workflow |
+
+### Helper Subcommands
+
+| Subcommand | Use For | Load / Detail |
+| --- | --- | --- |
+| `<subcommand>` | <purpose> | `<references/file.md>` or inline workflow |
+
+If no helper subcommands are exposed, write `No helper subcommands are currently exposed.` instead of a table.
+
+### Misc Subcommands
+
+| Subcommand | Use For | Load / Detail |
+| --- | --- | --- |
+| `help` | Explain this skill and list available subcommands | This entrypoint |
+| `<shortcut>` | <purpose> | Inline or delegated to a procedural subcommand |
 
 ## High Level Process
 
@@ -320,9 +314,9 @@ Include a table that lists every file the proposed skill would contain. For each
 
 Define the terms a reader must remember. Include skill-owned terms such as subcommands, modes, artifact names, evidence names, and external actors. Keep each definition to one sentence.
 
-### Draft SKILL.md
+### Subcommands Included
 
-Include a complete draft of the proposed `SKILL.md` content. Follow the rules in **Authoring the Proposed SKILL.md**.
+List every subcommand the proposed skill exposes, grouped by flavor (collection-of-routines or complex-procedure). For each subcommand, give its purpose and the reference page or inline workflow that implements it. Do not embed a full `SKILL.md` draft here.
 
 ### High Level Process
 
@@ -374,13 +368,13 @@ Add a visible warning near the examples stating that the user/AI chat content is
 
 Validate the design document before writing the output file:
 
-1. Confirm the proposed `SKILL.md` frontmatter has valid YAML with `name` and `description`.
+1. Confirm the proposed skill frontmatter has valid YAML with `name` and `description`.
 2. Confirm `name` uses letters, numbers, and hyphens only.
 3. Confirm the description starts with "Use when...", is in third person, and does not summarize the workflow.
-4. Confirm the draft includes overview, when-to-use, and workflow/core-pattern sections.
+4. Confirm the design document includes overview, when-to-use, workflow/core-pattern, and subcommands-included sections.
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long procedural detail has been moved out of the workflow into dedicated sections or reference pages.
-7. If subcommands exist, confirm the selected subcommand structure flavor matches the proposed skill functionality.
+7. If subcommands exist, confirm the selected subcommand structure flavor matches the proposed skill functionality and the subcommands are listed in the correct table(s).
 8. Confirm the output location was resolved and documented correctly.
 9. Confirm the design document does not propose writing actual skill files.
 10. If the design includes user/AI chat examples, confirm they include the example-content warning.
