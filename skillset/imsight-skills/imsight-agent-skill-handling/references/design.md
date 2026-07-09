@@ -9,7 +9,7 @@ Use this reference to generate a self-contained design overview document for a p
 3. **Choose the subcommand structure flavor**. See **Subcommand Structure**. Default to a multi-subcommand skill with a `help` subcommand unless the task clearly maps to a single technique or pattern.
 4. **Propose a name and description** that conform to the Imsight skill format. See **Authoring the Proposed SKILL.md**.
 5. **Resolve the output location** using **Output Contract**.
-6. **Draft the design overview document** using **Design Document Template**.
+6. **Draft the design overview document** by reading and adapting **Design Document Template**.
 7. **Validate the design document** using **Validation**.
 8. **Write the output file** and return a concise chat summary with the file path, proposed skill name, and next recommended step.
 
@@ -42,21 +42,32 @@ Choose the type that best matches the skill's purpose. The type influences how t
 
 Default to a **multi-subcommand** skill that includes a `help` subcommand. This shape is general enough to handle procedural workflows, collections of routines, and mixed skills.
 
-Use the **collection-of-routines** flavor when subcommands are peer routines, tools, or functions and their calling order is absent, flexible, or task-specific. Write one plain `## Subcommands` section with a table.
+Use the **collection-of-routines** flavor when subcommands are peer routines, tools, or functions and their calling order is absent, flexible, or task-specific. Under `## Subcommands Design`, write one plain table.
 
-Use the **complex-procedure** flavor when the skill describes a multi-step procedure, each step may have its own sub-workflow or reference page, and some steps depend on artifacts produced by earlier steps. Split `## Subcommands` into:
+Use the **complex-procedure** flavor when the skill describes a multi-step procedure, each step may have its own sub-workflow or reference page, and some steps depend on artifacts produced by earlier steps. Under `## Subcommands Design`, split subcommands into:
 
-- `### Procedural Subcommands` for user-facing workflow steps.
 - `### Helper Subcommands` for lower-level implementation commands called by procedural subcommands.
+- `### Procedural Subcommands` for user-facing workflow steps.
 - `### Misc Subcommands` for `help` and public shortcuts such as `fast-forward` or `step-by-step`.
 
-For complex-procedure skills, put procedural subcommands in user-facing workflow order, keep helper subcommands out of help output unless promoted, and say `No helper subcommands are currently exposed.` when the helper group is empty.
+For complex-procedure skills, put procedural subcommands in user-facing workflow order within their table, keep helper subcommands out of help output unless promoted, and say `No helper subcommands are currently exposed.` when the helper group is empty.
 
 Override the multi-subcommand default only when the task clearly maps to a single technique or pattern with no meaningful subcommands. Document the override reason in the design overview.
 
+### Subcommand Design Guide
+
+Group CRUD operations that target the same domain object into one subcommand with action arguments. Prefer `manage-toolbox` over separate `list-toolboxes`, `show-toolbox`, `enable-toolbox`, `disable-toolbox`, and `uninstall-toolbox` subcommands unless the actions have different audiences, safety gates, or workflow dependencies.
+
+Use separate subcommands for different user goals, not for every verb. A smaller subcommand surface is easier to route, document, test, and explain.
+
+Example:
+
+- Do: `manage-toolbox` with actions such as `list`, `show`, `enable`, `disable`, `update-source`, and `uninstall`.
+- Do not: separate public subcommands named `list-toolboxes`, `show-toolbox`, `enable-toolbox`, `disable-toolbox`, `update-toolbox-source`, and `uninstall-toolbox`.
+
 ## Authoring the Proposed Skill
 
-Define the proposed skill's frontmatter and core sections. Do not embed a full `SKILL.md` draft inside the design document; instead, capture the skill shape concisely and list subcommands in `## Subcommands Included`. For detailed skill-format rules, see `references/create.md`.
+Define the proposed skill's frontmatter and core sections. Do not embed a full `SKILL.md` draft inside the design document; instead, capture the skill shape concisely and list subcommands in `## Subcommands Design`. For detailed skill-format rules, see `references/create.md`.
 
 ### Required Frontmatter
 
@@ -75,15 +86,15 @@ Rules for the frontmatter:
 - Write in third person.
 - Include keywords agents would search for: error messages, symptoms, tools, library names.
 
-### Core Sections to Define
+### Design Content to Capture
 
-1. **Overview** — core principle in 1-2 sentences.
-2. **When to Use** — symptoms and contexts that trigger this skill. Include when NOT to use.
-3. **Workflow** or **Core Pattern** — the technique, pattern, or rule the agent must follow.
-4. **Subcommands Included** — list of subcommands derived from **Subcommand Structure**.
-5. **Common Mistakes** — what goes wrong and how to fix it.
+1. **Purpose** — why the skill exists and who owns routing, blockers, and final output.
+2. **Concepts** — small user-facing vocabulary needed to read the workflow and examples.
+3. **Core Workflow** — concise numbered steps plus a freeform fallback.
+4. **Subcommands Design** — subcommands derived from **Subcommand Structure**.
+5. **External Calls** — services or skills the proposed skill depends on instead of reimplementing.
 
-When the proposed skill has subcommands, apply **Subcommand Structure** before writing `## Subcommands Included`.
+When the proposed skill has subcommands, apply **Subcommand Structure** before writing `## Subcommands Design`.
 
 For discipline-enforcing skills, also include:
 
@@ -105,264 +116,18 @@ Do not write any other skill files. Do not create `SKILL.md`, `agents/openai.yam
 
 ## Design Document Template
 
-Use this template as the default scaffold for `design-overview.md`. Replace placeholders with concrete content from the proposed skill design, remove sections that do not apply, and keep the document self-contained.
+Read `references/design-output-template.md` and use it as the default scaffold for `design-overview.md`. Copy the template, replace placeholders with concrete content from the proposed skill design, remove sections that do not apply, and keep the document self-contained.
 
-````markdown
-# <Readable Skill Name> Design Overview
+Keep the overview concise. Prefer the sections in the template over older heavy sections such as `Proposed File Inventory`, `Formal Skill Process`, `Skill Process Explanation`, or `Evidence Handoffs`.
 
-## Purpose
+When adapting the template:
 
-This note describes a proposed skill, `<proposed-skill-id>`, before it is created. It captures the intended triggering conditions, workflow, subcommands, process model, and file layout so a designer can review the shape of the skill without reading generated skill files.
-
-The key orchestration rule is: <one sentence describing who owns routing, evidence, blockers, and final output>.
-
-## Proposed File Inventory
-
-| Relative Path | Category | Purpose |
-| --- | --- | --- |
-| `<skill-name>/SKILL.md` | Entrypoint | <One-sentence explanation of the skill entrypoint.> |
-| `<skill-name>/agents/openai.yaml` | Agent config | <One-sentence explanation of the agent configuration, if needed.> |
-| `<skill-name>/references/<file>.md` | Reference | <One-sentence explanation of the reference file.> |
-
-## Concepts
-
-- **<Concept Name>**: <One-sentence definition needed to understand this process.>
-- **<Artifact or Evidence Name>**: <One-sentence definition, including path or owner when relevant.>
-- **<External Actor or Skill>**: <One-sentence definition of its role in this process.>
-
-## Subcommands Included
-
-List every subcommand the proposed skill exposes. Use the structure chosen in **Subcommand Structure**.
-
-For a **collection-of-routines** flavor, write one table:
-
-| Subcommand | Use For | Load / Detail |
-| --- | --- | --- |
-| `help` | Explain this skill and list available subcommands | This entrypoint |
-| `<subcommand>` | <purpose> | `<references/file.md>` or inline workflow |
-
-For a **complex-procedure** flavor, split into subsections:
-
-### Procedural Subcommands
-
-| Subcommand | Use For | Load / Detail |
-| --- | --- | --- |
-| `<subcommand>` | <purpose> | `<references/file.md>` or inline workflow |
-
-### Helper Subcommands
-
-| Subcommand | Use For | Load / Detail |
-| --- | --- | --- |
-| `<subcommand>` | <purpose> | `<references/file.md>` or inline workflow |
-
-If no helper subcommands are exposed, write `No helper subcommands are currently exposed.` instead of a table.
-
-### Misc Subcommands
-
-| Subcommand | Use For | Load / Detail |
-| --- | --- | --- |
-| `help` | Explain this skill and list available subcommands | This entrypoint |
-| `<shortcut>` | <purpose> | Inline or delegated to a procedural subcommand |
-
-## High Level Process
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor U as User
-    participant S as <proposed-skill-id>
-    participant R as <subcommand-or-stage>
-    participant O as <output-or-external-skill>
-
-    U->>S: Ask the skill to <natural-language request>.
-    S->>R: <Natural-language call sentence with the requested work.>
-    R-->>S: <Natural-language return sentence with evidence or blockers.>
-    S->>O: <Natural-language call sentence when another skill or stage is invoked.>
-    O-->>S: <Natural-language return sentence with durable output or readiness evidence.>
-    S-->>U: Return <final response or output path>.
-```
-
-## Skill Call Graph
-
-This graph shows top-level skill and public subcommand calls used by this process. Route nodes name the condition or public route that creates the edge.
-
-```mermaid
-flowchart TD
-    classDef skill fill:#eef6ff,stroke:#2563eb,stroke-width:1.5px,color:#111827
-    classDef route fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
-
-    Entry["<target><br/>skill"]:::skill
-    SubA["<public><br/>subcommand>"]:::skill
-    SubB["<external><br/>skill>"]:::skill
-
-    S1["S1<br/><route name>"]:::route
-    S2["S2<br/><route name>"]:::route
-
-    Entry --> S1 --> SubA
-    Entry --> S2 --> SubB
-```
-
-| ID | Caller | Route | Callee | Calling condition |
-| --- | --- | --- | --- | --- |
-| S1 | `<caller>` | `<route>` | `<callee>` | <Natural-language condition that causes this call.> |
-| S2 | `<caller>` | `<route>` | `<callee>` | <Natural-language condition that causes this call.> |
-
-## Formal Skill Process
-
-```python
-@skill(
-    name="<proposed-skill-id>",
-    description="<plain description of the proposed skill process>",
-)
-def run_<skill_name>(user_request: str, target: Path | None = None) -> StageResult:
-    # Entry point purpose: <why this skill owns the overall process>.
-    # Example input: user_request="<example user request>"
-    # Example output: StageResult(status="ready", evidence=["<final evidence>"])
-
-    route = agent_select(
-        ["<route-a>", "<route-b>", "<route-c>"],
-        criterion="<how the skill chooses the narrowest route>",
-        context={"user_request": user_request, "target": target},
-    )
-
-    first_stage = agent_do(
-        "<Natural-language work owned by the skill before delegation.>",
-        context={"route": route, "target": target},
-        returns=StageResult,
-    )
-    if first_stage.status in {"blocked", "failed"}:
-        # Condition matched when <why the process must stop here>.
-        return first_stage
-
-    if route == "<route-a>":
-        # Condition matched when <route-a applies>.
-        return agent_do(
-            "<Natural-language finalization for route-a.>",
-            context={"first_stage": first_stage},
-            returns=StageResult,
-        )
-
-    delegated = agent_invoke(
-        "<callee-skill-or-subcommand>",
-        task="<Natural-language task sent to the callee.>",
-        context={"first_stage": first_stage},
-        returns=StageResult,
-        params={
-            "expect": ["<expected evidence>", "<expected artifact>"],
-            "must_not_call": ["<forbidden callee when relevant>"],
-        },
-    )
-    if delegated.status in {"blocked", "failed"}:
-        # Condition matched when <delegated stage reports blockers or failure>.
-        return delegated
-
-    return agent_do(
-        "<Natural-language final validation or summary task.>",
-        context={"first_stage": first_stage, "delegated": delegated},
-        returns=StageResult,
-    )
-```
-
-## Skill Process Explanation
-
-The formal process is easier to read if each stage is understood as a handoff of responsibility, not just a sequence of calls. `<proposed-skill-id>` stays responsible for <routing/finalization/output ownership>.
-
-- **<Stage name>.** <Explain what this stage receives, what it decides or produces, and why this boundary matters.>
-- **<Stage name>.** <Explain the next handoff, including typical evidence and blockers.>
-- **<Stage name>.** <Explain final validation, durable output, or user-facing response.>
-
-## Evidence Handoffs
-
-| Producing skill or stage | Evidence | Consuming stage |
-| --- | --- | --- |
-| `<producer>` | <Evidence or artifact that affects later routing or output.> | `<consumer>` |
-| `<producer>` | <Evidence or artifact that affects later routing or output.> | `<consumer>` |
-
-## Example Prompt And Expected AI Response
-
-> **Warning:** The user/AI chat content below is for example purposes only. Implementations should learn its style, intent, and semantics rather than hardcoding the example content.
-
-These examples show only the visible user prompt and the AI response content that should be returned to the user. Do not include hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or thinking process in the AI response unless the user explicitly asks the skill to document that process.
-
-### Event 001 - <Short Scenario Title>
-
-> Time: `<example-or-placeholder-time>` · Session: `<example-session-or-context>`
-
-User Prompt:
-
-> <realistic user invocation>
-
-AI:
-
-> <expected response shape or illustrative response>
-
-## Open Questions
-
-- <Assumption or unresolved decision that the designer must confirm before implementation.>
-- <Assumption or unresolved decision that the designer must confirm before implementation.>
-````
-
-### Purpose
-
-State what the proposed skill coordinates, which skill files or subcommands the design aligns, and the one most important orchestration rule.
-
-### Proposed File Inventory
-
-Include a table that lists every file the proposed skill would contain. For each file, give its path relative to the skill folder, a category such as entrypoint, reference, agent config, subcommand, script, asset, or other, and a one-sentence explanation of its purpose.
-
-### Concepts
-
-Define the terms a reader must remember. Include skill-owned terms such as subcommands, modes, artifact names, evidence names, and external actors. Keep each definition to one sentence.
-
-### Subcommands Included
-
-List every subcommand the proposed skill exposes, grouped by flavor (collection-of-routines or complex-procedure). For each subcommand, give its purpose and the reference page or inline workflow that implements it. Do not embed a full `SKILL.md` draft here.
-
-### High Level Process
-
-Use one Mermaid `sequenceDiagram` for the reader-facing process. Keep calls and returns as natural-language single sentences. Follow `references/mermaid-style.md` for diagram syntax and styling.
-
-### Skill Call Graph
-
-Use one Mermaid `flowchart TD` call graph. Include top-level skills and public subcommands that create meaningful call paths. Use route nodes when they explain why one skill or subcommand calls another. Follow `references/mermaid-style.md` for graph syntax and styling.
-
-After the graph, include a table:
-
-| ID | Caller | Route | Callee | Calling condition |
-| --- | --- | --- | --- | --- |
-
-Do not include files that are merely read for context as callgraph nodes. Include reference pages only when they are public subcommands, modes, workflow pages, or runtime routing targets.
-
-### Formal Skill Process
-
-Write Python-like pseudocode using the Agent-Primitive Python style in `references/skill-pseudo-lang.md` when it clarifies orchestration. Use ordinary Python for exact checks and `agent_*` calls for semantic work:
-
-- `@skill(...)` for the target skill entrypoint.
-- `agent_select(...)` for semantic route choice.
-- `agent_do(...)` for local natural-language work.
-- `agent_check(...)` for semantic gates.
-- `agent_invoke(...)` for explicit calls to another skill or public subcommand.
-
-Add comments only where they explain purpose, example input or output, or branch matching conditions. Put branch comments directly under the `if` or `else` statement and start them with `Condition matched when ...`.
-
-### Skill Process Explanation
-
-Explain the formal process as a skimmable Markdown list. Each bullet should help a reader understand a handoff of responsibility, not merely restate the pseudocode.
-
-### Evidence Handoffs
-
-Use a table:
-
-| Producing skill or stage | Evidence | Consuming stage |
-| --- | --- | --- |
-
-Include only evidence that affects later routing, validation, finalization, or durable output. If the proposed skill has no meaningful evidence handoffs, say so directly.
-
-### Example Prompt And Expected AI Response
-
-When the proposed skill is an agent skill, AI assistant skill, or agent-facing instruction workflow, include at least one example user prompt and the expected example AI response shape. Format examples as compact event records.
-
-Add a visible warning near the examples stating that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
+- Keep `## Concepts` to the small user-facing vocabulary needed to read the workflow and examples.
+- Use `## Subcommands Design` for exposed workflows and lower-level primitives.
+- Use `## Core Workflow Diagram` for the normal request-to-result sequence.
+- Follow `references/mermaid-style.md` for Mermaid syntax and styling.
+- Use `## Calls To External Skills` only for dependencies outside the proposed skill, not internal helper subcommands or files read for context.
+- Include at least one example prompt and expected visible AI response shape when the proposed skill is agent-facing.
 
 ## Validation
 
@@ -371,13 +136,14 @@ Validate the design document before writing the output file:
 1. Confirm the proposed skill frontmatter has valid YAML with `name` and `description`.
 2. Confirm `name` uses letters, numbers, and hyphens only.
 3. Confirm the description starts with "Use when...", is in third person, and does not summarize the workflow.
-4. Confirm the design document includes overview, when-to-use, workflow/core-pattern, and subcommands-included sections.
-5. Confirm the workflow is a concise numbered list with a freeform fallback.
-6. Confirm long procedural detail has been moved out of the workflow into dedicated sections or reference pages.
+4. Confirm the design document includes `Purpose`, `Concepts`, `Core Workflow`, `Subcommands Design`, `Core Workflow Diagram`, `Calls To External Skills`, examples, and open questions.
+5. Confirm the core workflow is a concise numbered list with a freeform fallback.
+6. Confirm long procedural detail has been moved out of the workflow into dedicated sections or future reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the proposed skill functionality and the subcommands are listed in the correct table(s).
-8. Confirm the output location was resolved and documented correctly.
-9. Confirm the design document does not propose writing actual skill files.
-10. If the design includes user/AI chat examples, confirm they include the example-content warning.
+8. Confirm `Calls To External Skills` lists only external dependencies, not internal helper subcommands or context files.
+9. Confirm the output location was resolved and documented correctly according to **Output Contract**.
+10. Confirm the design document does not propose writing actual skill files.
+11. If the design includes user/AI chat examples, confirm they include the example-content warning.
 
 Report any validation failures and fix them before writing the output file.
 
