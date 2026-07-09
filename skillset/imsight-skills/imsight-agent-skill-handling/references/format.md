@@ -29,7 +29,7 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - Multiple-choice steps let the agent choose the option that fits the user's task; they do not hardcode one option without evidence.
 - Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subcommands, and user request.
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
-- Skill-based use cases and chat-turn examples show the visible user prompt or user action and the expected final AI response shape; they do not include hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or thinking process unless the user explicitly asks for that process to be documented.
+- Skill-based use cases and chat-turn examples show the visible user prompt or user action and the expected final AI response shape; they do not include hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or thinking process unless the user explicitly asks for that process to be documented. They also include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
 
 ## Subcommand Structure Checks
 
@@ -116,3 +116,4 @@ After validation, inspect changed files for:
 - workflows without a freeform fallback,
 - accidental changes to trigger or output semantics.
 - AI response examples that expose hidden reasoning or thinking process without an explicit user request.
+- AI response examples that omit the example-content warning when the skill includes user/AI chat examples.

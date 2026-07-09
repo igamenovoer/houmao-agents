@@ -137,6 +137,7 @@ When the user asks for a skill-based use case, or when a new skill includes use-
 - Do not show hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or a thinking process as part of the AI response unless the user explicitly asks the skill to document that process.
 - If process context matters, express it as observable actions or decisions, such as "I will inspect the manifest, then run validation," rather than internal thoughts.
 - Keep the example concrete enough to guide implementation, but avoid a brittle full transcript unless the user requests transcript fidelity.
+- Add a visible warning near the examples stating that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
 
 ## Validation
 
@@ -149,7 +150,7 @@ Validate the skill before finishing:
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long detail has been moved out of the workflow into dedicated sections or reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the skill functionality.
-8. If the skill includes use-case or chat-turn examples, confirm AI response examples show only visible response content and do not expose hidden reasoning or thinking process unless the user explicitly requested that.
+8. If the skill includes use-case or chat-turn examples, confirm AI response examples show only visible response content and do not expose hidden reasoning or thinking process unless the user explicitly requested that, and confirm the examples include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
 9. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
 
 Report any validation failures and fix them before returning the summary.
