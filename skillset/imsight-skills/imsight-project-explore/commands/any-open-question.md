@@ -6,12 +6,10 @@ Use `any-open-question` when the user asks whether given material has unresolved
 
 When `any-open-question` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
 
-**Critical guard**: The open-question map is a report, not a questionnaire. After reporting it, route to the highest-priority matching mode automatically, or ask exactly one routing question if the route is unclear. Never ask the user to answer all listed questions at once.
-
 1. **Collect the material to inspect**. Use the user's prompt, named files, current OpenSpec change artifacts, prior exploration artifacts, and nearby repository evidence. See **Input Material**.
 2. **Find candidate open questions**. Scan for explicit questions, TODOs, placeholders, contradictions, missing acceptance criteria, undefined terms, and unstated choices. See **Open Question Scan**.
 3. **Classify and prioritize**. Assign each material question a route type and priority. See **Route Classification**.
-4. **Report the open-question map**. Summarize material questions and the recommended route for each. See **Reporting Format**.
+4. **Report the open-question map**. Summarize material questions and the recommended route for each. See **Reporting Format** for the map format and the rule that it is a report, not a questionnaire.
 5. **Route to the next mode**. Enter the highest-priority matching mode, or ask one routing question only if the route cannot be inferred. See **Routing Rules**.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
@@ -83,6 +81,8 @@ The highest-priority blocker is a scope decision, so I will enter `design-choice
 If no material open questions are found, say so, list the evidence inspected, and stop with a suggested next action. Do not invent questions to force a route.
 
 ## Routing Rules
+
+The open-question map is a routing aid, not a questionnaire. Never ask the user to answer all listed questions at once.
 
 If the user explicitly requested a non-interactive audit only, do not enter another mode. Stop after the open-question map and recommended routes.
 

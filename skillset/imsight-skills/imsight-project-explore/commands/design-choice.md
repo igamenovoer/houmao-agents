@@ -6,12 +6,10 @@ Use `design-choice` when the user's prompt is about a design decision: a feature
 
 When `design-choice` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
 
-**Critical guard**: Ask exactly one question per message. Never list multiple questions in the same response. If several ambiguities exist, ask the single highest-impact question first and wait for the answer before generating the next one.
-
 1. **Perform a Pre-Exploration Scan**. Gather repo evidence about similar design decisions, behavior surfaces, product material, and domain memory. See **Pre-Exploration Scan**.
-2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**. This map is internal; do not output it as a list of questions.
+2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan** for the internal-map rule.
 3. **Enter the adaptive questioning loop**. Prepare to ask up to 5 questions, generating each one from the current coverage map. See **Question Constraints**.
-4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
+4. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for the one-question-per-message rule and response formats.
 5. **After each answer, integrate**. Update choice notes, write ADRs for hard decisions, and update the design-choice doc. See **Integration After Each Answer**.
 6. **When complete, produce a Completion Report**. Summarize the decision, resolved behavior, open questions, and next actions. See **Completion Report**.
 

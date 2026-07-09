@@ -6,13 +6,11 @@ Use `auto` as the default when the user does not explicitly request a focused mo
 
 When `auto` mode is selected, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
 
-**Critical guard**: Ask exactly one question per message. Never list multiple questions in the same response. If several ambiguities exist, ask the single highest-impact question first and wait for the answer before generating the next one.
-
 1. **Perform a Pre-Exploration Scan**. Spend ~2 minutes gathering evidence from the repo. See **Pre-Exploration Scan** for the ordered checklist.
-2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan**. This map is internal; do not output it as a list of questions.
+2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan** for the internal-map rule.
 3. **Choose the exploration type**. Based on the scan, select the most relevant mode or topic and state the routing choice to the user. This routing choice does not require user confirmation.
 4. **Enter the adaptive questioning loop**. Prepare to ask up to 5 questions, generating each one from the current coverage map. See **Question Constraints**.
-5. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for question formats and handling rules.
+5. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for the one-question-per-message rule and response formats.
 6. **After each answer, integrate**. Update the coverage map, decide whether another question is needed, generate the next single question from the updated map if so, and pivot to a focused mode if the answer reveals one is needed. See **Integration After Each Answer**.
 7. **When complete, produce a Completion Report**. Summarize what was explored, what remains open, and what to do next. See **Completion Report**.
 
