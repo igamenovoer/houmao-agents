@@ -96,7 +96,7 @@ By default, `design` writes one Markdown document named `design-overview.md`. Re
 
 1. Use the file path explicitly provided by the user. If the user provides a directory, write `<provided-dir>/design-overview.md`.
 2. Otherwise, use `IMSIGHT_SKILL_OUTPUT_DIR` when set, writing `<output-dir>/<slug>/design-overview.md` where `<slug>` is derived from the proposed skill name and contains no more than six words.
-3. Otherwise, write `<project-dir>/.agent-skill-handling/design/<slug>/design-overview.md`.
+3. Otherwise, write `<project-dir>/.imsight-arts/agent-skill-handling/design/<slug>/design-overview.md`.
 
 Derive `<slug>` from the proposed skill `name` by taking up to the first six meaningful words, lowercasing, and joining with hyphens. If the skill name is shorter than six words, use the full name.
 

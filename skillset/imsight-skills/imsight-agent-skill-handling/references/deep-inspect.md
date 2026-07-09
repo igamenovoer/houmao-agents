@@ -22,8 +22,7 @@ By default, `deep-inspect` writes one Markdown document. Resolve the output file
 
 1. Use the file path explicitly provided by the user.
 2. Otherwise, use `AGENT_SKILL_OUTPUT_DIR` when set, writing `<output-dir>/<target-skill-name>.md`.
-3. Otherwise, when the current project has `context/design/skill-process/`, write `context/design/skill-process/<target-skill-name>.md`.
-4. Otherwise, write `<project-dir>/.agent-skill-handling/deep-inspect/<target-skill-name>.md`.
+3. Otherwise, write `<project-dir>/.imsight-arts/agent-skill-handling/deep-inspect/<target-skill-name>.md`.
 
 Do not write a multi-file report set. Do not overwrite an unrelated design document unless the user explicitly names that path.
 

@@ -29,7 +29,7 @@ Resolve `<output-dir>` in this order:
 
 1. Use the output location explicitly provided by the user.
 2. Otherwise, use `AGENT_SKILL_OUTPUT_DIR` when set; relative values are resolved from the current project directory and absolute values are used as-is.
-3. Otherwise, use `<project-dir>/.agent-skill-handling/analysis/<target-skill-name>/`.
+3. Otherwise, use `<project-dir>/.imsight-arts/agent-skill-handling/analysis/<target-skill-name>/`.
 
 Write reports using these names:
 
