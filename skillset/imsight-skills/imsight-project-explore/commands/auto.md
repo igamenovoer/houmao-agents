@@ -9,10 +9,11 @@ When `auto` mode is selected, execute the following steps in order. Detailed rul
 1. **Perform a Pre-Exploration Scan**. Spend ~2 minutes gathering evidence from the repo. See **Pre-Exploration Scan** for the ordered checklist.
 2. **Run a Coverage Scan**. Mark each category as Clear / Partial / Missing. See **Coverage Scan** for the internal-map rule.
 3. **Choose the exploration type**. Based on the scan, select the most relevant mode or topic and state the routing choice to the user. This routing choice does not require user confirmation.
-4. **Enter the adaptive questioning loop**. Prepare to ask up to 5 questions, generating each one from the current coverage map. See **Question Constraints**.
-5. **Execute the Sequential Questioning Loop**. Present exactly one question at a time. See **Sequential Questioning Loop** for the one-question-per-message rule and response formats.
-6. **After each answer, integrate**. Update the coverage map, decide whether another question is needed, generate the next single question from the updated map if so, and pivot to a focused mode if the answer reveals one is needed. See **Integration After Each Answer**.
-7. **When complete, produce a Completion Report**. Summarize what was explored, what remains open, and what to do next. See **Completion Report**.
+4. **Choose the questioning mode**. Inspect the user's prompt for batch-mode phrases such as "list all at once", "batch mode", "show all options", or "let me pick which ones to change". If any such phrase is present, set `mode = batch`; otherwise set `mode = sequential`. See **Batch Mode** for batch behavior and **Sequential Questioning Loop** for sequential behavior.
+5. **Generate or ask questions**. If `mode = sequential`, enter the adaptive questioning loop and generate one question at a time. If `mode = batch`, generate the full batch question set. Prepare up to 5 questions from the current coverage map. See **Question Constraints**.
+6. **Present questions**. If `mode = sequential`, execute the **Sequential Questioning Loop**. If `mode = batch`, present the **Batch Mode** list.
+7. **After each answer, integrate**. Update the coverage map, decide whether another question is needed, generate the next single question from the updated map if so, and pivot to a focused mode if the answer reveals one is needed. See **Integration After Each Answer**. For batch responses, see **Batch Response Integration**.
+8. **When complete, produce a Completion Report**. Summarize what was explored, what remains open, and what to do next. See **Completion Report**.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
 
@@ -59,6 +60,47 @@ Perform a structured scan across these categories. For each, mark status: **Clea
 - Only ask questions whose answers materially impact project scope, terminology, decision status, what to explore first within the selected type, or whether the request is actionable.
 - If more than 5 candidate questions remain, select the top 5 by (Impact × Uncertainty) heuristic.
 - Do not reveal future questions in advance. Because each question is generated after the previous answer is integrated, there is no fixed queue to reveal.
+
+## Batch Mode
+
+Use **Batch Mode** when the user explicitly asks to see all questions at once with recommended options. Batch mode is opt-in; if the user does not use a batch-mode phrase, use the **Sequential Questioning Loop** instead.
+
+### Generating the Batch Question Set
+
+1. Run the same coverage scan and question selection logic used for sequential mode.
+2. Select up to 5 questions using the same (Impact × Uncertainty) heuristic.
+3. For each selected question, prepare:
+   - A concise **Motivation**.
+   - A concrete **Example** scenario.
+   - A **Proposed** option.
+   - A short **Pros/Cons** table with 2–5 mutually exclusive options.
+4. Number each question (Q1, Q2, ...) so the user can refer to them when overriding.
+
+### Batch Response Format
+
+Present all selected questions in one message. Keep each question self-contained. After the last question, add an instruction such as:
+
+```
+Reply with the numbers you want to override (e.g., "Q1 = B, Q3 = D"), or say
+"accept all" / "yes" to accept every proposed option. If an earlier override
+changes a downstream proposal, I will flag it and ask for confirmation.
+```
+
+### Batch Mode Example
+
+```
+Q1 — Scope default
+**Proposed:** Option A — Project-scope default with optional topic override.
+**Implication:** Simplifies the happy path but requires explicit narrowing for per-topic behavior.
+| Option | Description | Pros/Cons |
+| --- | --- | --- |
+| A | Project-scope default, topic override | Pros: simpler common case. Cons: topic users must remember to narrow. |
+| B | Topic-scope default | Pros: safer for multi-topic projects. Cons: more verbose for project-wide behavior. |
+| Short | Provide a different answer | — |
+
+Q2 — Validation source
+...
+```
 
 ## Sequential Questioning Loop
 
@@ -185,6 +227,17 @@ Do not use "no valid questions exist" as a reason to skip the first user interac
 - Do not write to disk in `auto` unless the user explicitly requests a written result. If they do, write it to `<output-dir>/design-choice/design-<what>.md`, `<output-dir>/domain-concepts/dc-<what>.md`, `<output-dir>/designs/YYYY-MM-DD-<topic>-design.md`, or `<output-dir>/use-cases/uc-<NN>-<what>.md` depending on the dominant concern, following the output directory discovery contract. If the target directory does not yet contain a `README.md`, create one as an index.
 - After writing any artifact, scan all other documents under `<output-dir>/` for references to the same concepts or decisions. Update affected documents to restore consistency.
 - When working with an OpenSpec change, also scan the OpenSpec change artifacts for contradictions or extensions, and update or flag them.
+
+## Batch Response Integration
+
+When the user replies to a batch question set:
+
+1. **Parse overrides**. Accept answers keyed by question number (e.g., "Q1 = B", "Q2 = short: ...") or a blanket "accept all" / "yes" / "proposed".
+2. **Apply overrides in order** (Q1, Q2, ...). For unmentioned questions, use the proposed default.
+3. **Re-evaluate downstream proposals**. If an early override changes a premise used by a later proposed option, flag the conflict and ask the user to confirm or revise the later option. Do not silently accept a now-invalid proposal.
+4. **Update the coverage map** with all resolved answers.
+5. **Decide whether follow-up questions are needed**. If an override reveals a new ambiguity, treat it as a new question (within the same 5-question cap if possible; otherwise summarize the new ambiguity in the Completion Report).
+6. **Write durable artifacts** only after all batch answers have been integrated and conflicts resolved.
 
 ## Completion Report
 

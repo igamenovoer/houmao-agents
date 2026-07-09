@@ -9,8 +9,9 @@ When `any-open-question` mode is selected, execute the following steps in order.
 1. **Collect the material to inspect**. Use the user's prompt, named files, current OpenSpec change artifacts, prior exploration artifacts, and nearby repository evidence. See **Input Material**.
 2. **Find candidate open questions**. Scan for explicit questions, TODOs, placeholders, contradictions, missing acceptance criteria, undefined terms, and unstated choices. See **Open Question Scan**.
 3. **Classify and prioritize**. Assign each material question a route type and priority. See **Route Classification**.
-4. **Report the open-question map**. Summarize material questions and the recommended route for each. See **Reporting Format** for the map format and the rule that it is a report, not a questionnaire.
-5. **Route to the next mode**. Enter the highest-priority matching mode, or ask one routing question only if the route cannot be inferred. See **Routing Rules**.
+4. **Choose the output mode**. Inspect the user's prompt for batch-mode phrases such as "list all at once", "batch mode", "show all options", or "let me pick which ones to change". If any such phrase is present, set `mode = batch`; otherwise set `mode = sequential`. See **Batch Mode** for batch behavior and **Routing Rules** for sequential behavior.
+5. **Report or expand questions**. If `mode = sequential`, report the open-question map. If `mode = batch`, expand every material question into a batch item. See **Reporting Format** and **Batch Mode**.
+6. **Route or integrate**. If `mode = sequential`, route to the next mode. If `mode = batch`, integrate the batch response. See **Routing Rules** and **Batch Response Integration**.
 
 If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan based on the constraints above and the user's specific goal, then execute the plan.
 
@@ -172,6 +173,58 @@ Format: Short answer. You can accept the proposal by saying "yes" or "proposed",
 - If ambiguous, ask for a quick disambiguation before routing.
 
 Once routed, do not continue resolving the remaining open-question list inside `any-open-question`. Let the selected mode ask its own 1-5 material questions, write any durable artifacts, and hand back if a later answer reveals a different mode is needed.
+
+## Batch Mode
+
+Use **Batch Mode** when the user explicitly asks to see all open questions at once with recommended options and routes, instead of routing into one focused mode immediately. Batch mode is opt-in; if the user does not use a batch-mode phrase, follow **Routing Rules** instead.
+
+### Generating the Batch Question Set
+
+1. Use the same classified and prioritized open-question map produced in step 3.
+2. Select up to 5 questions using the same prioritization heuristic (Impact × Uncertainty), preferring **Blocker** items first.
+3. For each selected question, prepare:
+   - The original open question and its evidence.
+   - A **Recommended Route** (`domain-language`, `design-choice`, `review-decision`, or `auto`).
+   - A **Proposed** option for resolving the question.
+   - A short **Pros/Cons** table with 2–5 mutually exclusive options.
+4. Number each question (Q1, Q2, ...) so the user can refer to them when overriding.
+
+### Batch Response Format
+
+Present all selected open questions in one message. Keep each question self-contained. After the last question, add an instruction such as:
+
+```
+Reply with the numbers you want to override (e.g., "Q1 = B, Q3 = D"), or say
+"accept all" / "yes" to accept every proposed option. If an earlier override
+changes a downstream proposal, I will flag it and ask for confirmation.
+```
+
+### Batch Mode Example
+
+```
+Q1 — Scope decision (route: design-choice)
+Evidence: feature-requirement.md:42
+**Proposed:** Option A — Project-scope default with optional topic override.
+**Implication:** Simplifies the happy path but requires explicit narrowing for per-topic behavior.
+| Option | Description | Pros/Cons |
+| --- | --- | --- |
+| A | Project-scope default, topic override | Pros: simpler common case. Cons: topic users must remember to narrow. |
+| B | Topic-scope default | Pros: safer for multi-topic projects. Cons: more verbose for project-wide behavior. |
+| Short | Provide a different answer | — |
+
+Q2 — Terminology conflict (route: domain-language)
+...
+```
+
+## Batch Response Integration
+
+When the user replies to a batch open-question set:
+
+1. **Parse overrides**. Accept answers keyed by question number (e.g., "Q1 = B", "Q2 = short: ...") or a blanket "accept all" / "yes" / "proposed".
+2. **Apply overrides in order** (Q1, Q2, ...). For unmentioned questions, use the proposed default.
+3. **Re-evaluate downstream proposals**. If an early override changes a premise used by a later proposed option, flag the conflict and ask the user to confirm or revise the later option. Do not silently accept a now-invalid proposal.
+4. **Route resolved questions** to their recommended modes. A question may be resolved by the batch answer, or it may still need exploration in its recommended mode.
+5. **Update durable artifacts** only after all batch answers have been integrated and conflicts resolved.
 
 ## Completion Report
 

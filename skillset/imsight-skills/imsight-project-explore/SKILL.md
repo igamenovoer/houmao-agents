@@ -35,6 +35,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 - Preferred explicit form: `$imsight-project-explore <task prompt>`.
 - Task-only form uses `auto` exploration by default.
 - Outside `auto`, select `any-open-question`, `design-choice`, `domain-language`, `review-decision`, `brainstorm`, or `usecase-design` only when the user's prompt explicitly names that mode or clearly asks for that kind of focused exploration. Inside `auto`, the agent may choose the focused exploration type after inspecting the prompt and repository evidence.
+- **Batch question mode**: When the user explicitly asks to see all questions at once with recommended options — using phrases such as "list all at once", "batch mode", "show all options", or "let me pick which ones to change" — the agent may list every material question (up to the mode's maximum) in one message, each with a **Proposed** option and short **Pros/Cons**. Batch mode is opt-in; the default remains sequential questioning.
 - No actionable task means `help`.
 
 ## Project Directory
