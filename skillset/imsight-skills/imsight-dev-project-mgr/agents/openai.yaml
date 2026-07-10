@@ -1,7 +1,0 @@
-interface:
-  display_name: "imsight-dev-project-mgr"
-  short_description: "Manage git worktrees and isolated implementation branches"
-  default_prompt: "Use $imsight-dev-project-mgr to create a clean worktree or implement a change in an isolated local worktree without disturbing the active checkout."
-
-policy:
-  allow_implicit_invocation: false
