@@ -1,6 +1,6 @@
 # OpenSpec One-Pass
 
-Use this subskill when the user provides one development request and wants it driven through the OpenSpec lifecycle in a single focused pass.
+Use this subcommand when the user provides one development request and wants it driven through the OpenSpec lifecycle in a single focused pass.
 
 ## Intent
 

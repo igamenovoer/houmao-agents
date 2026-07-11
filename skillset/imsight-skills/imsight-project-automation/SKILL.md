@@ -1,19 +1,20 @@
 ---
 name: imsight-project-automation
-description: Use when the user wants to automate a development-project task through a maintained one-pass workflow, such as OpenSpec explore-propose-apply-sync-archive, inside the current repository. Triggered by explicit invocation or when a prompt names imsight-project-automation and requests a supported automation routine.
+description: Use when the user explicitly invokes imsight-project-automation or requests one of its maintained project routines, including an OpenSpec lifecycle in one pass or user-directed testing followed by minimal bug fixes through OpenSpec.
 ---
 
 # Imsight Project Automation
 
 ## Overview
 
-This skill is an entrypoint for running focused project-automation routines in a single pass. Keep `SKILL.md` small; reusable behavior belongs in subskill pages.
+This skill is an entrypoint for focused project-automation routines. Keep `SKILL.md` small; reusable behavior belongs in subcommand pages.
 
 ## When to Use
 
 Use this skill only when explicitly invoked by name or when the request clearly targets a maintained automation routine, such as:
 
 - a request to run OpenSpec explore, propose, apply, sync, and archive in one pass,
+- a request to execute user-provided test cases, collect unexpected outcomes, and fix confirmed product bugs through OpenSpec,
 - explicit mention of `imsight-project-automation` or one of its subcommands,
 - a routed command or message that names this skill as the handler.
 
@@ -25,8 +26,9 @@ Do not activate it implicitly for ordinary development tasks that do not name `i
 2. If no subcommand or actionable task is present, handle `help`.
 3. For a task-only request, choose the applicable subcommand.
 4. For `openspec-one-pass`, load `commands/openspec-one-pass.md`.
-5. Ask for the smallest clarification when the subcommand or request body is ambiguous.
-6. Do not invent additional stages; add a command page when a new automation routine becomes reusable.
+5. For `openspec-test-and-fix`, load `commands/openspec-test-and-fix.md`.
+6. Ask for the smallest clarification when the subcommand or request body is ambiguous.
+7. Do not invent additional stages; add a command page when a new automation routine becomes reusable.
 
 If the task does not map cleanly to these steps, use your native planning tool only with the existing subcommands and constraints; report when no maintained routine matches.
 
@@ -53,9 +55,11 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 | --- | --- | --- |
 | `help` | Explain this skill and list public subcommands | This entrypoint |
 | `openspec-one-pass` | Given one development request, run an OpenSpec lifecycle in one pass: explore, propose, apply, sync, and archive. | [commands/openspec-one-pass.md](commands/openspec-one-pass.md) |
+| `openspec-test-and-fix` | Run user-provided tests, document unexpected outcomes, make minimal continuation patches, then propose and apply confirmed bug fixes through OpenSpec. | [commands/openspec-test-and-fix.md](commands/openspec-test-and-fix.md) |
 
 ## Common Mistakes
 
 - Routing ordinary ad-hoc tasks through this skill instead of handling them directly.
-- Skipping the subskill page and inlining a complex automation workflow in `SKILL.md`.
+- Skipping the subcommand page and inlining a complex automation workflow in `SKILL.md`.
 - Inventing unsupported subcommands that are not backed by a subskill page.
+- Treating discovery-time continuation patches as a substitute for the required OpenSpec proposal and apply stages.
