@@ -1,6 +1,6 @@
 ---
 name: imsight-project-misc
-description: Imsight-authored generic development project task router. Use when explicitly invoked as imsight-project-misc, routed from another Imsight skill, or when the prompt or context mentions `imsight` and asks to set up miscellaneous project infrastructure, development project utilities, project-local Docker services, Docker Compose service folders, or other generic project support tasks that do not fit a more specific Imsight skill. Do not invoke for generic project or Docker tasks that do not mention `imsight`.
+description: Use when explicitly invoking imsight-project-misc, routing from another Imsight skill, or using Imsight context for miscellaneous project infrastructure, development utilities, project-local Docker services, Compose service folders, or support work without a more specific Imsight owner. Do not use for generic project or Docker tasks without Imsight context.
 ---
 
 # Imsight Project Misc
@@ -8,6 +8,22 @@ description: Imsight-authored generic development project task router. Use when 
 ## Overview
 
 Use this skill as a router for miscellaneous generic development project tasks. Keep `SKILL.md` as a first-level subcommand index and place detailed second-level subskill pages in `references/`.
+
+## When to Use
+
+- Use for explicit or routed `imsight-project-misc` requests.
+- Use when `imsight` context requests miscellaneous project support without a more specific Imsight owner.
+- Current supported work includes project-local Docker service setup.
+- Do not use for generic project or Docker tasks without Imsight context.
+
+## Workflow
+
+1. If no subcommand or actionable task is present, handle `help`.
+2. Load a named subcommand reference, or choose the applicable subcommand from a task-only request.
+3. Follow the reference's discovery, file-layout, implementation, and verification steps.
+4. If no matching command exists, use normal engineering judgment and consider adding a focused reference.
+
+If the task does not map cleanly to these steps, use your native planning tool with the existing subcommands, project-directory rules, and constraints; keep work inside the requested project support scope.
 
 ## Invocation Contract
 
@@ -27,14 +43,13 @@ Use the project directory explicitly provided by the user. If none is provided, 
 | `help` | Explain this miscellaneous project skill and list available subcommands | This entrypoint |
 | `docker-service-setup` | Create project-local Docker service files under `<project-dir>/dockers/<service-name>/...` | `references/docker-service-setup.md` |
 
-## Procedure
-
-1. If no subcommand or actionable task is present, handle `help`: summarize this skill and list the subcommands.
-2. If the request names a subcommand, load that subcommand's reference file.
-3. If the request is task-only, choose the applicable subcommand from the task.
-4. Follow the selected reference's discovery, file layout, implementation, and verification steps.
-5. If no matching subcommand exists, use normal engineering judgment and consider adding a focused reference file linked from this subcommand index.
-
 ## Maintenance
 
 Name new subskill references after the first-level subcommand, keep each reference self-contained, and avoid duplicating detailed workflows in this index.
+
+## Common Mistakes
+
+- Routing work here when a more specific Imsight skill owns it.
+- Creating project-root Docker files instead of the requested service-local layout.
+- Skipping existing project-pattern and local-image discovery.
+- Embedding secrets or overwriting existing Docker files without reading them.

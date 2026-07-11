@@ -21,6 +21,8 @@ Use this subcommand to answer a question grounded in the wiki, not from general 
    ```
    If promoted, add a separate `promote` line.
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing query, filing, promotion, and resume rules; ground answers in the wiki.
+
 ## Constraints
 
 - The answer must be grounded in wiki content.

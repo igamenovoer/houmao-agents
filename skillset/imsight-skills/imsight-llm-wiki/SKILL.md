@@ -27,6 +27,17 @@ Use this skill when the user asks to:
 
 Do not use it for general note-taking, daily journals, or non-wiki Obsidian use.
 
+## Workflow
+
+1. **Read the request** and identify the requested subcommand; handle `help` when none is present.
+2. **Resolve the wiki root** for operations that need one. See **Wiki Root Resolution**.
+3. **Load the selected command page** from `commands/<subcommand>.md`.
+4. **Execute its workflow** with the specified tools and scripts.
+5. **Append a daily log entry** to `log/YYYYMMDD.md` when the operation mutates the wiki.
+6. **Report the result**, including touched files, issues, or viewer URL.
+
+If the task does not map cleanly to these steps, use your native planning tool with the existing subcommands, wiki contracts, and constraints; do not invent wiki operations or mutations.
+
 ## Invocation Contract
 
 - Preferred explicit form: `$imsight-llm-wiki use <subcommand> to do <task>`.
@@ -54,19 +65,6 @@ This skill operates on a user-provided wiki root. It does not write skill-owned 
 | `lint` | Run health checks and propose fixes | `commands/lint.md` |
 | `audit` | Process human feedback from `audit/` | `commands/audit.md` |
 | `deploy-viewer` | Deploy or launch the bundled web viewer | `commands/deploy-viewer.md` |
-
-## Workflow
-
-When this skill is invoked, execute the following steps in order.
-
-1. **Read the request** and identify the requested subcommand. If none is present, handle `help`.
-2. **Resolve the wiki root** if the subcommand needs one. Prefer an explicit path from the user; otherwise infer from context. See **Wiki Root Resolution**.
-3. **Load the selected subcommand's detail page** from `commands/<subcommand>.md`.
-4. **Execute the subcommand workflow** using the tools and scripts it specifies.
-5. **Append a log entry** to the current day's `log/YYYYMMDD.md` when the subcommand mutates the wiki.
-6. **Report the result** to the user, including files touched, issues found, or the viewer URL.
-
-If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan using the subcommands and constraints provided by this skill, then execute the plan.
 
 ## Wiki Root Resolution
 

@@ -2,6 +2,15 @@
 
 Use this reference when an Imsight dev box or workstation needs to reach a target address through an SSH-accessible middle host.
 
+## Workflow
+
+1. Select the existing pattern under **Choose The Pattern**.
+2. Apply the matching dynamic SOCKS5, existing-proxy forwarding, or single-service procedure.
+3. Select systemd or tmux only as provided by the chosen case and user request.
+4. Run **Validation** and enforce **Safety Rules**.
+
+If the task does not map cleanly to these steps, plan only from the documented SSH proxy patterns and safety rules; ask which proxy service and runtime mode are intended.
+
 ## Choose The Pattern
 
 Ask for these details when the request is underspecified:

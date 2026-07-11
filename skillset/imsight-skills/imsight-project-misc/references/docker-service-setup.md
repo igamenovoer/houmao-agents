@@ -2,6 +2,16 @@
 
 Use this reference when an Imsight project needs a project-local Docker service setup.
 
+## Workflow
+
+1. Resolve the project root and normalized service name under **Discovery**.
+2. Inspect existing Docker patterns and local images before online lookup.
+3. Create the service-local files under the exact **File Layout**.
+4. Apply **Compose Guidance** without fake ports, volumes, or credentials.
+5. Run **Verification** and enforce **Safety Rules**.
+
+If the task does not map cleanly to these steps, use your native planning tool with the existing discovery, layout, Compose, verification, and safety rules; ask for missing secrets or ports before startup.
+
 ## Goal
 
 For a requested Docker service, create all Docker-related files under:

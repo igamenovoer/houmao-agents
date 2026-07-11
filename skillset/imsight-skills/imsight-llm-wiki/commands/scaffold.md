@@ -16,6 +16,8 @@ Use this subcommand to create a new LLM Wiki directory tree.
    ## [HH:MM] scaffold | Initialized <Topic Title> knowledge base
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing scaffold layout and constraints; do not overwrite a populated target.
+
 ## Constraints
 
 - The target directory must either not exist or be empty before scaffolding.

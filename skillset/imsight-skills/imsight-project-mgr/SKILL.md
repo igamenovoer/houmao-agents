@@ -9,12 +9,18 @@ description: Use when the user explicitly invokes imsight-project-mgr or another
 
 Use this skill as the manually invoked or internally routed entrypoint for Imsight project-foundation and project-development operations. It preserves the established public operations without absorbing project exploration, feature design, automation, host setup, networking, or miscellaneous infrastructure.
 
+## When to Use
+
+- Use only when the user explicitly invokes `imsight-project-mgr` or another loaded skill routes a supported operation here.
+- Use for the project-foundation and isolated-development operations in **Subcommands**.
+- Do not activate implicitly for generic project work or from Imsight context alone.
+
 ## Workflow
 
 When this skill is invoked, execute the following steps in order.
 
 1. **Confirm invocation eligibility**. Continue only when the user explicitly invoked `imsight-project-mgr` or another loaded skill explicitly routed the operation here. See **Invocation Contract**.
-2. **Select the subcommand** from **Project Foundation**, **Project Development**, or **Skill Support**. If no subcommand or actionable task is present, handle `help`.
+2. **Select the subcommand** from **Subcommands**. If no subcommand or actionable task is present, handle `help`.
 3. **Resolve the project root** when the selected operation needs one. Use the user-provided project directory, or the current repository root when the task clearly targets it.
 4. **Load the linked command page** and follow its `## Workflow` step by step.
 5. **Report the result** using the selected command's output and safety contract.
@@ -41,28 +47,16 @@ This contract does not replace intentional project-foundation edits in the targe
 
 ## Subcommands
 
-### Project Foundation
-
 | Subcommand | Use For | Detail |
 | --- | --- | --- |
 | `init-pixi-project` | Perform first-time Pixi/Python initialization, then reconcile the standard project structure | `commands/init-pixi-project.md` |
 | `structure-pixi-project` | Initialize, scaffold, review, or normalize a Pixi-managed Python project | `commands/structure-pixi-project.md` |
 | `declare-universal-rules` | Add or refresh Imsight universal rules in a coding-agent project context file | `commands/declare-universal-rules.md` |
-
-### Project Development
-
-| Subcommand | Use For | Detail |
-| --- | --- | --- |
 | `create-worktree` | Create a clean Git worktree and safely reuse eligible local state | `commands/create-worktree.md` |
 | `impl-in-worktree` | Implement and verify a change on a fresh local branch in an isolated worktree | `commands/impl-in-worktree.md` |
-
-### Skill Support
-
-| Subcommand | Use For | Detail |
-| --- | --- | --- |
 | `help` | Explain this skill, its invocation restriction, categories, and public subcommands | This entrypoint |
 
-The categories describe purpose, not a mandatory lifecycle. Each operational subcommand remains independently invocable.
+Each operational subcommand is independently invocable; the table order does not impose a lifecycle.
 
 ## Ownership Boundaries
 

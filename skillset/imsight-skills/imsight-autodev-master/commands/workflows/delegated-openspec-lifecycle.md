@@ -20,6 +20,8 @@ Use this workflow when the master needs to delegate OpenSpec-oriented developmen
 4. If it names an existing change, use [continue-existing-change.md](continue-existing-change.md) unless the request is clearly finalization-only.
 5. Dispatch through the selected invocation leaf and stop after accepted delivery.
 
+If the task does not map cleanly to these steps, plan only from the existing lifecycle routes and guardrails; ask whether whole-lifecycle or bounded-phase delegation is intended.
+
 ## Guardrails
 
 - Do not duplicate command rendering here; use the selected invocation leaf.

@@ -1,6 +1,6 @@
 ---
 name: imsight-doc-writing
-description: Imsight-authored documentation-writing router for drafting, revising, structuring, and polishing technical Markdown documentation, project notes, design docs, usage guides, architecture explanations, and Mermaid diagrams. Use when explicitly invoked as imsight-doc-writing, routed from another Imsight skill, or when an Imsight-scoped request asks for documentation writing, documentation structure, Markdown deliverables, doc review, diagramming, formatting existing Mermaid diagrams, or the mermaid-graphing subskill.
+description: Use when explicitly invoking imsight-doc-writing, routing from another Imsight skill, or handling an Imsight-scoped request to draft, revise, structure, review, or polish technical Markdown, project notes, design or usage docs, architecture explanations, or Mermaid diagrams.
 ---
 
 # Imsight Doc Writing
@@ -9,12 +9,18 @@ description: Imsight-authored documentation-writing router for drafting, revisin
 
 Use this skill as the Imsight entrypoint for documentation work. Keep this file small: route specialized writing and diagramming work to subskills, keep durable style rules in those subskills, and edit the user's requested documentation directly when the target file is clear.
 
+## When to Use
+
+- Use for an explicit `imsight-doc-writing` invocation or route from another Imsight skill.
+- Use for Imsight-scoped documentation writing, structure, Markdown deliverables, review, Mermaid graphing, or Mermaid formatting.
+- Use the general documentation pass when no specialized command fits.
+
 ## Workflow
 
 When this skill is invoked, execute the following steps in order.
 
 1. **Identify the documentation task**. Determine whether the user wants a new document, a revision, a review, a structure proposal, a diagram, or a mixed documentation pass.
-2. **Select the subskill** from the **Subskills** table. If no subskill fits, use the **General Documentation Pass** rules.
+2. **Select the subskill** from the **Subcommands** table. If no subskill fits, use the **General Documentation Pass** rules.
 3. **Resolve the target artifact**. Use the file, directory, or output location provided by the user; otherwise ask only when writing to the wrong place would be risky.
 4. **Read existing context before writing**. Inspect nearby docs, project terminology, linked specs, and existing diagrams before choosing headings, terms, or diagram shapes.
 5. **Execute the selected subskill's workflow**. Load the linked subskill and follow its `## Workflow` section step by step.
@@ -29,7 +35,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 - No subskill and no actionable task means `help`.
 - `help` summarizes this skill and lists the subskills below.
 
-## Subskills
+## Subcommands
 
 | Subskill | Use For | Load |
 | --- | --- | --- |
@@ -62,3 +68,11 @@ When the user names a file, edit that file in place. When the user asks for a ne
 - Any Mermaid diagram must render as a fenced `mermaid` block and fit the target document without horizontal scrolling.
 - Any durable document should have enough context for a future reader who did not watch the conversation.
 - State assumptions and unresolved questions only when they affect the document's correctness or next action.
+
+## Common Mistakes
+
+- Writing before reading nearby documentation and project terminology.
+- Inventing a new document structure when the target already has a consistent style.
+- Treating a documentation result as a transcript of reasoning.
+- Adding unused process notes or auxiliary documents.
+- Producing Mermaid that does not render or requires horizontal scrolling.

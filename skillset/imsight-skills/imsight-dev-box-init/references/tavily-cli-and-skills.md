@@ -2,6 +2,16 @@
 
 Use this reference to install Tavily CLI (`tvly`), authenticate it, and install Tavily skills for the requested coding agent. Keep install mechanics in the skill-owned scripts; this reference chooses the right path and handles credentials.
 
+## Workflow
+
+1. Check **Prerequisites** and existing `tvly` status.
+2. Install the CLI using the preferred or documented fallback path.
+3. Authenticate without exposing the API key.
+4. Resolve the requested agent home and install Tavily skills using the maintained method.
+5. Run **Verify** and **Test**, applying **Pitfalls** when needed.
+
+If the task does not map cleanly to these steps, plan only from the documented install, authentication, agent-path, and verification choices; keep credentials private.
+
 ## Prerequisites
 
 - `uv` for the preferred Tavily CLI install path.

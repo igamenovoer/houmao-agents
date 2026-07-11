@@ -31,6 +31,8 @@ Use this primitive before any master dispatch that depends on a Houmao-managed s
    ```
 7. Read `manifest.json` only when the managed state output already exposes `manifest_path` or `session_root` and the needed metadata is not available from read-only command output.
 
+If the task does not map cleanly to these steps, plan only from the supported read-only Houmao inspection commands; ask for the selector or requested delivery posture instead of guessing.
+
 ## Metadata To Recover
 
 - `agent_name` or `agent_id`

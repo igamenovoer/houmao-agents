@@ -2,6 +2,15 @@
 
 Use this reference to install Houmao itself, verify `houmao-mgr`, and install Houmao system skills into supported agent homes.
 
+## Workflow
+
+1. Check **Prerequisites**.
+2. Install or verify Houmao and `houmao-mgr` using the maintained commands.
+3. Install the requested system skills using the preferred path or documented alternate installer.
+4. Apply **Home Resolution Notes** and run **Verification**.
+
+If the task does not map cleanly to these steps, plan only from the existing install paths, agent homes, and verification rules; do not invent an unsupported destination.
+
 ## Prerequisites
 
 - `uv` for installing Houmao as a global tool.

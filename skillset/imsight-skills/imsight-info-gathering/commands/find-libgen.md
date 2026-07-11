@@ -50,6 +50,8 @@ Important options:
    ```
 9. Report the query, mirror source (user input or defaults file), filters, direct URL count, selected URL(s), and the exact `wget` command(s). If a byte-range test was run, include HTTP status, downloaded byte count, and output path.
 
+If the task does not map cleanly to these steps, plan only from the bundled script, defaults, filters, output contract, and guardrails; do not full-download or claim an unresolved URL is downloadable.
+
 ## Guardrails
 
 - Do not full-download large files unless the user explicitly asks for a full download.

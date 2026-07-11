@@ -1,22 +1,38 @@
 ---
 name: llm-wiki-all-in-one
-description: >-
-  Build and maintain a Karpathy-style LLM knowledge base and deploy its
-  bundled local web viewer. Use when (1) scaffolding a new knowledge base
-  for any research topic, (2) ingesting articles/papers/PDFs/web pages into
-  raw/, (3) compiling or restructuring wiki articles from existing raw
-  material, (4) answering questions against the wiki and filing durable
-  answers back, (5) running lint passes for dead links / orphan pages /
-  coverage gaps / audit shape, (6) processing human feedback from the audit/
-  directory and applying corrections, (7) deploying or launching the packaged
-  web viewer against an existing LLM Wiki. Not for general note-taking, daily
-  journals, or non-wiki Obsidian use.
+description: Use when scaffolding, ingesting, compiling, querying, linting, auditing, or deploying the bundled viewer for a Karpathy-style LLM knowledge base. Do not use for general note-taking, daily journals, or non-wiki Obsidian use.
 ---
 
 # LLM Wiki All-in-One — Karpathy Knowledge Base Pattern
 
+## Overview
+
 > **Experimental skill — iterating.**
 > Authored by Lewis Liu (lylewis@outlook.com) · Inspired by [Karpathy's llm-wiki Gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
+
+This skill compiles immutable raw sources into a persistent, cross-linked wiki and bundles a local viewer. The human owns sourcing, questions, direction, and feedback; the LLM owns writing, cross-referencing, filing, bookkeeping, and acting on feedback.
+
+## When to Use
+
+- Scaffold a knowledge base for a research topic.
+- Ingest articles, papers, PDFs, web pages, notes, or references into `raw/` and the wiki.
+- Compile or restructure wiki articles from existing raw material.
+- Query the wiki and file durable answers.
+- Lint links, index coverage, orphan pages, and audit shape.
+- Process human feedback under `audit/`.
+- Deploy, launch, update, or repair the bundled viewer.
+- Do not use for general notes, daily journals, or non-wiki Obsidian use.
+
+## Workflow
+
+1. Resolve the wiki root and read `README.md` plus `wiki/index.md`.
+2. Select the requested operation: `compile`, `ingest`, `query`, `lint`, `audit`, scaffolding, or viewer deployment.
+3. Follow the matching operation below, including its confirmation and raw-source rules.
+4. Update required wiki artifacts and append the operation log entry.
+5. For viewer work, load `subskills/viewer-deploy.md` and prefer `scripts/deploy_viewer.py`.
+6. Report changed files, findings, or viewer launch details.
+
+If the task does not map cleanly to these steps, use your native planning tool with the existing operations, principles, schemas, scripts, and constraints; do not invent mutation rules or write into immutable `raw/` sources.
 
 ## Core idea
 
@@ -334,3 +350,11 @@ Quick grep across history: `grep -rh "^## \[" log/ | tail -20`.
 - `references/audit-guide.md` — Audit file format, anchor strategy, processing workflow
 - `references/tooling-tips.md` — Obsidian setup, Web Clipper, qmd, plugin + web installation
 - `references/vault-root-link-resolver.md` — Canonical wikilink resolver contract and compatibility cases
+
+## Common Mistakes
+
+- Treating raw sources as agent-written files instead of immutable input.
+- Starting without reading `README.md` and `wiki/index.md`.
+- Creating oversized concept pages instead of applying divide-and-conquer.
+- Omitting daily operation logs or durable query filing.
+- Applying audit or structural changes without the confirmations required below.

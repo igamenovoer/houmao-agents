@@ -2,6 +2,15 @@
 
 Use this subskill when the user asks to deploy, install, launch, repair, or update the bundled LLM Wiki web viewer.
 
+## Workflow
+
+1. Resolve the installation directory, wiki root, port, host, and optional author under **Inputs To Resolve**.
+2. Run the preferred deployment helper with the requested package manager and launch mode.
+3. Apply the documented deployment, tooling, install/build, and launch behavior.
+4. Verify the viewer and report the URL, paths, launch command, and background process details when applicable.
+
+If the task does not map cleanly to these steps, plan only from the existing helper options, tooling behavior, launch modes, and security constraints; ask for required paths rather than guessing.
+
 ## Inputs To Resolve
 
 - **Installation directory**: required. If the user did not supply it, ask for a local directory where the viewer should be installed.

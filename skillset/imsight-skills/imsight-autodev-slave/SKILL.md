@@ -1,15 +1,31 @@
 ---
 name: imsight-autodev-slave
-description: Manual invocation only; Imsight-authored slave-agent automation entrypoint for Houmao-managed agents that receive and process explicit master-agent requests. Use when a prompt, gateway message, mailbox notification, direct command, another Imsight skill route, or relevant `imsight` context names imsight-autodev-slave for a maintained request-processing workflow such as init-openspec or OpenSpec one-pass explore, propose, apply, sync, and archive.
+description: Use when a human request, gateway message, mailbox notification, direct command, Imsight route, or relevant Imsight context explicitly names imsight-autodev-slave for maintained Houmao slave operations such as init-openspec or the one-pass OpenSpec lifecycle. Do not use implicitly for ordinary development tasks.
 ---
 
 # Imsight Autodev Slave
 
-Use this skill only when explicitly invoked by name. Explicit invocation may come from a human/operator or from a master agent using the slave tool's native skill invocation syntax, such as `$imsight-autodev-slave ...` for Codex or `/imsight-autodev-slave ...` for Claude.
+## Overview
 
-Do not activate it implicitly for ordinary development tasks that do not name `imsight-autodev-slave` or one of its maintained operations.
+This skill receives a master's request, selects the matching maintained slave operation, and processes the request through that operation. Keep reusable behavior in command pages.
 
-This skill is an entrypoint for a slave agent that receives a master's request, selects the matching maintained subskill, and processes the request through that subskill. Keep `SKILL.md` small; reusable behavior belongs in subskill pages.
+## When to Use
+
+- Use only when explicitly invoked by a human/operator or master agent.
+- Accept `$imsight-autodev-slave ...` for Codex and `/imsight-autodev-slave ...` for Claude.
+- Use when a named maintained operation is delivered through a prompt, gateway, mailbox, direct command, Imsight route, or relevant `imsight` context.
+- Do not activate implicitly for ordinary development tasks that do not name this skill or one of its maintained operations.
+
+## Workflow
+
+1. Read the master's request and identify the requested slave subcommand.
+2. If no subcommand or actionable task is present, handle `help`.
+3. If the request is task-only, choose the applicable subcommand from the task.
+4. Load `commands/openspec-one-pass.md` for `openspec-one-pass` or `commands/init-openspec.md` for `init-openspec`.
+5. If the subcommand or required request body is ambiguous, ask for the smallest clarification needed.
+6. Do not invent additional stages; add a command page when a new slave operation becomes reusable.
+
+If the task does not map cleanly to these steps, use your native planning tool only to select and execute the existing maintained operations under their current constraints; otherwise report that no maintained operation matches.
 
 ## Invocation Contract
 
@@ -30,19 +46,11 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 
 ## Subcommands
 
-- `help`: Explain this slave request-processing skill and list available subcommands.
-- `openspec-one-pass`: Given one master-provided development request, run an OpenSpec lifecycle in one pass: explore, propose, apply, sync, and archive. Use [commands/openspec-one-pass.md](commands/openspec-one-pass.md).
-- `init-openspec`: Initialize `openspec/` in the slave's current target workdir when missing. Use [commands/init-openspec.md](commands/init-openspec.md).
-
-## Workflow
-
-1. Read the master's request and identify the requested slave subcommand.
-2. If no subcommand or actionable task is present, handle `help`: summarize this skill and list the subcommands.
-3. If the request is task-only, choose the applicable subcommand from the task.
-4. If the subcommand is `openspec-one-pass`, read [commands/openspec-one-pass.md](commands/openspec-one-pass.md).
-5. If the subcommand is `init-openspec`, read [commands/init-openspec.md](commands/init-openspec.md).
-6. If the subcommand or required request body is ambiguous, ask for the smallest clarification needed.
-7. Do not invent additional workflow stages in this entrypoint; add a new subskill page when a new slave operation becomes reusable.
+| Subcommand | Use For | Detail |
+| --- | --- | --- |
+| `help` | Explain this slave request-processing skill and list available subcommands | This entrypoint |
+| `openspec-one-pass` | Run explore, propose, apply, sync, and archive for one master request | `commands/openspec-one-pass.md` |
+| `init-openspec` | Initialize `openspec/` in the slave's target workdir when missing | `commands/init-openspec.md` |
 
 ## Guardrails
 
@@ -50,3 +58,10 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 - Prefer maintained OpenSpec skills over ad hoc artifact editing when an OpenSpec operation is requested.
 - Keep implementation, verification, sync, and archiving scoped to the current repository or explicitly provided workspace.
 - Stop and report clearly if a required OpenSpec skill is unavailable, an OpenSpec command fails, or the repository does not contain the expected OpenSpec structure.
+
+## Common Mistakes
+
+- Activating the skill without an explicit named operation.
+- Dropping or rewriting the master's request instead of carrying it through.
+- Replacing maintained OpenSpec workflows with ad hoc artifact edits.
+- Continuing after a required skill, command, or repository structure fails.

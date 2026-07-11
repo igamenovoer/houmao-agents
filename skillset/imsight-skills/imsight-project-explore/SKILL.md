@@ -1,6 +1,6 @@
 ---
 name: imsight-project-explore
-description: Imsight-authored agent-assisted exploration workflow for development projects. Use when explicitly invoked as imsight-project-explore, routed from another Imsight skill, or when an Imsight-scoped request asks to explore a project before implementation, clarify specs, feature behavior, scope boundaries, acceptance criteria, ambiguities, domain terminology, plan risks, or contradictions between docs and code. Do not invoke for implementation-only tasks unless exploration is requested first.
+description: Use when explicitly invoking imsight-project-explore, routing from another Imsight skill, or handling an Imsight-scoped request to explore a project before implementation, clarify specs, behavior, scope, acceptance criteria, ambiguities, terminology, plan risks, or contradictions between docs and code. Do not use for implementation-only tasks unless exploration is requested first.
 ---
 
 # Imsight Project Explore
@@ -11,6 +11,13 @@ Use this skill to explore a development project before planning or building. Tre
 
 Exploration is interactive by default. In `auto` mode, the agent may inspect repository evidence and choose the exploration type itself, such as `any-open-question`, `design-choice`, `domain-language`, or `review-decision`. After that routing choice, the agent must ask the user at least one decision-bearing question before choosing a durable project direction, writing artifacts, or producing a final proposed direction. Use zero questions only when the user explicitly requests a non-interactive audit, explicitly asks the agent to make reasonable assumptions, or provides all required decisions in the prompt.
 
+## When to Use
+
+- Use for explicit or routed `imsight-project-explore` requests.
+- Use for Imsight-scoped pre-implementation exploration, ambiguity resolution, terminology, use cases, design choices, decision review, or brainstorming.
+- Use zero questions only under the explicit exceptions in **Overview**.
+- Do not use for implementation-only tasks unless exploration is requested first.
+
 ## Workflow
 
 When this skill is invoked, execute the following steps in order. Detailed rules for each step are in the sections referenced below.
@@ -18,12 +25,12 @@ When this skill is invoked, execute the following steps in order. Detailed rules
 1. **Determine the project directory**. See **Project Directory**.
 2. **Resolve `<output-dir>`**. See **Output Directory Discovery**.
 3. **Load previous exploration artifacts**. Check `<output-dir>/` for existing `domain-concepts/`, `adrs/`, `design-choice/`, `designs/`, and `use-cases/` files. Load any relevant prior artifacts and incorporate them into your evidence set. See Core Principles §1.
-4. **Prepare domain language baseline**. See **First Step: Establish Domain Language**. If accepting or changing domain language requires a project decision, ask the user before treating it as established.
-5. **Select exploration mode**. Inspect the user's prompt and early repository evidence against the **Exploration Modes** table:
+4. **Prepare domain language baseline**. See **First Step: Prepare Domain Language**. If accepting or changing domain language requires a project decision, ask the user before treating it as established.
+5. **Select exploration mode**. Inspect the user's prompt and early repository evidence against the **Subcommands** table:
    - If the prompt explicitly names a mode (`any-open-question`, `design-choice`, `domain-language`, `review-decision`, `brainstorm`, `usecase-design`) or clearly asks for that kind of work, use that mode.
    - Otherwise, default to `auto`.
    - If the prompt spans multiple modes naturally, combine them sequentially.
-6. **Execute the selected mode's workflow**. Load the mode's page (linked in the **Exploration Modes** table) and follow its **Workflow** section step by step.
+6. **Execute the selected mode's workflow**. Load the mode's page from **Subcommands** and follow its **Workflow** section step by step.
 7. **Route documentation-specific writing needs**. If the artifact needs a particular document style, Markdown structure, polished prose, Mermaid diagrams, or other writing-specific conventions, use `imsight-doc-writing` for those rules before writing the artifact. See **Documentation Writing Route**.
 8. **Capture durable knowledge**. Follow the **Capturing Knowledge** rules when writing or updating artifacts.
 9. **Do not start implementation** unless the user explicitly asks to switch from exploration to implementation.
@@ -71,10 +78,11 @@ Before entering any exploration mode, scan the project for domain language that 
 
 If the project already has an established domain language document that the user accepts as authoritative, skip this step and load it instead.
 
-## Exploration Modes
+## Subcommands
 
-| Mode | Use For | Detail |
+| Subcommand | Use For | Detail |
 | --- | --- | --- |
+| `help` | Explain this exploration skill and list its modes | This entrypoint |
 | `auto` | Let the agent choose the exploration type from the prompt, repo evidence, and highest-risk uncertainty | [commands/auto.md](commands/auto.md) |
 | `any-open-question` | Identify unresolved questions in given material, classify them by type, and route each material question to the matching non-brainstorm exploration mode | [commands/any-open-question.md](commands/any-open-question.md) |
 | `design-choice` | Clarify a design decision: features, scopes, protocols, conventions, patterns, interfaces, acceptance criteria, and tradeoffs | [commands/design-choice.md](commands/design-choice.md) |
@@ -135,3 +143,11 @@ When `<output-dir>` is inside an OpenSpec change (i.e., `<openspec-change-dir>/e
 - In `review-decision`, review existing ADRs, decision sections, architecture notes, and code behavior before proposing any new decision. Report inconsistencies first; update durable artifacts only after the inconsistency has a resolved answer.
 
 Do not start implementation unless the user explicitly asks to switch from exploration to implementation.
+
+## Common Mistakes
+
+- Asking the user for facts that repository inspection can answer.
+- Treating repository evidence as product intent or acceptance criteria.
+- Establishing or changing domain language without user consent.
+- Ignoring previous exploration artifacts or leaving related artifacts inconsistent.
+- Starting implementation before the user explicitly switches from exploration.

@@ -1,5 +1,15 @@
 # Source Handling
 
+## Workflow
+
+1. Select source classes and run broad discovery before focused searches.
+2. Choose tools under **Tool Preference**.
+3. For downloads, apply the workspace network rules and **Download SOP**.
+4. Maintain the source ledger and local corpus metadata required by this page.
+5. Verify durable files and preserve source provenance.
+
+If the task does not map cleanly to these steps, plan only from the existing source classes, tools, download rules, ledger fields, and output contract; do not lower the evidence bar.
+
 ## Search SOP
 
 Start with source classes, not keywords:

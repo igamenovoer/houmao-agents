@@ -2,6 +2,17 @@
 
 Use this reference to set up, inspect, repair, or remove SSH reverse and forward tunnels on Imsight development boxes.
 
+## Workflow
+
+1. Apply **Common Policy** and install or refresh the bundled scripts.
+2. Create and verify the relay SSH alias.
+3. Gather missing inputs using **Interactive Intake For Vague Requests**.
+4. Select tmux or user systemd, then execute the matching reverse, forward, inspection, or cleanup procedure.
+5. Verify the requested tunnel and preserve unrelated working tunnels.
+6. Use **Troubleshooting** when validation fails.
+
+If the task does not map cleanly to these steps, plan only from the documented tunnel directions, runtime modes, scripts, and safety rules; ask for missing endpoints, ports, or exposure intent.
+
 ## Common Policy
 
 - First create an SSH config `Host` entry for the tunnel server/relay and make it work with public-key authentication. Do not build persistent tunnel services around raw IPs until the alias is stable and `ssh -o BatchMode=yes <alias> true` succeeds.

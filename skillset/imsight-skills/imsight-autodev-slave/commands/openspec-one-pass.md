@@ -38,6 +38,8 @@ Turn one master request into:
    - In `interactive` mode, stop here after sync/archive and wait for final follow-up instructions if any.
 6. Report the resulting change id/path, implementation summary, verification performed, archive location, and any residual risks.
 
+If the task does not map cleanly to these steps, plan only from the maintained OpenSpec lifecycle and its current modes, stop conditions, and guardrails; do not invent stages.
+
 ## Invocation Guidance
 
 - When the skill is available locally, use the OpenSpec skills directly in this order:

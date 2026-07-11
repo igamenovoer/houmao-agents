@@ -1,6 +1,6 @@
 ---
 name: imsight-project-design
-description: "Imsight-style staged development-project design. Use when explicitly asked to use Imsight project design, Imsight SOP, this skill, or an Imsight-authored process to design aspects of a development project. Current supported scope is feature planning: scaffold or revise feature planning artifacts, define a feature, design use cases, design interfaces or contracts, or write implementation handoffs. Supports command-style invocation such as `$imsight-project-design use define-feature to ...`."
+description: Use when explicitly asked to use Imsight project design, Imsight SOP, this exact skill, or an Imsight-authored process to scaffold or revise feature planning, define a feature, design use cases, design interfaces or agent skills, or write an implementation handoff.
 ---
 
 # Imsight Project Design
@@ -13,7 +13,14 @@ The skill behaves like a main command with subcommands: complete the requested p
 
 This skill is portable across host projects. Do not assume a specific repository layout, package name, planning framework, or source tree beyond files the user provides or files discovered in the active host project.
 
-## Entry Workflow
+## When to Use
+
+- Use for explicit Imsight project-design or Imsight SOP requests.
+- Use for the supported feature-planning stages listed below.
+- Use command form such as `$imsight-project-design use define-feature to ...`, or infer the narrowest command from a task-only request.
+- Do not assume a host-project layout beyond user-provided or discovered files.
+
+## Workflow
 
 When this skill is invoked, execute these steps in order.
 
@@ -24,17 +31,28 @@ When this skill is invoked, execute these steps in order.
 
 If the task does not map cleanly to the currently supported feature-planning workflow, explain the closest available subcommand and ask for the missing decision before writing artifacts. If the task concerns another project-design aspect, state that the skill is intended to expand in that direction but the current command set only supports feature planning.
 
-## Current Subcommands
+## Subcommands
+
+### Procedural Subcommands
 
 | Subcommand | Use For | Detail |
 | --- | --- | --- |
-| `help` | Explain this skill and list subcommands | `commands/help.md` |
 | `scaffold` | Create a feature design directory and placeholder planning skeleton | `commands/scaffold.md` |
 | `define-feature` | Create or update `<feature-dir>/feature-requirement.md` | `commands/define-feature.md` |
 | `design-usecase` | Create or update one matched use case under `<feature-dir>/usecases/` | `commands/design-usecase.md` |
 | `design-interface` | Create or update interface and contract docs under `<feature-dir>/design/` | `commands/design-interface.md` |
 | `design-skill` | Generate a skill design overview under `<feature-dir>/design/<slug>/` for agent-skill features | `commands/design-skill.md` |
 | `design-agent-task` | Create or update `<feature-dir>/agent-task.md` as an implementation handoff | `commands/design-agent-task.md` |
+
+### Helper Subcommands
+
+No helper subcommands are currently exposed.
+
+### Misc Subcommands
+
+| Subcommand | Use For | Detail |
+| --- | --- | --- |
+| `help` | Explain this skill and list subcommands | `commands/help.md` |
 
 ## Feature Planning Output Directory
 

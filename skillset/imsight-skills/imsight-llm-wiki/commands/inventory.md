@@ -48,6 +48,8 @@ Use this subcommand to maintain a lightweight backlog of ingest candidates.
    ## [HH:MM] inventory | rejected <slug> — <reason>
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing inventory actions and constraints; do not invent candidate states or transitions.
+
 ## Constraints
 
 - Candidates are mutable backlog items, not immutable sources. They live under `wiki/inventory/`, not `raw/`.

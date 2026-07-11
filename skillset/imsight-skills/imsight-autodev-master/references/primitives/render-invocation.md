@@ -2,6 +2,15 @@
 
 Use this primitive whenever the master must render a command for a slave's native skill invocation syntax.
 
+## Workflow
+
+1. Gather the tool lane, invocation family, operation, and request body from **Inputs**.
+2. Choose the matching command from **Raw OpenSpec Commands** or **Slave Skill Commands**.
+3. Preserve the request, target, change identifier, and constraints in the rendered command.
+4. Validate the result against **Rules** before delivery.
+
+If the task does not map cleanly to these steps, plan only from the listed command families and rules; ask for an unknown tool lane or operation instead of guessing.
+
 ## Inputs
 
 - Slave tool lane from [inspect-slave.md](inspect-slave.md), especially `codex` or `claude`.

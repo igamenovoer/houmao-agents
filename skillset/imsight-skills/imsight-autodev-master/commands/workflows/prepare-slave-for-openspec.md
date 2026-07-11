@@ -15,6 +15,8 @@ The slave owns the filesystem check because it may be running in an isolated env
 5. Deliver with [../../references/primitives/deliver-to-slave.md](../../references/primitives/deliver-to-slave.md).
 6. After delivery is accepted, finish the turn by default.
 
+If the task does not map cleanly to these steps, plan only from the existing inspection, rendering, and delivery primitives; do not initialize the slave workdir directly.
+
 ## Guardrails
 
 - Do not check the slave filesystem from the master unless the user explicitly asks for inspection and the path is actually local.

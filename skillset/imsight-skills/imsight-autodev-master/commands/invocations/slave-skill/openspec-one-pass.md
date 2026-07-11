@@ -38,6 +38,8 @@ This dispatch invokes the predefined `imsight-autodev-slave openspec-one-pass` o
 4. Deliver with [../../../references/primitives/deliver-to-slave.md](../../../references/primitives/deliver-to-slave.md).
 5. After delivery is accepted, finish the turn by default.
 
+If the task does not map cleanly to these steps, plan only from the existing one-pass slave invocation and its guardrails; preserve the master request and desired mode.
+
 ## Guardrails
 
 - Do not split one-pass work into multiple OpenSpec prompts from the master.

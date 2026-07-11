@@ -2,6 +2,15 @@
 
 Use this subcommand to research a problem or topic and create a durable hint file that helps future agents or humans solve the same class of problem.
 
+## Workflow
+
+1. Resolve the output location and filename using the existing precedence and naming rules.
+2. Follow **Research Workflow**, including Context7 and primary-source preferences where applicable.
+3. Write the hint with **Hint Structure** and the applicable code and writing rules.
+4. Keep sources with supported claims and preserve uncertainty or version caveats.
+
+If the task does not map cleanly to these steps, plan only from this page's output, research, structure, and writing rules; ask for project context only when the destination would otherwise be unsafe.
+
 ## Output Location
 
 Choose the output root in this order:

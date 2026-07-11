@@ -8,6 +8,15 @@ There are two provider categories. Find your provider in the routing table below
 
 Never bake API keys into this skill, generated documentation, git-tracked config, or launcher scripts. Store keys in environment variables, a local untracked secret file, or a shell-specific secret manager chosen by the user.
 
+## Workflow
+
+1. Select `responses-api` or `chat-completions-only` from the provider routing table, testing `/v1/responses` when the provider is unlisted.
+2. Follow the selected provider procedure without embedding API keys.
+3. Preserve unrelated Codex configuration and launcher settings.
+4. Run **Validation** and report the configured route.
+
+If the task does not map cleanly to these steps, plan only from the existing provider categories, configuration rules, and validation checks; ask for provider details rather than inventing compatibility.
+
 ## Subcommand: codex-cli-3rd-party
 
 Use this top-level subcommand to add or repair a Codex CLI third-party provider configuration. The second-level argument selects the provider category.

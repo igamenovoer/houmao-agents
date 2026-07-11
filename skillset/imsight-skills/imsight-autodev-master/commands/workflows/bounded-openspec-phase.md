@@ -20,6 +20,8 @@ Use this workflow when the master wants exactly one OpenSpec phase performed by 
 4. Dispatch through the selected invocation leaf.
 5. After delivery is accepted, finish the turn by default.
 
+If the task does not map cleanly to these steps, plan only from the listed phases and their guardrails; ask for clarification rather than chaining or inventing phases.
+
 ## Guardrails
 
 - Do not chain multiple raw OpenSpec phases from this workflow.

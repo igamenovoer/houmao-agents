@@ -21,6 +21,8 @@ Use this subcommand to add a new source to `raw/` and update the wiki with summa
    ## [HH:MM] ingest | <slug> — <one-line description> (touched N pages)
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing ingest actions and constraints; preserve raw-source and index rules.
+
 ## Constraints
 
 - `raw/` files are immutable after ingestion. Fix mistakes by re-ingesting, not by editing `raw/`.

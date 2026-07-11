@@ -15,6 +15,8 @@ Use this subcommand to restructure wiki content from existing `raw/` material, s
    ## [HH:MM] compile | <what you did — files touched, splits, merges>
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing compile actions and constraints; retain confirmation requirements for structural rewrites.
+
 ## Constraints
 
 - Do not split or merge pages without user confirmation.

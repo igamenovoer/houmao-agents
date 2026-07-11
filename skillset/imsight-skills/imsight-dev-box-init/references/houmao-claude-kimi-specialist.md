@@ -2,6 +2,15 @@
 
 Use this reference when the user wants a Houmao specialist that launches Claude Code with Kimi Code credentials.
 
+## Workflow
+
+1. Resolve the Kimi credential under **Required Input** without printing it.
+2. Ask the existing proxy-environment question when the user has not answered it.
+3. Apply **Defaults**, **Preconditions**, and the Claude onboarding configuration.
+4. Create the specialist and run every applicable check in **Verification**.
+
+If the task does not map cleanly to these steps, plan only from this page's credential, proxy, specialist, and verification rules; ask for required input rather than weakening secret handling.
+
 ## Required Input
 
 You need a Kimi API key. Prefer `KIMI_API_KEY` or `ANTHROPIC_API_KEY` when already set by the user. If a `claude-kimi` launcher already exists from `references/claude-kimi-launcher.md`, prefer reading the shared `kimi-api-key` file next to that launcher. Never print the key.

@@ -1,6 +1,6 @@
 ---
 name: imsight-info-gathering
-description: Imsight-authored online information gathering command workflow for searching the web, extracting or downloading sources, finding LibGen mirror download links, building source ledgers, and producing synthesized reports from multiple sources. Use when explicitly invoked as imsight-info-gathering, routed from another Imsight skill, when a prompt asks for Imsight-style research or reporting, or when `imsight` context covers online search, source download/extraction, LibGen link finding, and synthesis into a cited report.
+description: Use when explicitly invoking imsight-info-gathering, routing from another Imsight skill, requesting Imsight-style research or reporting, or using Imsight context for online search, source extraction or download, LibGen link finding, source ledgers, source packs, or cited synthesis.
 ---
 
 # Imsight Info Gathering
@@ -10,6 +10,24 @@ description: Imsight-authored online information gathering command workflow for 
 Use this skill as the Imsight research SOP for online information work. Prefer explicit source ledgers, primary-source bias, reproducible downloads, and synthesized conclusions over loose search-result summaries.
 
 This skill can route to other Imsight skills in the same suite. If the task needs tool installation, network setup, proxy repair, environment bootstrapping, or documentation-specific writing guidance, use the matching Imsight skill before continuing.
+
+## When to Use
+
+- Use for explicit or routed Imsight information-gathering work.
+- Use for `imsight`-scoped online search, downloads, extraction, source ledgers or packs, LibGen links, comparisons, scans, and cited reports.
+- Route installation, network repair, and writing-specific needs to the existing Imsight owners listed below.
+
+## Workflow
+
+1. If no subcommand or actionable task is present, handle `help`.
+2. Load a named subcommand page, or choose the applicable subcommand or sequence for a quick answer, source pack, hint guide, literature scan, market map, technical comparison, or full report.
+3. Set the evidence bar: primary sources for technical, legal, financial, medical, standards, product-documentation, and company claims; corroborated reputable sources for news or market context.
+4. Search broad, then narrow; use dedicated discovery, extraction, crawl, research, browsing, or command-line download tools as already routed below.
+5. Maintain a source ledger and download durable material when requested or needed for an auditable corpus.
+6. Synthesize findings, conflicts, uncertainty, and recommendations; use source-by-source summaries only when the user requests an annotated bibliography.
+7. Route durable writing to `imsight-doc-writing` and LibGen work to `commands/find-libgen.md`.
+
+If the task does not map cleanly to these steps, use your native planning tool with the existing subcommands, evidence bar, source-handling rules, routes, and output contract; do not weaken source or download constraints.
 
 ## Invocation Contract
 
@@ -38,19 +56,6 @@ When this skill writes hints, downloaded source corpora, source packs, reports, 
 | `synthesize-report` | Produce a synthesized cited report, comparison, recommendation, market scan, or literature scan | `references/report-synthesis.md` |
 | `find-hint` | Research a problem or topic and create a durable hint guide with source links and concise snippets | `references/find-hint.md` |
 | `find-libgen` | Search a provided LibGen-style mirror and produce direct download links or wget commands using the bundled stdlib script | `commands/find-libgen.md` |
-
-## Workflow
-
-1. If no subcommand or actionable task is present, handle `help`: summarize this skill and list the subcommands.
-2. If the request names a subcommand, load the matching reference file and follow that subcommand.
-3. If the request is task-only, identify the deliverable and choose the applicable subcommand or sequence: quick answer, source pack, hint guide, literature scan, market map, technical comparison, or full report.
-4. Decide the evidence bar: primary sources for technical, legal, financial, medical, standards, product docs, and company facts; corroborated reputable sources for news or market context.
-5. Search broad, then narrow. Prefer dedicated search/extract/crawl/research tools when available; otherwise use normal web browsing and command-line downloads.
-6. Maintain a source ledger while working: URL, title, publisher, date accessed, publish date if available, why it matters, and whether it is primary or secondary.
-7. Download or extract durable source material when the user asks for downloads, when sources are likely to move, or when a report needs an auditable local corpus.
-8. Synthesize across sources. Separate findings, conflicts, uncertainty, and recommendations. Do not pad the report with source-by-source summaries unless the user asked for an annotated bibliography.
-9. If writing a durable hint, report, source pack narrative, comparison, or other documentation artifact that needs structure, prose style, Markdown conventions, diagrams, or a particular document style, route to `imsight-doc-writing` for the writing-specific rules, then return to this skill for evidence and source-handling rules.
-10. If the task asks for LibGen mirror search, direct download links, or wget-ready commands, load `commands/find-libgen.md` and use that workflow.
 
 ## Routing
 
@@ -82,3 +87,11 @@ Load `commands/find-libgen.md` when the user asks to search a LibGen mirror, res
 - Use stable, descriptive filenames: `<date>-<publisher-or-domain>-<slug>.<ext>`.
 - Cite sources with links in the final answer whenever external information shaped the conclusion.
 - State uncertainty directly when sources disagree, are stale, or are not authoritative enough.
+
+## Common Mistakes
+
+- Treating search-result snippets as a sufficient evidence base.
+- Omitting the source ledger for durable research work.
+- Using weak secondary sources when a responsible primary source exists.
+- Writing source-by-source summaries instead of synthesizing findings and conflicts.
+- Bypassing the maintained LibGen workflow or documentation-writing route.

@@ -45,6 +45,8 @@ Use this subcommand to group related outputs into a deliverable folder.
    ## [HH:MM] project | archived <slug>
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing project actions and constraints; preserve project layout and archive behavior.
+
 ## Constraints
 
 - Project folders live only under `outputs/projects/`.

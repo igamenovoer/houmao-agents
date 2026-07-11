@@ -2,6 +2,15 @@
 
 Use this reference for Imsight-preferred Codex CLI configuration tasks.
 
+## Workflow
+
+1. Select a second-level subcommand from **Second-Level Subcommands**.
+2. Follow that operation's configuration procedure while preserving unrelated settings.
+3. Run its **Verification** checks.
+4. Report changed configuration and any remaining user action.
+
+If the task does not map cleanly to these steps, plan only from the existing second-level subcommands and their constraints; do not invent or apply unrelated Codex settings.
+
 ## Second-Level Subcommands
 
 Use these subcommands under `codex-cli-setup`, for example: `$imsight-dev-box-init use codex-cli-setup disable-codex-apps to disable Codex apps globally`.

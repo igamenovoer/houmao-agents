@@ -2,6 +2,16 @@
 
 Use this primitive after a workflow or invocation page has selected and rendered the command to send to a Houmao-managed slave.
 
+## Workflow
+
+1. Select the first available lane from **Delivery Ladder** without guessing stale runtime data.
+2. For mail, apply **Mail Body Rule** and the linked notifier policy.
+3. Deliver the rendered command without mutating the slave workdir.
+4. Apply **After Delivery**: stop after accepted delivery unless the user asks for follow-up inspection.
+5. Report the last attempted lane when delivery fails.
+
+If the task does not map cleanly to these steps, plan only from the supported delivery lanes and guardrails; report a blocker when no supported lane is available.
+
 ## Delivery Ladder
 
 1. Prefer live gateway prompt delivery when the slave has a healthy gateway and the request is immediate:

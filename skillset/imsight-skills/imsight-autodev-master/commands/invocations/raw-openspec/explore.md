@@ -37,6 +37,8 @@ This dispatch invokes the slave-local OpenSpec explore skill directly. It is a b
 4. Deliver with [../../../references/primitives/deliver-to-slave.md](../../../references/primitives/deliver-to-slave.md).
 5. After delivery is accepted, finish the turn by default.
 
+If the task does not map cleanly to these steps, plan only from this bounded exploration invocation and its guardrails; do not convert it into proposal or implementation work.
+
 ## Guardrails
 
 - Do not convert explore dispatch into proposal or implementation work.

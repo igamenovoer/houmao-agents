@@ -4,6 +4,16 @@ Use this reference to install the bundled proxy environment scripts onto a new h
 
 Do not record real proxy inventory from the current host in this skill. Discover candidates on the target host at setup time.
 
+## Workflow
+
+1. Follow **Install Workflow** and use the bundled scripts.
+2. Select or discover candidate groups, using `proxy-scan` when requested.
+3. Validate candidate protocols before persisting them.
+4. Update only the managed shell-startup block.
+5. Run the end-to-end checks and use **Troubleshooting** for failures.
+
+If the task does not map cleanly to these steps, plan only from the bundled scripts, candidate groups, validation, and managed-block rules; ask for the scan range or shell file when missing.
+
 ## Install Workflow
 
 1. Copy `scan-proxy-candidates.py`, `setup-proxy.sh`, and `unset-proxy.sh` into the target user's home directory unless the user specifies another install location.

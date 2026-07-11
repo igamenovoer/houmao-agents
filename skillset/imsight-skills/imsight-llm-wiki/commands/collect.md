@@ -24,6 +24,8 @@ Use this subcommand to find, deduplicate, and catalog a bounded set of external 
    ## [HH:MM] collect | <slug> — cataloged N artifacts
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing collection actions and constraints; do not broaden the requested artifact set.
+
 ## Constraints
 
 - `collect` searches the open web, not the existing local wiki.

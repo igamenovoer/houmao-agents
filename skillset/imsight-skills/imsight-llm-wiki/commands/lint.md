@@ -32,6 +32,8 @@ Use this subcommand to run health checks on the wiki.
    ## [HH:MM] lint | <N> issues found, <M> fixed
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing lint passes and constraints; keep fixes behind the required confirmation.
+
 ## Constraints
 
 - Do not apply fixes without user confirmation unless the fix is unambiguous and safe.

@@ -2,6 +2,15 @@
 
 Use this primitive only when a master is considering Houmao gateway mail-notifier appendix text.
 
+## Workflow
+
+1. Decide whether the instruction is one-off mail behavior or persistent notifier policy.
+2. Put one-off behavior in the mail body as required by **Core Rule**.
+3. Use appendix text only for intentional repeated policy under **When To Use Appendix Text**.
+4. Before changing appendix text, apply every check in **Before Changing Appendix Text**.
+
+If the task does not map cleanly to these steps, keep request-specific instructions in the mail body and leave persistent appendix text unchanged.
+
 ## Core Rule
 
 For one-off mail delivery behavior, include the rendered native invocation command at the top of the mail body. The mail body is the right place for request-specific instructions, skill names, OpenSpec commands, target change IDs, and any behavior that should apply only to this single mail.

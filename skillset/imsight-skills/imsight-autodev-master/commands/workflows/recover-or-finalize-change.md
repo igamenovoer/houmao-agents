@@ -18,6 +18,8 @@ Use this workflow when the master asks a slave to recover partial OpenSpec work,
 3. Use archive only when finalization is intended; use sync when the request is spec update without archival.
 4. Dispatch through the selected invocation leaf and stop after accepted delivery.
 
+If the task does not map cleanly to these steps, plan only from the existing recovery, sync, and archive routes; preserve the requested final state and ask when it is unclear.
+
 ## Guardrails
 
 - Do not combine recovery and archive into one master-side sequence unless the user explicitly asked for that full chain.

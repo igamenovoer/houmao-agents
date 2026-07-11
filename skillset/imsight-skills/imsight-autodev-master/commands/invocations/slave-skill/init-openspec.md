@@ -37,6 +37,8 @@ This dispatch invokes the predefined `imsight-autodev-slave init-openspec` opera
 4. Deliver with [../../../references/primitives/deliver-to-slave.md](../../../references/primitives/deliver-to-slave.md).
 5. After delivery is accepted, finish the turn by default.
 
+If the task does not map cleanly to these steps, plan only from the existing slave initialization invocation and its guardrails; preserve any workdir hint and do not initialize directly.
+
 ## Guardrails
 
 - Do not run `openspec init` from the master for the slave.

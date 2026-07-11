@@ -19,6 +19,17 @@ Use this skill only when explicitly invoked by name or when the request clearly 
 
 Do not activate it implicitly for ordinary development tasks that do not name `imsight-project-automation` or one of its maintained operations.
 
+## Workflow
+
+1. Read the request and identify the requested subcommand.
+2. If no subcommand or actionable task is present, handle `help`.
+3. For a task-only request, choose the applicable subcommand.
+4. For `openspec-one-pass`, load `commands/openspec-one-pass.md`.
+5. Ask for the smallest clarification when the subcommand or request body is ambiguous.
+6. Do not invent additional stages; add a command page when a new automation routine becomes reusable.
+
+If the task does not map cleanly to these steps, use your native planning tool only with the existing subcommands and constraints; report when no maintained routine matches.
+
 ## Invocation Contract
 
 - Preferred explicit form: `$imsight-project-automation use <subcommand> to do <task>`.
@@ -42,19 +53,6 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 | --- | --- | --- |
 | `help` | Explain this skill and list public subcommands | This entrypoint |
 | `openspec-one-pass` | Given one development request, run an OpenSpec lifecycle in one pass: explore, propose, apply, sync, and archive. | [commands/openspec-one-pass.md](commands/openspec-one-pass.md) |
-
-## Workflow
-
-When this skill is invoked, execute the following steps in order.
-
-1. **Read the request** and identify the requested subcommand.
-2. If no subcommand or actionable task is present, handle `help`: summarize this skill and list the subcommands.
-3. If the request is task-only, choose the applicable subcommand from the task.
-4. If the subcommand is `openspec-one-pass`, read [commands/openspec-one-pass.md](commands/openspec-one-pass.md).
-5. If the subcommand or required request body is ambiguous, ask for the smallest clarification needed.
-6. Do not invent additional workflow stages in this entrypoint; add a new subskill page when a new automation routine becomes reusable.
-
-If the user's task does not map cleanly to these steps, use your native planning tool to build a step-by-step plan using the subcommands and constraints provided by this skill, then execute the plan.
 
 ## Common Mistakes
 

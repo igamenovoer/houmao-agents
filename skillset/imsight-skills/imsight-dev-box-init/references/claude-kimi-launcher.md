@@ -2,6 +2,15 @@
 
 Use this reference when the user wants a local `claude-kimi` launcher that runs Claude Code against the Kimi Code Anthropic-compatible endpoint.
 
+## Workflow
+
+1. Resolve API-key handling under **Required Input** without printing or hard-coding the key.
+2. Apply the platform-specific paths and values in **Defaults**.
+3. Create the launcher and preserve **Runtime Argument Contract**.
+4. Run every applicable check in **Verification**.
+
+If the task does not map cleanly to these steps, plan only from this page's inputs, defaults, launcher contract, and verification rules; keep credentials out of commands and responses.
+
 ## Required Input
 
 You can provide a Kimi API key during setup, or let the generated launcher prompt for it on first run. Prefer an existing `KIMI_API_KEY` or `ANTHROPIC_API_KEY` only when the user explicitly wants to seed the shared Kimi key file during setup. If no key is available, still create the launcher; the launcher will prompt interactively on first use.

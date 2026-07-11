@@ -1,5 +1,15 @@
 # Report Synthesis
 
+## Workflow
+
+1. Select the report shape appropriate to the request.
+2. Group findings by user-relevant questions and separate facts from interpretation.
+3. Reconcile conflicts, dates, uncertainty, and source quality.
+4. Apply the relevant common-output guidance.
+5. Run every check in **Quality Bar** before finalizing.
+
+If the task does not map cleanly to these steps, plan only from the existing report shapes, synthesis rules, source evidence, and quality checks; preserve uncertainty rather than filling gaps.
+
 ## Imsight Report Shape
 
 Default report structure:

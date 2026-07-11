@@ -38,6 +38,8 @@ This dispatch invokes the slave-local OpenSpec sync-specs skill directly. It is 
 4. Deliver with [../../../references/primitives/deliver-to-slave.md](../../../references/primitives/deliver-to-slave.md).
 5. After delivery is accepted, finish the turn by default.
 
+If the task does not map cleanly to these steps, plan only from this sync invocation's prerequisites, rendering, delivery, and guardrails; do not imply archival.
+
 ## Guardrails
 
 - Do not sync specs locally when the request is slave dispatch.

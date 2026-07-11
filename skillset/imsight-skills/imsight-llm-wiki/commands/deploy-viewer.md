@@ -24,6 +24,8 @@ Use this subcommand to deploy, install, launch, repair, or update the bundled LL
    - exact launch command
    - PID, process-group stop command, and log path when launched in background
 
+If the task does not map cleanly to these steps, use your native planning tool with the existing deployment helper, options, and constraints; ask for required paths rather than guessing.
+
 ## Constraints
 
 - Do not bind to `0.0.0.0` unless the user explicitly asks and understands the viewer has no authentication.

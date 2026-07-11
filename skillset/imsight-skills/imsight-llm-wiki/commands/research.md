@@ -22,6 +22,8 @@ Use this subcommand to research a topic on the web and ingest high-signal source
    ## [HH:MM] research | <topic> — ingested N sources (touched M pages)
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing research, source, ingest, and logging constraints; do not weaken provenance requirements.
+
 ## Constraints
 
 - Do not ingest sources without user confirmation unless `--auto` is set.

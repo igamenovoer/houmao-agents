@@ -42,6 +42,8 @@ test -d "$TARGET_WORKDIR"
    ```
 9. Report the initialized path and any verification performed.
 
+If the task does not map cleanly to these steps, plan only from the existing target-workdir, temporary-generation, copy, cleanup, and verification rules; stop rather than broadening the initialization.
+
 ## Failure Handling
 
 - If `openspec/` already exists, do not overwrite, merge, or refresh it.

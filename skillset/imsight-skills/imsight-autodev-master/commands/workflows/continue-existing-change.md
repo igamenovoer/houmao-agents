@@ -18,6 +18,8 @@ Use this workflow when the master request names an existing OpenSpec change and 
 3. If the next phase is ambiguous, ask for the smallest clarification needed.
 4. Dispatch through the selected invocation leaf and stop after accepted delivery.
 
+If the task does not map cleanly to these steps, plan only from the existing change state and invocation leaves; preserve identifiers and ask which next phase is intended.
+
 ## Guardrails
 
 - Do not invent a change id.

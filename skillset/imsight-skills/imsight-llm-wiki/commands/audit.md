@@ -28,6 +28,8 @@ Use this subcommand to process human feedback from `audit/`.
    ## [HH:MM] audit | resolved <id> — <one-line what>
    ```
 
+If the task does not map cleanly to these steps, use your native planning tool with this command's existing audit actions and constraints; do not invent resolutions or apply unapproved feedback.
+
 ## Constraints
 
 - Never delete audit files, even rejected ones.
