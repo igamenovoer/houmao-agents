@@ -42,6 +42,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 | `help` | Explain this documentation-writing skill and list available subskills | This entrypoint |
 | `mermaid-graphing` | Create, revise, troubleshoot, or style Mermaid diagrams in Markdown, including flowcharts, sequence diagrams, state diagrams, class diagrams, ER diagrams, timelines, and Gantt charts | [commands/mermaid-graphing.md](commands/mermaid-graphing.md) |
 | `format-mermaid` | Reformat existing Mermaid diagrams in one or more Markdown documents to match the `mermaid-graphing` portable style | [commands/format-mermaid.md](commands/format-mermaid.md) |
+| `mermaid-syntax-check` | Check Mermaid source text or an `.mmd` file with the `mermaid` package without rendering an image or launching a browser | [commands/mermaid-syntax-check.md](commands/mermaid-syntax-check.md) |
 
 ## General Documentation Pass
 
