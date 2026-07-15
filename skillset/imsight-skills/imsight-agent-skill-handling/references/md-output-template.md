@@ -91,7 +91,7 @@ Prefer 2-5 concise paragraphs.
 ## Key Constraints
 
 <!--
-List required guardrails, ordering constraints, approval rules, exclusions, or "do not" rules.
+List negative-action guardrails, ordering constraints, approval rules, and other exclusions. Keep positive operation steps in the process description rather than presenting them as guardrails.
 If none are explicit, say "No explicit constraints found."
 -->
 

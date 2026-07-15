@@ -24,7 +24,7 @@ Use this subcommand to run health checks on the wiki.
 4. **Run stale checks only when explicitly requested** with `--stale` or `--stale-days N`:
    - articles whose `updated:` date is older than the threshold and whose raw sources have newer material.
 5. **Write findings** to `outputs/lint-report-<YYYY-MM-DD>.md`.
-6. **Propose a fix** for each issue.
+6. **Propose a fix** for each issue and update `README.md` research gaps when the report identifies missing pages.
 7. **Confirm fixes with the user** before applying them.
 8. **Apply confirmed fixes** and re-run lint.
 9. **Append a log entry**:
@@ -57,5 +57,4 @@ If the task does not map cleanly to these steps, use your native planning tool w
 
 - DO NOT run lint and ignore the output.
 - DO NOT fix links silently when the user may want to review them.
-- DO NOT forget to update `README.md` research gaps after finding missing pages.
 - DO NOT run stale checks by default.

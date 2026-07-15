@@ -24,6 +24,6 @@ If the task does not map cleanly to these steps, plan only from the existing lif
 
 ## Guardrails
 
-- DO NOT duplicate command rendering here; use the selected invocation leaf.
+- DO NOT duplicate command rendering in this workflow.
 - DO NOT turn a bounded phase request into one-pass automation.
 - DO NOT inspect slave follow-up unless explicitly asked.

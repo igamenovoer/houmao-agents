@@ -70,7 +70,7 @@ Each operational subcommand is independently invocable; the table order does not
 ## Guardrails
 
 - DO NOT activate this skill for an ordinary project request that did not name it or was not routed from another skill.
-- DO NOT treat the two subcommand categories as required phases; MUST select only the operation or sequence requested.
+- DO NOT treat the two subcommand categories as required phases.
 - DO NOT rename, hide, or omit `init-pixi-project` or any other public subcommand; these names are part of the command contract.
 - DO NOT mutate the original checkout after `impl-in-worktree` creates an isolated worktree.
 

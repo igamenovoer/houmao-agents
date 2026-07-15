@@ -53,7 +53,7 @@ If the task does not map cleanly to these steps, plan only from the existing tar
 
 ## Guardrails
 
-- MUST copy only `$TMP/openspec`; DO NOT copy `.codex/`, `.claude/`, or other tool-local assistant state.
+- DO NOT copy `.codex/`, `.claude/`, other tool-local assistant state, or any temporary path other than `$TMP/openspec` into the target workdir.
 - DO NOT run `openspec init` directly in the target workdir for this workflow.
 - DO NOT initialize when the target workdir is ambiguous.
 - DO NOT delete an existing `openspec/`.

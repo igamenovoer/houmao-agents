@@ -110,9 +110,8 @@ No helper subcommands are currently exposed. The internal primitives remain list
 
 ## Guardrails
 
-- DO NOT guess the slave agent selector, tool lane, gateway posture, mailbox posture, or delivery lane; MUST use the inspection primitive to recover slave metadata.
-- MUST use supported Houmao inspection and messaging surfaces instead of direct runtime file searches; see [references/primitives/inspect-slave.md](references/primitives/inspect-slave.md) and [references/primitives/deliver-to-slave.md](references/primitives/deliver-to-slave.md).
-- MUST render OpenSpec and slave mega-skill commands with the syntax matching the slave platform (`$...` for Codex, `/...` for Claude); see [references/primitives/render-invocation.md](references/primitives/render-invocation.md). DO NOT mix the two syntaxes.
-- MUST include the rendered invocation command in the mail body for one-off mail-based messaging; see [references/primitives/mail-notifier-policy.md](references/primitives/mail-notifier-policy.md).
-- DO NOT initialize, copy, or mutate files in the slave workdir directly; MUST dispatch those requests to the slave.
+- DO NOT guess the slave agent selector, tool lane, gateway posture, mailbox posture, or delivery lane.
+- DO NOT bypass supported Houmao inspection and messaging surfaces with direct runtime file searches.
+- DO NOT mix Codex `$...` syntax with Claude `/...` syntax when rendering slave commands.
+- DO NOT initialize, copy, or mutate files in the slave workdir directly.
 - DO NOT wait for or inspect the slave's follow-up, gateway state, mailbox state, TUI output, or results unless the user explicitly asks.

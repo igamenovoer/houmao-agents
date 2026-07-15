@@ -44,4 +44,4 @@ If the task does not map cleanly to these steps, plan only from the existing one
 
 - DO NOT split one-pass work into multiple OpenSpec prompts from the master.
 - DO NOT monitor, poll, or inspect the slave after delivery unless explicitly asked.
-- DO NOT use direct OpenSpec command prefixes for one-pass dispatch; target `imsight-autodev-slave`.
+- DO NOT use direct OpenSpec command prefixes for one-pass dispatch.

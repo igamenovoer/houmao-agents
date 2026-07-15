@@ -50,6 +50,7 @@ Name new subskill references after the first-level subcommand, keep each referen
 ## Guardrails
 
 - DO NOT route work here when a more specific Imsight skill owns it.
-- DO NOT create project-root Docker files; MUST use the requested service-local layout under `<project-dir>/dockers/<service-name>/`.
+- DO NOT create project-root Docker files for a service-local setup.
 - DO NOT skip existing project-pattern and local-image discovery.
-- DO NOT embed secrets; MUST read existing Docker files before overwriting them.
+- DO NOT embed secrets.
+- DO NOT overwrite existing Docker files without reading them first.

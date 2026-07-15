@@ -150,10 +150,11 @@ Use bug statuses `open`, `provisional-patch`, `proposed`, `applied`, `verified`,
 
 ## Guardrails
 
-- MUST preserve pre-existing user changes and MUST record the baseline before editing.
+- DO NOT overwrite, discard, or hide pre-existing user changes.
 - DO NOT use destructive git operations to clean the worktree or hide failures.
-- MUST capture evidence before source changes and MUST retain the original outcome.
-- MUST keep testing within the user-provided cases and directly required regression checks.
-- MUST stop for unsafe commands, missing credentials, inaccessible external systems, or ambiguity that could cause harmful changes.
-- MUST report failed tests, failed validation, and incomplete apply work explicitly.
+- DO NOT edit source before capturing evidence for the unexpected outcome.
+- DO NOT erase the original outcome after a continuation patch changes a rerun.
+- DO NOT expand testing beyond the user-provided cases and directly required regression checks.
+- DO NOT continue through unsafe commands, missing credentials, inaccessible external systems, or ambiguity that could cause harmful changes.
+- DO NOT conceal failed tests, failed validation, or incomplete apply work.
 - DO NOT sync or archive the OpenSpec change.

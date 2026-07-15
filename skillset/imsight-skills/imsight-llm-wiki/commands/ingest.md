@@ -46,5 +46,5 @@ If the task does not map cleanly to these steps, use your native planning tool w
 
 - DO NOT save a source to the wrong `raw/` subfolder.
 - DO NOT write a full rewrite instead of a summary.
-- DO NOT cram a topic into one oversized page; split pages that exceed 1200 words.
+- DO NOT cram a topic into one oversized page.
 - DO NOT add raw references unless the user asks for them.

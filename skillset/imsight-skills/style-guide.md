@@ -96,6 +96,16 @@ If the skill mainly provides tools, constraints, or subcommands rather than a ri
 
 These rules do not prevent adding other sections. They only enforce that every skill has a clear, actionable workflow entrypoint.
 
+## Guardrail Authoring
+
+Every skill entrypoint must have a concise `## Guardrails` section focused exclusively on negative-action prevention. Subcommand-like pages may add their own guardrails when they need page-specific prohibitions.
+
+- Start every guardrail with `DO NOT ...` and state one prohibited action.
+- Include only prohibitions that materially protect the skill's design intent.
+- Put positive actions, required operations, ordering, recipes, and output requirements in the workflow, core pattern, procedure, contract, or another substantive section.
+- Do not use guardrails to present operation steps, repeat the workflow, or create a second procedural checklist.
+- Omit universal common-sense warnings that do not address a failure specific to the skill.
+
 ## Example skeleton
 
 Below is a minimal collection-of-routines skill that follows these rules. Writers may add any other sections they need.
@@ -151,6 +161,10 @@ Resolve `<output-dir>` in this priority:
 ## Capturing Knowledge
 
 Write results to `<output-dir>/results/<timestamp>-<what>.md`.
+
+## Guardrails
+
+- DO NOT write results outside the resolved output directory.
 
 ## Additional sections
 

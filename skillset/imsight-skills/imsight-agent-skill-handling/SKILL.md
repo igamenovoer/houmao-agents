@@ -26,7 +26,6 @@ If the user's task does not map cleanly to these steps, use your native planning
 - Task-only form: `$imsight-agent-skill-handling <task prompt>` means choose the applicable subcommand from the task.
 - No subcommand and no task means `help`.
 - `help` summarizes this skill and lists the subcommands below.
-- Do not use this skill unless the user explicitly names it.
 
 ## Subcommands
 
@@ -50,7 +49,10 @@ Use the skill folder explicitly provided by the user. If none is provided:
 2. Otherwise, use the current working directory if it contains `SKILL.md`.
 3. If multiple candidates remain, ask the user which skill to target.
 
-Do not analyze or format a parent skillset directory as a single skill unless the user explicitly asks for a suite-level operation.
+## Guardrails
+
+- DO NOT invoke this skill unless the user explicitly names it.
+- DO NOT analyze or format a parent skillset directory as a single skill unless the user explicitly asks for a suite-level operation.
 
 ## Maintenance
 

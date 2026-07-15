@@ -36,7 +36,7 @@ Turn one request into:
    - Prefer `openspec-archive-change` for finalization, because it assesses delta-spec sync and archives the completed change.
    - If the local workflow or archive prompt requires an explicit sync first, invoke `openspec-sync-specs` on the same change, then invoke `openspec-archive-change`.
    - In `interactive` mode, stop here after sync/archive and wait for final follow-up instructions if any.
-6. Report the resulting change id/path, implementation summary, verification performed, archive location, and any residual risks.
+6. Report the resulting change id/path, implementation summary, verification performed, archive location, and any residual risks. If a test, OpenSpec validation, sync, or archive operation failed, include the failure and the last successful stage.
 
 If the task does not map cleanly to these steps, use your native planning tool only with the maintained OpenSpec lifecycle, current modes, stop conditions, and guardrails; do not invent stages.
 
@@ -55,10 +55,10 @@ If the task does not map cleanly to these steps, use your native planning tool o
 
 ## Guardrails
 
-- DO NOT skip exploration; the proposal MUST be grounded in current repository state.
+- DO NOT skip exploration.
 - DO NOT apply before a proposal exists.
 - DO NOT archive until the implementation is complete and verification has been attempted.
 - DO NOT use broad destructive git operations.
-- DO NOT silently ignore failed tests, failed OpenSpec validation, failed sync, or archive errors; MUST report them with the last successful stage.
-- DO NOT treat this as a planning-only workflow. If the user requested one-pass execution, MUST continue through apply and archive unless blocked.
-- DO NOT ask routine confirmation questions in `automation` mode; MUST reserve questions for true blockers or externally required confirmations.
+- DO NOT silently ignore failed tests, failed OpenSpec validation, failed sync, or archive errors.
+- DO NOT treat a one-pass request as a planning-only workflow.
+- DO NOT ask routine confirmation questions in `automation` mode.

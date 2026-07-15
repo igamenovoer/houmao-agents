@@ -19,7 +19,6 @@ If the task does not map cleanly to these steps, use your native planning tool w
 
 ## Constraints
 
-- Do not split or merge pages without user confirmation.
 - Every wiki page must appear exactly once in `wiki/index.md` after compilation.
 - Wikilinks must remain canonical: `[[wiki/concepts/foo|Foo]]`.
 
@@ -38,6 +37,4 @@ If the task does not map cleanly to these steps, use your native planning tool w
 
 ## Guardrails
 
-- DO NOT compile without reading `README.md` first.
-- DO NOT create folder-split pages without updating the `wiki/index.md` hierarchy.
-- DO NOT leave broken wikilinks after a merge.
+- DO NOT split or merge pages without user confirmation.

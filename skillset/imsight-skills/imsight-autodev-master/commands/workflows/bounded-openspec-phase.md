@@ -26,4 +26,4 @@ If the task does not map cleanly to these steps, plan only from the listed phase
 
 - DO NOT chain multiple raw OpenSpec phases from this workflow.
 - DO NOT use `imsight-autodev-slave openspec-one-pass` when the user asked for one bounded phase.
-- DO NOT restate command semantics here; the invocation leaf owns them.
+- DO NOT restate command semantics in this workflow.

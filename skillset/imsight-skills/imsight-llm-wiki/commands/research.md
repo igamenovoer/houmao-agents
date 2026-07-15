@@ -47,4 +47,3 @@ If the task does not map cleanly to these steps, use your native planning tool w
 
 - DO NOT ingest search results without reading them.
 - DO NOT treat search snippets as enough evidence to create concept pages.
-- DO NOT forget to present sources for confirmation in non-auto mode.

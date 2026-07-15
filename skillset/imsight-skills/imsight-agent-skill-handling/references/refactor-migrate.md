@@ -222,12 +222,12 @@ Return a concise chat summary with:
 
 ## Guardrails
 
-- DO NOT treat refactor migration as a cosmetic rewrite; MUST preserve behavior.
-- DO NOT rewrite from intuition; MUST rewrite from the deep-inspection output.
-- DO NOT inspect mutable runtime files during self-migration; MUST inspect the snapshot under `org/src/`.
+- DO NOT treat refactor migration as a cosmetic rewrite that changes or drops source behavior.
+- DO NOT rewrite from intuition or without grounding the target in deep-inspection output.
+- DO NOT inspect mutable runtime files during self-migration or treat them as source evidence.
 - DO NOT overwrite the target `SKILL.md` or `agents/openai.yaml` with source files.
 - DO NOT edit files under `org/src/` after copying them.
 - DO NOT drop source gates, blockers, evidence handoffs, assumptions, inputs, or outputs because they do not fit the target's first draft.
-- DO NOT bind unresolved storage, tools, routes, or environment assumptions too early; MUST use placeholders.
+- DO NOT bind unresolved storage, tools, routes, or environment assumptions to guessed concrete values.
 - DO NOT leave workflow steps dependent on hidden source knowledge that is absent from the target runtime files.
 - DO NOT mix guidance, preferences, constraints, and quality gates into one prose block.

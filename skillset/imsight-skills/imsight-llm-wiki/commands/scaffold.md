@@ -10,7 +10,7 @@ Use this subcommand to create a new LLM Wiki directory tree.
    python3 scripts/scaffold.py <wiki-root> "<Topic Title>"
    ```
 3. **Verify the created tree** includes `README.md`, `wiki/index.md`, `log/YYYYMMDD.md`, `audit/`, `raw/`, `wiki/`, and `outputs/`.
-4. **Prompt the user** to fill in `README.md` scope, naming conventions, and open research questions.
+4. **Prompt the user** to fill in `README.md` scope, exclusions, naming conventions, and open research questions.
 5. **Append a log entry** if the user asks for one:
    ```markdown
    ## [HH:MM] scaffold | Initialized <Topic Title> knowledge base
@@ -35,4 +35,3 @@ If the task does not map cleanly to these steps, use your native planning tool w
 ## Guardrails
 
 - DO NOT scaffold into a directory that already contains files.
-- DO NOT forget to ask the user to define scope and exclusions in `README.md`.

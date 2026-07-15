@@ -75,11 +75,11 @@ This skill operates on a user-provided wiki root. It does not write skill-owned 
 
 ## Guardrails
 
-- DO NOT use general knowledge instead of wiki content for `query`; MUST ground `query` answers in wiki content.
+- DO NOT use general knowledge instead of wiki content for `query`.
 - DO NOT run `compile` splits or merges without user confirmation.
 - DO NOT silently ignore open `audit/*.md` files.
-- DO NOT create non-canonical wikilinks such as `[[concepts/foo|Foo]]`; MUST use `[[wiki/concepts/foo|Foo]]`.
-- DO NOT copy large binaries into `raw/`; MUST create a pointer file in `raw/refs/`.
+- DO NOT create non-canonical wikilinks such as `[[concepts/foo|Foo]]`.
+- DO NOT copy large binaries into `raw/`.
 
 ## References
 

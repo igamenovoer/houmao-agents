@@ -18,7 +18,7 @@ This skill receives a master's request, selects the matching maintained slave op
 
 ## Workflow
 
-1. Read the master's request and identify the requested slave subcommand.
+1. Read the master's request, preserve its task semantics and constraints, and identify the requested slave subcommand.
 2. If no subcommand or actionable task is present, handle `help`.
 3. If the request is task-only, choose the applicable subcommand from the task.
 4. Load `commands/openspec-one-pass.md` for `openspec-one-pass` or `commands/init-openspec.md` for `init-openspec`.
@@ -44,6 +44,10 @@ When this skill writes slave-side notes, reports, manifests, or other skill-owne
 
 This contract does not relocate OpenSpec changes, implementation edits, or initialized `openspec/` trees; those stay in the target workdir required by the selected OpenSpec workflow.
 
+## Workspace and Failure Handling
+
+Keep implementation, verification, sync, and archiving inside the current repository or an explicitly provided workspace. If a required OpenSpec skill is unavailable, an OpenSpec command fails, or the repository lacks the expected OpenSpec structure, stop and report the failure and the affected operation clearly.
+
 ## Subcommands
 
 | Subcommand | Use For | Detail |
@@ -55,7 +59,4 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 ## Guardrails
 
 - DO NOT activate the skill without an explicit named operation.
-- MUST preserve the master's request text and carry it through the selected subskill workflow.
-- MUST prefer maintained OpenSpec skills over ad hoc artifact editing when an OpenSpec operation is requested.
-- MUST keep implementation, verification, sync, and archiving scoped to the current repository or explicitly provided workspace.
-- MUST stop and report clearly if a required OpenSpec skill is unavailable, an OpenSpec command fails, or the repository does not contain the expected OpenSpec structure.
+- DO NOT continue after a required OpenSpec skill is unavailable, an OpenSpec command fails, or the repository lacks the expected OpenSpec structure.

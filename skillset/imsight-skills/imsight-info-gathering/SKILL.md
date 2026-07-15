@@ -93,5 +93,5 @@ Load `commands/find-libgen.md` when the user asks to search a LibGen mirror, res
 - DO NOT treat search-result snippets as a sufficient evidence base.
 - DO NOT omit the source ledger for durable research work.
 - DO NOT use weak secondary sources when a responsible primary source exists.
-- DO NOT write source-by-source summaries; MUST synthesize findings and conflicts.
+- DO NOT write source-by-source summaries unless the user requests an annotated bibliography.
 - DO NOT bypass the maintained LibGen workflow or documentation-writing route.

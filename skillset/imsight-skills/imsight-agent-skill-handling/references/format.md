@@ -29,6 +29,8 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - Multiple-choice steps let the agent choose the option that fits the user's task; they do not hardcode one option without evidence.
 - Freeform skills tell the agent to use its native planning tool to plan execution from the available tools, constraints, subcommands, and user request.
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
+- The skill entrypoint has a concise `## Guardrails` section in which every bullet starts with `DO NOT ...` and prevents a negative action specific to the skill.
+- Guardrails do not contain positive requirements, operation steps, workflow repetitions, or a second procedural checklist; those instructions appear in substantive skill sections.
 - Skill-based use cases and chat-turn examples show the visible user prompt or user action and the expected final AI response shape; they do not include hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or thinking process unless the user explicitly asks for that process to be documented. They also include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
 
 ## Subcommand Structure Checks
@@ -78,6 +80,7 @@ When `create` or `format` edits a skill, task-specific detail is welcome but mus
 - If the skill has multiple modes, subcommands, or variants, create `references/<subcommand>.md` detail pages when the routines have their own executable workflows, then link them from the workflow or subcommand table.
 - If the skill is a collection of peer routines, keep one plain `## Subcommands` table. If the skill is a complex procedure, use the three-type split from **Subcommand Structure Checks**.
 - Preserve all domain-specific content: examples, guardrails, success criteria, and output templates. Only the structure should change, not the substance.
+- Normalize guardrails into negative-action prevention: rewrite each retained prohibition as one `DO NOT ...` bullet, and move positive requirements or operation steps into the workflow, procedure, contract, or another substantive section without changing their meaning.
 - When examples expose hidden reasoning or thinking process, revise them into observable response contracts: decisions, commands, diagnostics, files, validation, or next-step guidance.
 
 The goal is a skill that is both well-formatted and rich enough to execute the user's task correctly.
@@ -114,6 +117,8 @@ After validation, inspect changed files for:
 - missing `## Workflow` sections in subcommand-like pages,
 - workflows without numbered steps,
 - workflows without a freeform fallback,
-- accidental changes to trigger or output semantics.
-- AI response examples that expose hidden reasoning or thinking process without an explicit user request.
+- guardrails that do not start with `DO NOT ...`,
+- positive requirements or operation steps presented as guardrails,
+- accidental changes to trigger or output semantics,
+- AI response examples that expose hidden reasoning or thinking process without an explicit user request,
 - AI response examples that omit the example-content warning when the skill includes user/AI chat examples.

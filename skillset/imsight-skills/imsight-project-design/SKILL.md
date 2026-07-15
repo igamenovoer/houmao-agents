@@ -11,7 +11,7 @@ Use this skill as an Imsight project-design umbrella for designing staged aspect
 
 The skill behaves like a main command with subcommands: complete the requested project-design stage within the supported scope, report what changed, then pause unless the user explicitly asks for another stage.
 
-This skill is portable across host projects. Do not assume a specific repository layout, package name, planning framework, or source tree beyond files the user provides or files discovered in the active host project.
+This skill is portable across host projects. Resolve repository layout, package names, planning frameworks, and source trees from files the user provides or files discovered in the active host project.
 
 ## When to Use
 
@@ -19,7 +19,6 @@ This skill is portable across host projects. Do not assume a specific repository
 - Use for the supported feature-planning stages listed below.
 - Use `manual-refine` for conversational, user-directed design decisions that must be recorded as ADRs and propagated across existing artifacts.
 - Use command form such as `$imsight-project-design use define-feature to ...`, or infer the narrowest command from a task-only request.
-- Do not assume a host-project layout beyond user-provided or discovered files.
 
 ## Workflow
 
@@ -66,7 +65,7 @@ When output artifacts are involved, resolve the feature design directory in this
 
 If the user gives an artifact root and a feature name, create or update `<artifact-root>/<YYYY-MM-DD-kebab-feature-name>/` unless the root already names the intended feature design directory. If the task appears to continue an existing feature, search the user-provided location, then `IMSIGHT_SKILL_OUTPUT_DIR`, then `.imsight-arts/feature-design/` for matching directory names, README titles, feature requirement titles, or use case summaries before creating a new directory.
 
-Do not overwrite an existing feature design folder during `scaffold` unless the user explicitly asks. For update subcommands, preserve unrelated sections and revise only the target artifact.
+For update subcommands, preserve unrelated sections and revise only the target artifact.
 
 ## Current Artifact Contracts
 
@@ -92,6 +91,12 @@ Do not overwrite an existing feature design folder during `scaffold` unless the 
 
 Use placeholder templates from `assets/templates/feature/` when creating new files. `scaffold` copies only the baseline folder skeleton templates. Design subcommands may copy the more specific templates before replacing placeholders with substantive content. `manual-refine` uses `assets/templates/feature/adrs/adr.md` for new ADRs but does not add ADRs during scaffolding.
 
+## Guardrails
+
+- DO NOT overwrite an existing feature design folder during `scaffold` unless the user explicitly asks.
+- DO NOT assume a host-project layout or convention that user input and repository inspection did not establish.
+- DO NOT treat activation, questions, tentative suggestions, or unrelated conversation as approved refinements.
+
 ## Troubleshooting Guide
 
 - Running every subcommand end to end
@@ -110,9 +115,5 @@ Use placeholder templates from `assets/templates/feature/` when creating new fil
   - If you are making `agent-task.md` too broad, then write minimal implementation instructions tied to stabilized feature, use case, and interface artifacts.
 - Using `design-interface` to design an agent skill
   - If you are using `design-interface` to design an agent skill, then invoke `design-skill` instead because `design-interface` writes non-skill interface and contract artifacts.
-- Treating activation, questions, tentative suggestions, or unrelated conversation as refinements
-  - If you are treating activation, questions, tentative suggestions, or unrelated conversation as refinements, then record only concrete decision-bearing instructions through `manual-refine`.
 - Updating one artifact without propagating a recorded refinement to other affected design documents
   - If you are updating one artifact without propagating a recorded refinement to other affected design documents, then run the `manual-refine` consistency review across affected artifacts.
-- Assuming a specific host project layout
-  - If you are assuming a specific host project layout, then inspect the active project and use neutral project language unless the user provides project-specific conventions.

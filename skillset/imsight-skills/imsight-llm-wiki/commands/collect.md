@@ -49,6 +49,6 @@ If the task does not map cleanly to these steps, use your native planning tool w
 
 ## Guardrails
 
-- DO NOT let "all" mean the entire internet; keep collections bounded and discoverable.
+- DO NOT interpret "all" as an unbounded request to collect from the entire internet.
 - DO NOT record naked URLs without context or provenance.
 - DO NOT create a collection so large it becomes unreadable.

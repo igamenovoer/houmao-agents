@@ -44,7 +44,7 @@ Important options:
    ```
 6. When using defaults, omit `--mirror` and/or `--proxy` instead of restating configured values in the command.
 7. If the user wants reusable output, save JSON under the output directory selected by the parent skill's Output Contract, normally `<project-dir>/.imsight-arts/info-gather/libgen/`.
-8. For download feasibility checks, prefer partial-byte tests:
+8. For download feasibility or connectivity checks, use partial-byte tests:
    ```bash
    wget --header='Range: bytes=0-1023' -O sample.part '<direct-get-url>'
    ```
@@ -55,6 +55,4 @@ If the task does not map cleanly to these steps, plan only from the bundled scri
 ## Guardrails
 
 - DO NOT full-download large files unless the user explicitly asks for a full download.
-- MUST use byte-range downloads for connectivity tests.
 - DO NOT claim a URL is downloadable until the direct URL is resolved, or a partial `wget` test succeeds when requested.
-- MUST respect user-provided output locations and the parent skill's Output Contract for any saved JSON, logs, or sample byte files.

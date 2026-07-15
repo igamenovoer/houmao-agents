@@ -59,7 +59,7 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 
 ## Guardrails
 
-- DO NOT route ordinary ad-hoc tasks through this skill; MUST handle them directly.
+- DO NOT route ordinary ad-hoc tasks through this skill.
 - DO NOT skip the subcommand page and inline a complex automation workflow in `SKILL.md`.
 - DO NOT invent unsupported subcommands that are not backed by a subskill page.
 - DO NOT treat discovery-time continuation patches as a substitute for the required OpenSpec proposal and apply stages.

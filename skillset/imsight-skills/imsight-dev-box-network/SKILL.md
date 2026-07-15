@@ -79,7 +79,7 @@ Copy them to the target dev box when missing or stale, make them executable, the
 ## Guardrails
 
 - DO NOT guess tunnel topology, aliases, ports, or exposure requirements.
-- DO NOT rewrite bundled tunnel loops; MUST use the supplied scripts.
+- DO NOT rewrite bundled tunnel loops.
 - DO NOT expose SSH login tunnels publicly without an explicit request.
 - DO NOT create systemd units that block startup or shutdown.
 - DO NOT remove a working reverse SSH access tunnel while cleaning unrelated forwarding.
