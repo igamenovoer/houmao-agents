@@ -103,7 +103,19 @@ Rules for the frontmatter:
 1. **## Overview** — core principle in 1-2 sentences.
 2. **## When to Use** — symptoms and contexts that trigger this skill. Include when NOT to use.
 3. **## Workflow** or **Core Pattern** — the technique, pattern, or rule the agent must follow.
-4. **## Common Mistakes** — what goes wrong and how to fix it.
+4. **## Guardrails** — a short bullet list of "DO NOT ..." and "MUST ..." rules that steer the agent away from acting against the skill's design intent and reinforce the preferred actions aligned with that intent.
+5. **## Troubleshooting Guide** — a nested bullet list of problems the agent may encounter while executing the skill and the corrective action to take for each.
+
+Write guardrails as a concise bullet list. Each item should state a single rule in one of two forms:
+
+- **"DO NOT ..."** for prohibited actions.
+- **"MUST ..."** for required actions.
+
+Keep the list sparse, concise, and stick to essentials; include only rules that materially protect the skill's intent.
+
+Write the troubleshooting guide as a two-level nested bullet list. The first level names the problem. The second level states the solution or corrective action. Use the form "If <problem>, then <action>." for the solution.
+
+Focus on problems tightly related to the actions described by this skill. Avoid universal common-sense troubleshooting that applies to any skill. Keep the list sparse, concise, and stick to essentials; include only problems an agent is likely to hit while executing this skill's workflow. Do not restate guardrails or general workflow steps.
 
 Write the workflow as numbered steps. Keep each step concise and point to a detail section when it needs more explanation. If a main step has several internal branches or substeps, present them as a nested list under that step instead of a long paragraph. Keep the nesting depth to three levels or fewer. End with a fallback for freeform tasks. Move long procedural detail, examples, edge cases, and configuration notes out of the workflow into dedicated sections or `references/<page>.md` files.
 
@@ -146,7 +158,7 @@ Validate the skill before finishing:
 1. Confirm `SKILL.md` exists and has valid YAML frontmatter with `name` and `description`.
 2. Confirm `name` matches the directory name for project-scoped skills.
 3. Confirm the description starts with "Use when...", is in third person, and does not summarize the workflow.
-4. Confirm the overview, when-to-use, and workflow/core-pattern sections exist.
+4. Confirm the overview, when-to-use, workflow/core-pattern, guardrails, and troubleshooting-guide sections exist.
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long detail has been moved out of the workflow into dedicated sections or reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the skill functionality.
