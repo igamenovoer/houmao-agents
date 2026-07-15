@@ -34,6 +34,6 @@ For mail delivery, put the rendered native invocation command at the top of the 
 
 ## Guardrails
 
-- Do not mutate the slave workdir from the master as part of delivery.
-- Do not infer stale gateway URLs or mailbox roots from memory.
-- Do not use mail-notifier appendix text for one-off request behavior; see [mail-notifier-policy.md](mail-notifier-policy.md).
+- DO NOT mutate the slave workdir from the master as part of delivery.
+- DO NOT infer stale gateway URLs or mailbox roots from memory.
+- DO NOT use mail-notifier appendix text for one-off request behavior; see [mail-notifier-policy.md](mail-notifier-policy.md).

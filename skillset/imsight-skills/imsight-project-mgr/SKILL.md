@@ -67,12 +67,12 @@ Each operational subcommand is independently invocable; the table order does not
 - Route networking to `imsight-dev-box-network` and miscellaneous infrastructure to `imsight-project-misc`.
 - Within `impl-in-worktree`, this skill owns the isolated branch, worktree, verification, and local-delivery boundary. The native coding workflow or explicitly named domain skill owns implementation logic.
 
-## Common Mistakes
+## Guardrails
 
-- Activating this skill for an ordinary project request that did not name it and was not routed from another skill. Handle the request normally instead.
-- Treating the two subcommand categories as required phases. Select only the operation or sequence requested.
-- Renaming or hiding the four retained operations, or omitting `init-pixi-project`. These public names are part of the command contract.
-- Mutating the original checkout after `impl-in-worktree` creates an isolated worktree.
+- DO NOT activate this skill for an ordinary project request that did not name it or was not routed from another skill.
+- DO NOT treat the two subcommand categories as required phases; MUST select only the operation or sequence requested.
+- DO NOT rename, hide, or omit `init-pixi-project` or any other public subcommand; these names are part of the command contract.
+- DO NOT mutate the original checkout after `impl-in-worktree` creates an isolated worktree.
 
 ## Maintenance
 

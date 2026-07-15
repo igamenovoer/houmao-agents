@@ -43,8 +43,8 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - `wiki/index.md` is updated with new pages.
 - A log entry is appended.
 
-## Common Mistakes
+## Guardrails
 
-- Ingesting search results without reading them.
-- Treating search snippets as enough evidence to create concept pages.
-- Forgetting to present sources for confirmation in non-auto mode.
+- DO NOT ingest search results without reading them.
+- DO NOT treat search snippets as enough evidence to create concept pages.
+- DO NOT forget to present sources for confirmation in non-auto mode.

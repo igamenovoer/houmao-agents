@@ -88,10 +88,10 @@ Load `commands/find-libgen.md` when the user asks to search a LibGen mirror, res
 - Cite sources with links in the final answer whenever external information shaped the conclusion.
 - State uncertainty directly when sources disagree, are stale, or are not authoritative enough.
 
-## Common Mistakes
+## Guardrails
 
-- Treating search-result snippets as a sufficient evidence base.
-- Omitting the source ledger for durable research work.
-- Using weak secondary sources when a responsible primary source exists.
-- Writing source-by-source summaries instead of synthesizing findings and conflicts.
-- Bypassing the maintained LibGen workflow or documentation-writing route.
+- DO NOT treat search-result snippets as a sufficient evidence base.
+- DO NOT omit the source ledger for durable research work.
+- DO NOT use weak secondary sources when a responsible primary source exists.
+- DO NOT write source-by-source summaries; MUST synthesize findings and conflicts.
+- DO NOT bypass the maintained LibGen workflow or documentation-writing route.

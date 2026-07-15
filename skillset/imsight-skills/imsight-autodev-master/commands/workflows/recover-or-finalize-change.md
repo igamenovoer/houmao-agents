@@ -22,6 +22,6 @@ If the task does not map cleanly to these steps, plan only from the existing rec
 
 ## Guardrails
 
-- Do not combine recovery and archive into one master-side sequence unless the user explicitly asked for that full chain.
-- Do not watch results after dispatch unless explicitly asked.
-- Do not change mail-notifier appendix text to force a one-off recovery behavior.
+- DO NOT combine recovery and archive into one master-side sequence unless the user explicitly asked for that full chain.
+- DO NOT watch results after dispatch unless explicitly asked.
+- DO NOT change mail-notifier appendix text to force a one-off recovery behavior.

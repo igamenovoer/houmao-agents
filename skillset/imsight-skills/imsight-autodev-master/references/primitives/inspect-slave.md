@@ -54,7 +54,7 @@ If the task does not map cleanly to these steps, plan only from the supported re
 
 ## Guardrails
 
-- Do not mutate slave state during inspection.
-- Do not start with raw tmux, raw runtime file searches, or direct `.houmao/runtime` scanning.
-- Do not infer live gateway base URLs or mailbox bindings from stale context.
-- Do not inspect follow-up output after delivery unless explicitly asked.
+- DO NOT mutate slave state during inspection.
+- DO NOT start with raw tmux, raw runtime file searches, or direct `.houmao/runtime` scanning.
+- DO NOT infer live gateway base URLs or mailbox bindings from stale context.
+- DO NOT inspect follow-up output after delivery unless explicitly asked.

@@ -36,8 +36,8 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - No orphan pages created.
 - `wiki/index.md` lists every page exactly once.
 
-## Common Mistakes
+## Guardrails
 
-- Compiling without reading `README.md` first.
-- Creating folder-split pages without updating `wiki/index.md` hierarchy.
-- Leaving broken wikilinks after a merge.
+- DO NOT compile without reading `README.md` first.
+- DO NOT create folder-split pages without updating the `wiki/index.md` hierarchy.
+- DO NOT leave broken wikilinks after a merge.

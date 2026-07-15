@@ -54,14 +54,8 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 
 ## Guardrails
 
-- Preserve the master's request text and carry it through the selected subskill workflow.
-- Prefer maintained OpenSpec skills over ad hoc artifact editing when an OpenSpec operation is requested.
-- Keep implementation, verification, sync, and archiving scoped to the current repository or explicitly provided workspace.
-- Stop and report clearly if a required OpenSpec skill is unavailable, an OpenSpec command fails, or the repository does not contain the expected OpenSpec structure.
-
-## Common Mistakes
-
-- Activating the skill without an explicit named operation.
-- Dropping or rewriting the master's request instead of carrying it through.
-- Replacing maintained OpenSpec workflows with ad hoc artifact edits.
-- Continuing after a required skill, command, or repository structure fails.
+- DO NOT activate the skill without an explicit named operation.
+- MUST preserve the master's request text and carry it through the selected subskill workflow.
+- MUST prefer maintained OpenSpec skills over ad hoc artifact editing when an OpenSpec operation is requested.
+- MUST keep implementation, verification, sync, and archiving scoped to the current repository or explicitly provided workspace.
+- MUST stop and report clearly if a required OpenSpec skill is unavailable, an OpenSpec command fails, or the repository does not contain the expected OpenSpec structure.

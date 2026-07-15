@@ -76,10 +76,10 @@ Copy them to the target dev box when missing or stale, make them executable, the
 - For systemd tunnel services, use foreground `--block` under `Type=simple`; do not use `network-online.target`, `ExecStartPre` connectivity checks, readiness waits, `--background`, or `nohup`; keep shutdown fast with `TimeoutStopSec=1`, `KillMode=control-group`, `KillSignal=SIGKILL`, and `SendSIGKILL=yes`.
 - Do not create tunnel units that can delay boot, shutdown, or reboot while waiting for SSH readiness or graceful disconnect.
 
-## Common Mistakes
+## Guardrails
 
-- Guessing tunnel topology, aliases, ports, or exposure requirements.
-- Rewriting bundled tunnel loops instead of using the supplied scripts.
-- Exposing SSH login tunnels publicly without an explicit request.
-- Creating systemd units that block startup or shutdown.
-- Removing a working reverse SSH access tunnel while cleaning unrelated forwarding.
+- DO NOT guess tunnel topology, aliases, ports, or exposure requirements.
+- DO NOT rewrite bundled tunnel loops; MUST use the supplied scripts.
+- DO NOT expose SSH login tunnels publicly without an explicit request.
+- DO NOT create systemd units that block startup or shutdown.
+- DO NOT remove a working reverse SSH access tunnel while cleaning unrelated forwarding.

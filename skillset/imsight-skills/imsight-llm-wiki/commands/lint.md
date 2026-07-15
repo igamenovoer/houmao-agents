@@ -53,9 +53,9 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - Every resolved issue maps to a specific edit.
 - A lint report is written when issues are found.
 
-## Common Mistakes
+## Guardrails
 
-- Running lint but ignoring the output.
-- Silently fixing links that the user may want to review.
-- Forgetting to update `README.md` research gaps after finding missing pages.
-- Running stale checks by default and overwhelming the user with outdated pages.
+- DO NOT run lint and ignore the output.
+- DO NOT fix links silently when the user may want to review them.
+- DO NOT forget to update `README.md` research gaps after finding missing pages.
+- DO NOT run stale checks by default.

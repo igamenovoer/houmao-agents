@@ -47,8 +47,8 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - `wiki/index.md` lists the collection.
 - A log entry is appended.
 
-## Common Mistakes
+## Guardrails
 
-- Letting "all" mean the entire internet instead of a bounded, discoverable set.
-- Recording naked URLs without context or provenance.
-- Creating a collection so large it becomes unreadable.
+- DO NOT let "all" mean the entire internet; keep collections bounded and discoverable.
+- DO NOT record naked URLs without context or provenance.
+- DO NOT create a collection so large it becomes unreadable.

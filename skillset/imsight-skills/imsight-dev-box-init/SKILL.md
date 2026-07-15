@@ -63,9 +63,9 @@ This contract does not replace intentional install destinations such as tool hom
 Name new setup references after the install target, keep each file self-contained, and avoid duplicating detailed commands in this index.
 Place reusable helper scripts owned by this skill in `<skill-dir>/scripts/` and have references call those scripts instead of embedding long generated-script bodies inline.
 
-## Common Mistakes
+## Guardrails
 
-- Applying a generic install method before checking the maintained Imsight reference.
-- Skipping a reference's prerequisites or verification steps.
-- Hard-coding, printing, or committing credentials handled by a setup workflow.
-- Overwriting unrelated configuration while changing one requested setting.
+- DO NOT apply a generic install method before checking the maintained Imsight reference.
+- DO NOT skip a reference's prerequisites or verification steps.
+- DO NOT hard-code, print, or commit credentials handled by a setup workflow.
+- DO NOT overwrite unrelated configuration while changing one requested setting.

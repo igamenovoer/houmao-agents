@@ -55,10 +55,10 @@ If the task does not map cleanly to these steps, use your native planning tool o
 
 ## Guardrails
 
-- Do not skip exploration; the proposal should be grounded in current repository state.
-- Do not apply before a proposal exists.
-- Do not archive until the implementation is complete and verification has been attempted.
-- Do not use broad destructive git operations.
-- Do not silently ignore failed tests, failed OpenSpec validation, failed sync, or archive errors; report them with the last successful stage.
-- Do not treat this as a planning-only workflow. If the user requested one-pass execution, continue through apply and archive unless blocked.
-- Do not ask routine confirmation questions in `automation` mode; reserve questions for true blockers or externally required confirmations.
+- DO NOT skip exploration; the proposal MUST be grounded in current repository state.
+- DO NOT apply before a proposal exists.
+- DO NOT archive until the implementation is complete and verification has been attempted.
+- DO NOT use broad destructive git operations.
+- DO NOT silently ignore failed tests, failed OpenSpec validation, failed sync, or archive errors; MUST report them with the last successful stage.
+- DO NOT treat this as a planning-only workflow. If the user requested one-pass execution, MUST continue through apply and archive unless blocked.
+- DO NOT ask routine confirmation questions in `automation` mode; MUST reserve questions for true blockers or externally required confirmations.

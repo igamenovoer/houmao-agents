@@ -44,9 +44,9 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - Promoted content appears in `wiki/index.md`.
 - Resumed queries reference the prior query slug.
 
-## Common Mistakes
+## Guardrails
 
-- Answering from general knowledge instead of the wiki.
-- Forgetting to save the answer to `outputs/queries/`.
-- Promoting a transient answer that should stay in `outputs/`.
-- Resuming without reading the prior query output.
+- DO NOT answer from general knowledge instead of the wiki.
+- DO NOT forget to save the answer to `outputs/queries/`.
+- DO NOT promote a transient answer that should stay in `outputs/`.
+- DO NOT resume without reading the prior query output.

@@ -32,7 +32,7 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - `log/YYYYMMDD.md` exists with a scaffold entry.
 - `audit/` and `audit/resolved/` directories exist.
 
-## Common Mistakes
+## Guardrails
 
-- Scaffolding into a directory that already contains files.
-- Forgetting to ask the user to define scope and exclusions in `README.md`.
+- DO NOT scaffold into a directory that already contains files.
+- DO NOT forget to ask the user to define scope and exclusions in `README.md`.

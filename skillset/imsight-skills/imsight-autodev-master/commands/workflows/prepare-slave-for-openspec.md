@@ -19,6 +19,6 @@ If the task does not map cleanly to these steps, plan only from the existing ins
 
 ## Guardrails
 
-- Do not check the slave filesystem from the master unless the user explicitly asks for inspection and the path is actually local.
-- Do not initialize or copy `openspec/` from the master.
-- Do not inspect follow-up unless explicitly asked.
+- DO NOT check the slave filesystem from the master unless the user explicitly asks for inspection and the path is actually local.
+- DO NOT initialize or copy `openspec/` from the master.
+- DO NOT inspect follow-up unless explicitly asked.

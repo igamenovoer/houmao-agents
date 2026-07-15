@@ -57,9 +57,9 @@ This contract does not relocate OpenSpec changes, implementation edits, or initi
 | `openspec-one-pass` | Given one development request, run an OpenSpec lifecycle in one pass: explore, propose, apply, sync, and archive. | [commands/openspec-one-pass.md](commands/openspec-one-pass.md) |
 | `openspec-test-and-fix` | Run user-provided tests, document unexpected outcomes, make minimal continuation patches, then propose and apply confirmed bug fixes through OpenSpec. | [commands/openspec-test-and-fix.md](commands/openspec-test-and-fix.md) |
 
-## Common Mistakes
+## Guardrails
 
-- Routing ordinary ad-hoc tasks through this skill instead of handling them directly.
-- Skipping the subcommand page and inlining a complex automation workflow in `SKILL.md`.
-- Inventing unsupported subcommands that are not backed by a subskill page.
-- Treating discovery-time continuation patches as a substitute for the required OpenSpec proposal and apply stages.
+- DO NOT route ordinary ad-hoc tasks through this skill; MUST handle them directly.
+- DO NOT skip the subcommand page and inline a complex automation workflow in `SKILL.md`.
+- DO NOT invent unsupported subcommands that are not backed by a subskill page.
+- DO NOT treat discovery-time continuation patches as a substitute for the required OpenSpec proposal and apply stages.

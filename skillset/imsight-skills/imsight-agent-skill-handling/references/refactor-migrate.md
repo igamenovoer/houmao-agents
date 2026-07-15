@@ -220,14 +220,14 @@ Return a concise chat summary with:
 - validation performed,
 - unresolved placeholders or blockers.
 
-## Common Mistakes
+## Guardrails
 
-- Treating refactor migration as a cosmetic rewrite instead of a behavior-preserving migration.
-- Rewriting from intuition instead of from the deep-inspection output.
-- Forgetting that self-migration must inspect the snapshot under `org/src/`, not the mutable runtime files.
-- Overwriting the target `SKILL.md` or `agents/openai.yaml` with source files.
-- Editing files under `org/src/` after copying them.
-- Dropping source gates, blockers, evidence handoffs, assumptions, inputs, or outputs because they do not fit the target's first draft.
-- Binding unresolved storage, tools, routes, or environment assumptions too early instead of using placeholders.
-- Leaving workflow steps dependent on hidden source knowledge that is absent from the target runtime files.
-- Mixing guidance, preferences, constraints, and quality gates into one prose block.
+- DO NOT treat refactor migration as a cosmetic rewrite; MUST preserve behavior.
+- DO NOT rewrite from intuition; MUST rewrite from the deep-inspection output.
+- DO NOT inspect mutable runtime files during self-migration; MUST inspect the snapshot under `org/src/`.
+- DO NOT overwrite the target `SKILL.md` or `agents/openai.yaml` with source files.
+- DO NOT edit files under `org/src/` after copying them.
+- DO NOT drop source gates, blockers, evidence handoffs, assumptions, inputs, or outputs because they do not fit the target's first draft.
+- DO NOT bind unresolved storage, tools, routes, or environment assumptions too early; MUST use placeholders.
+- DO NOT leave workflow steps dependent on hidden source knowledge that is absent from the target runtime files.
+- DO NOT mix guidance, preferences, constraints, and quality gates into one prose block.

@@ -42,5 +42,5 @@ If the task does not map cleanly to these steps, plan only from this invocation'
 
 ## Guardrails
 
-- Do not implement the change in the master workspace when the request is slave dispatch.
-- Do not inspect tests, logs, TUI state, or slave output after delivery unless explicitly asked.
+- DO NOT implement the change in the master workspace when the request is slave dispatch.
+- DO NOT inspect tests, logs, TUI state, or slave output after delivery unless explicitly asked.

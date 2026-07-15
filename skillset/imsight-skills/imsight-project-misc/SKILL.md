@@ -47,9 +47,9 @@ Use the project directory explicitly provided by the user. If none is provided, 
 
 Name new subskill references after the first-level subcommand, keep each reference self-contained, and avoid duplicating detailed workflows in this index.
 
-## Common Mistakes
+## Guardrails
 
-- Routing work here when a more specific Imsight skill owns it.
-- Creating project-root Docker files instead of the requested service-local layout.
-- Skipping existing project-pattern and local-image discovery.
-- Embedding secrets or overwriting existing Docker files without reading them.
+- DO NOT route work here when a more specific Imsight skill owns it.
+- DO NOT create project-root Docker files; MUST use the requested service-local layout under `<project-dir>/dockers/<service-name>/`.
+- DO NOT skip existing project-pattern and local-image discovery.
+- DO NOT embed secrets; MUST read existing Docker files before overwriting them.

@@ -104,7 +104,10 @@ Rules for the frontmatter:
 2. **## When to Use** — symptoms and contexts that trigger this skill. Include when NOT to use.
 3. **## Workflow** or **Core Pattern** — the technique, pattern, or rule the agent must follow.
 4. **## Guardrails** — a short bullet list of "DO NOT ..." and "MUST ..." rules that steer the agent away from acting against the skill's design intent and reinforce the preferred actions aligned with that intent.
-5. **## Troubleshooting Guide** — a nested bullet list of problems the agent may encounter while executing the skill and the corrective action to take for each.
+
+### Optional Sections
+
+- **## Troubleshooting Guide** — a nested bullet list of problems the agent may encounter while executing the skill and the corrective action to take for each. Include this section only when the skill writer sees fit; do not add it as a placeholder.
 
 Write guardrails as a concise bullet list. Each item should state a single rule in one of two forms:
 
@@ -158,7 +161,7 @@ Validate the skill before finishing:
 1. Confirm `SKILL.md` exists and has valid YAML frontmatter with `name` and `description`.
 2. Confirm `name` matches the directory name for project-scoped skills.
 3. Confirm the description starts with "Use when...", is in third person, and does not summarize the workflow.
-4. Confirm the overview, when-to-use, workflow/core-pattern, guardrails, and troubleshooting-guide sections exist.
+4. Confirm the overview, when-to-use, and workflow/core-pattern sections exist. Confirm a guardrails section exists.
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long detail has been moved out of the workflow into dedicated sections or reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the skill functionality.

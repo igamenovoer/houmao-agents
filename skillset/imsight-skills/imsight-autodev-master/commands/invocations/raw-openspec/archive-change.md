@@ -42,5 +42,5 @@ If the task does not map cleanly to these steps, plan only from this invocation'
 
 ## Guardrails
 
-- Do not archive locally when the request is slave dispatch.
-- Do not inspect the slave's follow-up unless the user explicitly asks.
+- DO NOT archive locally when the request is slave dispatch.
+- DO NOT inspect the slave's follow-up unless the user explicitly asks.

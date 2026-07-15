@@ -92,16 +92,27 @@ Do not overwrite an existing feature design folder during `scaffold` unless the 
 
 Use placeholder templates from `assets/templates/feature/` when creating new files. `scaffold` copies only the baseline folder skeleton templates. Design subcommands may copy the more specific templates before replacing placeholders with substantive content. `manual-refine` uses `assets/templates/feature/adrs/adr.md` for new ADRs but does not add ADRs during scaffolding.
 
-## Common Mistakes
+## Troubleshooting Guide
 
-- Running every subcommand end to end. Fix by completing the requested subcommand and pausing for review.
-- Treating `scaffold` as design. Fix by copying placeholder templates only.
-- Treating feature planning as the permanent boundary of this skill. Fix by preserving the project-design framing and recognizing feature planning as the current supported scope.
-- Ignoring the Imsight output contract. Fix by resolving explicit user location, then `IMSIGHT_SKILL_OUTPUT_DIR`, then `.imsight-arts/feature-design/`.
-- Creating duplicate use cases for the same workflow. Fix by matching existing use case titles, slugs, actors, goals, and summaries before choosing the next identifier.
-- Designing interfaces without reading use cases. Fix by deriving commands, routes, schemas, files, events, storage contracts, or service boundaries from actual use case flows.
-- Making `agent-task.md` too broad. Fix by writing minimal implementation instructions tied to stabilized feature, use case, and interface artifacts.
-- Using `design-interface` to design an agent skill. Fix by invoking `design-skill` instead; `design-interface` writes non-skill interface and contract artifacts.
-- Treating activation, questions, tentative suggestions, or unrelated conversation as refinements. Fix by recording only concrete decision-bearing instructions through `manual-refine`.
-- Updating one artifact without propagating a recorded refinement to other affected design documents. Fix by running the `manual-refine` consistency review.
-- Assuming a specific host project layout. Fix by inspecting the active project and using neutral project language unless the user provides project-specific conventions.
+- Running every subcommand end to end
+  - If you are running every subcommand end to end, then complete only the requested subcommand and pause for review.
+- Treating `scaffold` as design
+  - If you are treating `scaffold` as design, then copy only the placeholder templates and defer substantive design to the appropriate design subcommand.
+- Treating feature planning as the permanent boundary of this skill
+  - If you are treating feature planning as the permanent boundary of this skill, then preserve the broader project-design framing and recognize feature planning as only the currently supported scope.
+- Ignoring the Imsight output contract
+  - If you are ignoring the Imsight output contract, then resolve the feature design directory by explicit user location first, then `IMSIGHT_SKILL_OUTPUT_DIR`, then `.imsight-arts/feature-design/`.
+- Creating duplicate use cases for the same workflow
+  - If you are creating duplicate use cases for the same workflow, then match existing use case titles, slugs, actors, goals, and summaries before choosing the next identifier.
+- Designing interfaces without reading use cases
+  - If you are designing interfaces without reading use cases, then derive commands, routes, schemas, files, events, storage contracts, or service boundaries from actual use case flows.
+- Making `agent-task.md` too broad
+  - If you are making `agent-task.md` too broad, then write minimal implementation instructions tied to stabilized feature, use case, and interface artifacts.
+- Using `design-interface` to design an agent skill
+  - If you are using `design-interface` to design an agent skill, then invoke `design-skill` instead because `design-interface` writes non-skill interface and contract artifacts.
+- Treating activation, questions, tentative suggestions, or unrelated conversation as refinements
+  - If you are treating activation, questions, tentative suggestions, or unrelated conversation as refinements, then record only concrete decision-bearing instructions through `manual-refine`.
+- Updating one artifact without propagating a recorded refinement to other affected design documents
+  - If you are updating one artifact without propagating a recorded refinement to other affected design documents, then run the `manual-refine` consistency review across affected artifacts.
+- Assuming a specific host project layout
+  - If you are assuming a specific host project layout, then inspect the active project and use neutral project language unless the user provides project-specific conventions.

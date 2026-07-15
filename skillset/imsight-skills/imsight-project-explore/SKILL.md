@@ -144,10 +144,10 @@ When `<output-dir>` is inside an OpenSpec change (i.e., `<openspec-change-dir>/e
 
 Do not start implementation unless the user explicitly asks to switch from exploration to implementation.
 
-## Common Mistakes
+## Guardrails
 
-- Asking the user for facts that repository inspection can answer.
-- Treating repository evidence as product intent or acceptance criteria.
-- Establishing or changing domain language without user consent.
-- Ignoring previous exploration artifacts or leaving related artifacts inconsistent.
-- Starting implementation before the user explicitly switches from exploration.
+- DO NOT ask the user for facts that repository inspection can answer.
+- DO NOT treat repository evidence as product intent or acceptance criteria.
+- DO NOT establish or change domain language without user consent.
+- DO NOT ignore previous exploration artifacts; MUST keep related artifacts consistent.
+- DO NOT start implementation before the user explicitly switches from exploration to implementation.

@@ -54,7 +54,7 @@ If the task does not map cleanly to these steps, plan only from the bundled scri
 
 ## Guardrails
 
-- Do not full-download large files unless the user explicitly asks for a full download.
-- Use byte-range downloads for connectivity tests.
-- Do not claim a URL is downloadable until the direct URL is resolved, or a partial `wget` test succeeds when requested.
-- Respect user-provided output locations and the parent skill's Output Contract for any saved JSON, logs, or sample byte files.
+- DO NOT full-download large files unless the user explicitly asks for a full download.
+- MUST use byte-range downloads for connectivity tests.
+- DO NOT claim a URL is downloadable until the direct URL is resolved, or a partial `wget` test succeeds when requested.
+- MUST respect user-provided output locations and the parent skill's Output Contract for any saved JSON, logs, or sample byte files.

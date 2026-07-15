@@ -70,12 +70,12 @@ The helper snapshots tracked and untracked source state through a temporary Git 
 
 ## Guardrails
 
-- Never switch branches or continue implementation in the original checkout after the isolated worktree exists.
-- Never push, open a pull request, or delete the branch or worktree unless the user explicitly asks.
-- Never copy the repository manually; use `git worktree`.
-- Never treat a missing local resource as a product defect before checking whether a safe link can bridge it.
-- Never bypass OpenSpec CLI discovery by hard-coding artifact layouts for OpenSpec targets.
-- Keep focus on the requested change and do not clean unrelated problems unless they directly block delivery.
+- DO NOT switch branches or continue implementation in the original checkout after the isolated worktree exists.
+- DO NOT push, open a pull request, or delete the branch or worktree unless the user explicitly asks.
+- DO NOT copy the repository manually; MUST use `git worktree`.
+- DO NOT treat a missing local resource as a product defect before checking whether a safe link can bridge it.
+- DO NOT bypass OpenSpec CLI discovery by hard-coding artifact layouts for OpenSpec targets.
+- MUST keep focus on the requested change and DO NOT clean unrelated problems unless they directly block delivery.
 
 ## Example Prompts
 

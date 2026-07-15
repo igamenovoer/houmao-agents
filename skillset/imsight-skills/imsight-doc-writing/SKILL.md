@@ -70,10 +70,10 @@ When the user names a file, edit that file in place. When the user asks for a ne
 - Any durable document should have enough context for a future reader who did not watch the conversation.
 - State assumptions and unresolved questions only when they affect the document's correctness or next action.
 
-## Common Mistakes
+## Guardrails
 
-- Writing before reading nearby documentation and project terminology.
-- Inventing a new document structure when the target already has a consistent style.
-- Treating a documentation result as a transcript of reasoning.
-- Adding unused process notes or auxiliary documents.
-- Producing Mermaid that does not render or requires horizontal scrolling.
+- DO NOT write before reading nearby documentation and project terminology.
+- DO NOT invent a new document structure when the target already has a consistent style.
+- DO NOT treat a documentation result as a transcript of reasoning.
+- DO NOT add unused process notes or auxiliary documents.
+- DO NOT produce Mermaid that does not render or requires horizontal scrolling.

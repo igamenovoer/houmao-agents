@@ -48,8 +48,8 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - Every moved audit is in `audit/resolved/` with `status: resolved` in frontmatter.
 - Every resolution is logged.
 
-## Common Mistakes
+## Guardrails
 
-- Ignoring open audits when the user has not asked for an audit pass.
-- Applying corrections without bumping the target page's `updated:` frontmatter field.
-- Deleting rejected audits instead of archiving them with rationale.
+- DO NOT ignore open audits when the user has not asked for an audit pass.
+- DO NOT apply corrections without bumping the target page's `updated:` frontmatter field.
+- DO NOT delete rejected audits instead of archiving them with rationale.

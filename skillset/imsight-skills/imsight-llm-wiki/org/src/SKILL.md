@@ -351,10 +351,10 @@ Quick grep across history: `grep -rh "^## \[" log/ | tail -20`.
 - `references/tooling-tips.md` — Obsidian setup, Web Clipper, qmd, plugin + web installation
 - `references/vault-root-link-resolver.md` — Canonical wikilink resolver contract and compatibility cases
 
-## Common Mistakes
+## Guardrails
 
-- Treating raw sources as agent-written files instead of immutable input.
-- Starting without reading `README.md` and `wiki/index.md`.
-- Creating oversized concept pages instead of applying divide-and-conquer.
-- Omitting daily operation logs or durable query filing.
-- Applying audit or structural changes without the confirmations required below.
+- DO NOT treat raw sources as agent-written files; they are immutable input.
+- MUST read `README.md` and `wiki/index.md` at the start of every session.
+- DO NOT create oversized concept pages; apply divide-and-conquer when a page would exceed ~1200 words.
+- MUST append every operation to the daily log and file durable query outputs.
+- DO NOT apply audit or structural changes without the confirmations required in each operation section.

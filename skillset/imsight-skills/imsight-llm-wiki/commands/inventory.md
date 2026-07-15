@@ -68,8 +68,8 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - `inventory list` shows only open candidates by default.
 - Promotions and rejections are logged.
 
-## Common Mistakes
+## Guardrails
 
-- Treating inventory candidates as raw sources.
-- Deleting rejected candidates instead of updating their status.
-- Letting open candidates grow stale without review.
+- DO NOT treat inventory candidates as raw sources.
+- DO NOT delete rejected candidates instead of updating their status.
+- DO NOT let open candidates grow stale without review.

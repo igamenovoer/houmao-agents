@@ -42,5 +42,5 @@ If the task does not map cleanly to these steps, plan only from this proposal in
 
 ## Guardrails
 
-- Do not ask the master to create proposal artifacts locally when the intent is slave dispatch.
-- Do not inspect the slave's follow-up unless the user explicitly asks.
+- DO NOT ask the master to create proposal artifacts locally when the intent is slave dispatch.
+- DO NOT inspect the slave's follow-up unless the user explicitly asks.

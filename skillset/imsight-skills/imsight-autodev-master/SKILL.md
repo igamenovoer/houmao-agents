@@ -110,17 +110,9 @@ No helper subcommands are currently exposed. The internal primitives remain list
 
 ## Guardrails
 
-- Do not guess the slave agent selector, tool lane, gateway posture, mailbox posture, or delivery lane.
-- Prefer supported Houmao inspection and messaging surfaces over direct runtime file searches; see [references/primitives/inspect-slave.md](references/primitives/inspect-slave.md) and [references/primitives/deliver-to-slave.md](references/primitives/deliver-to-slave.md).
-- For Codex-based slaves, render OpenSpec commands with `$openspec-*` and the slave mega-skill command as `$imsight-autodev-slave`; see [references/primitives/render-invocation.md](references/primitives/render-invocation.md).
-- For Claude-based slaves, render OpenSpec commands with `/openspec-*` and the slave mega-skill command as `/imsight-autodev-slave`; see [references/primitives/render-invocation.md](references/primitives/render-invocation.md).
-- For mail-based messaging, include the rendered invocation command in the mail body for one-off behavior; see [references/primitives/mail-notifier-policy.md](references/primitives/mail-notifier-policy.md).
-- Do not initialize or copy files into the slave workdir directly; dispatch the initialization request to the slave.
-- Do not wait for or inspect the slave's follow-up, gateway state, mailbox state, TUI output, or results unless the user explicitly asks.
-
-## Common Mistakes
-
-- Guessing slave metadata or a delivery lane instead of using the inspection primitive.
-- Mixing Codex `$...` syntax with Claude `/...` syntax.
-- Mutating the slave workdir directly instead of dispatching the request.
-- Waiting for slave results after accepted delivery without an explicit request.
+- DO NOT guess the slave agent selector, tool lane, gateway posture, mailbox posture, or delivery lane; MUST use the inspection primitive to recover slave metadata.
+- MUST use supported Houmao inspection and messaging surfaces instead of direct runtime file searches; see [references/primitives/inspect-slave.md](references/primitives/inspect-slave.md) and [references/primitives/deliver-to-slave.md](references/primitives/deliver-to-slave.md).
+- MUST render OpenSpec and slave mega-skill commands with the syntax matching the slave platform (`$...` for Codex, `/...` for Claude); see [references/primitives/render-invocation.md](references/primitives/render-invocation.md). DO NOT mix the two syntaxes.
+- MUST include the rendered invocation command in the mail body for one-off mail-based messaging; see [references/primitives/mail-notifier-policy.md](references/primitives/mail-notifier-policy.md).
+- DO NOT initialize, copy, or mutate files in the slave workdir directly; MUST dispatch those requests to the slave.
+- DO NOT wait for or inspect the slave's follow-up, gateway state, mailbox state, TUI output, or results unless the user explicitly asks.

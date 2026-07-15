@@ -73,13 +73,13 @@ This skill operates on a user-provided wiki root. It does not write skill-owned 
 - If exactly one candidate wiki root exists nearby (for example, a sibling directory named `<topic>-wiki`), use it.
 - Otherwise, ask the user for the wiki root.
 
-## Common Mistakes
+## Guardrails
 
-- Using general knowledge instead of wiki content for `query`.
-- Running `compile` splits or merges without user confirmation.
-- Silently ignoring open `audit/*.md` files.
-- Creating non-canonical wikilinks such as `[[concepts/foo|Foo]]` instead of `[[wiki/concepts/foo|Foo]]`.
-- Copying large binaries into `raw/` instead of creating a pointer file in `raw/refs/`.
+- DO NOT use general knowledge instead of wiki content for `query`; MUST ground `query` answers in wiki content.
+- DO NOT run `compile` splits or merges without user confirmation.
+- DO NOT silently ignore open `audit/*.md` files.
+- DO NOT create non-canonical wikilinks such as `[[concepts/foo|Foo]]`; MUST use `[[wiki/concepts/foo|Foo]]`.
+- DO NOT copy large binaries into `raw/`; MUST create a pointer file in `raw/refs/`.
 
 ## References
 

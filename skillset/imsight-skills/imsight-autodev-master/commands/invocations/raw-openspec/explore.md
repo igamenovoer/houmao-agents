@@ -41,5 +41,5 @@ If the task does not map cleanly to these steps, plan only from this bounded exp
 
 ## Guardrails
 
-- Do not convert explore dispatch into proposal or implementation work.
-- Do not inspect the slave's follow-up unless the user explicitly asks.
+- DO NOT convert explore dispatch into proposal or implementation work.
+- DO NOT inspect the slave's follow-up unless the user explicitly asks.

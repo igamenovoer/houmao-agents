@@ -65,8 +65,8 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - `project list` shows only active projects by default.
 - Archive moves, not deletes, project contents.
 
-## Common Mistakes
+## Guardrails
 
-- Creating a project without a clear goal.
-- Moving originals into the project folder instead of copying them.
-- Deleting archived projects instead of moving them to `.archive/`.
+- DO NOT create a project without a clear goal.
+- DO NOT move originals into the project folder instead of copying them.
+- DO NOT delete archived projects instead of moving them to `.archive/`.

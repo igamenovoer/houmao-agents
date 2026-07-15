@@ -39,11 +39,11 @@ If the task does not map cleanly to these steps, use your native planning tool w
 - The chosen port is available before launch.
 - The viewer source is copied and dependencies install successfully.
 
-## Common Mistakes
+## Guardrails
 
-- Deploying into a directory that is not empty without `--force`.
-- Launching on a busy port without trying an alternative.
-- Treating the viewer as a multi-user or authenticated service.
+- DO NOT deploy into a non-empty directory without `--force`.
+- DO NOT launch on a busy port without trying an alternative.
+- DO NOT treat the viewer as a multi-user or authenticated service.
 
 ## Useful Variants
 

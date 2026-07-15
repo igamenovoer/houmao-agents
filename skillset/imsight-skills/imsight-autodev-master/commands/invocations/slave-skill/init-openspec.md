@@ -41,7 +41,7 @@ If the task does not map cleanly to these steps, plan only from the existing sla
 
 ## Guardrails
 
-- Do not run `openspec init` from the master for the slave.
-- Do not copy files into the slave workdir from the master.
-- Do not assume the master can see the same filesystem as the slave.
-- Do not monitor, poll, or inspect the slave after delivery unless explicitly asked.
+- DO NOT run `openspec init` from the master for the slave.
+- DO NOT copy files into the slave workdir from the master.
+- DO NOT assume the master can see the same filesystem as the slave.
+- DO NOT monitor, poll, or inspect the slave after delivery unless explicitly asked.

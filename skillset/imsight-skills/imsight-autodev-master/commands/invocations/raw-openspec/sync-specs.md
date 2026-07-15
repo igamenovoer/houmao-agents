@@ -42,6 +42,6 @@ If the task does not map cleanly to these steps, plan only from this sync invoca
 
 ## Guardrails
 
-- Do not sync specs locally when the request is slave dispatch.
-- Do not treat sync as archive unless the request explicitly asks for finalization too.
-- Do not inspect the slave's follow-up unless the user explicitly asks.
+- DO NOT sync specs locally when the request is slave dispatch.
+- DO NOT treat sync as archive unless the request explicitly asks for finalization too.
+- DO NOT inspect the slave's follow-up unless the user explicitly asks.

@@ -22,6 +22,6 @@ If the task does not map cleanly to these steps, plan only from the existing cha
 
 ## Guardrails
 
-- Do not invent a change id.
-- Do not apply, sync, or archive locally when the request is slave dispatch.
-- Do not inspect slave follow-up unless explicitly asked.
+- DO NOT invent a change id.
+- DO NOT apply, sync, or archive locally when the request is slave dispatch.
+- DO NOT inspect slave follow-up unless explicitly asked.
