@@ -62,7 +62,9 @@ Use the complex-procedure flavor when the skill describes a multi-step procedure
 
 For complex-procedure skills, put procedural subcommands in user-facing workflow order, keep helper subcommands out of help output unless promoted, and say `No helper subcommands are currently exposed.` when the helper group is empty.
 
-When a capability is large or self-contained enough to be a full skill but only meaningful as part of the parent skill, make it a bundled subskill under `subskills/<subskill-name>/` instead of a subcommand detail page. See **Skill Layout** and [skill-layout.md](skill-layout.md).
+A subcommand may own child subcommands when it represents a command object with its own scoped operations. Put a `## Subcommands` table on the parent command page, link each direct child detail page there, and record the full invocation chain. Treat an intermediate `parent()` as an object generator for its child rather than automatically executing the parent's standalone action. Use nesting only when the child is meaningful specifically within the parent command context; keep independent peer operations as direct subcommands. Keep all command detail and support files within the containing skill or subskill's resource boundary.
+
+Use resource ownership as the subcommand-versus-subskill decision. Keep a capability as a direct or nested subcommand when it can use resources owned by its containing skill or subskill. Make it a bundled subskill under `subskills/<subskill-name>/` when it needs its own private `scripts/`, `references/`, `commands/`, `assets/`, templates, runtime metadata, or other resource tree. Private means scoped ownership, not secrecy. See **Skill Layout** and [skill-layout.md](skill-layout.md).
 
 ## Skill Layout
 
@@ -76,7 +78,7 @@ When initializing a skill:
 - Create `references/` only when the skill has detail pages, style guides, schemas, or other reference material.
 - Create `assets/` only when the skill bundles static resources used in output.
 - Create `commands/` only when the skill has subcommand detail pages.
-- Create `subskills/` only when the skill bundles nested skills. Each subskill is a self-contained skill folder with its own `SKILL.md` and follows this same layout recursively.
+- Create `subskills/` only when a nested capability needs its own private bundled-resource boundary. Each subskill is a self-contained skill folder with its own `SKILL.md` and follows this same layout recursively.
 - Do not create empty directories purely for symmetry.
 - If the target skill home already exists, do not overwrite or remove any existing files or directories. If a required file such as `SKILL.md` already exists and conflicts with the new skill, stop and report the conflict.
 
@@ -125,7 +127,7 @@ Write the workflow as numbered steps. Keep each step concise and point to a deta
 
 When the skill has subcommands, apply **Subcommand Structure** before writing the `## Subcommands` section. Do not use the three-type split for a simple collection of unordered routines.
 
-When the skill bundles subskills, list them in the `## Subcommands` table or a dedicated `## Subskills` section of `SKILL.md` so the entrypoint can route invocation designators. When any page of the skill uses object-style invocation designators such as `X->Y->cmd()`, declare the notation in that page's YAML frontmatter with the `skill_invocation_notation` key; use the standard value from `references/imsight-skill-style-guide.md`.
+When the skill bundles subskills, list them in the `## Subcommands` table or a dedicated `## Subskills` section of `SKILL.md` so the entrypoint can route invocation designators. Write skill and subskill entrypoints as bare paths such as `X->Y`. Write every subcommand component with `()`, including intermediate object generators in chains such as `X->parent()->child()`, and never use `X()` or `X->Y()` for an entrypoint. Once a command chain begins, do not append a bare skill or subskill component. A direct subskill and direct subcommand may share a name because their component forms distinguish them. When any page uses these object-style invocation designators, declare the notation in that page's YAML frontmatter with the `skill_invocation_notation` key; use the standard value from `references/imsight-skill-style-guide.md`.
 
 For discipline-enforcing skills, also include:
 
@@ -169,9 +171,13 @@ Validate the skill before finishing:
 6. Confirm long detail has been moved out of the workflow into dedicated sections or reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the skill functionality.
 8. If the skill bundles subskills, confirm each `subskills/<subskill-name>/SKILL.md` exists with valid frontmatter and follows this same checklist, and confirm the parent `SKILL.md` lists the subskills in its `## Subcommands` table or a `## Subskills` section.
-9. If any page uses object-style invocation designators such as `X->Y->cmd()`, confirm that page declares the `skill_invocation_notation` key in its YAML frontmatter.
-10. If the skill includes use-case or chat-turn examples, confirm AI response examples show only visible response content and do not expose hidden reasoning or thinking process unless the user explicitly requested that, and confirm the examples include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
-11. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
+9. If a subcommand owns children, confirm its page declares each direct child in `## Subcommands`, links the child detail page, defines terminal behavior for invoking the parent without a child, and keeps all child support resources within the containing skill or subskill's resource boundary.
+10. If any page uses object-style invocation designators such as `X->Y`, `X->Y->cmd()`, or `X->parent()->child()`, confirm that page declares the `skill_invocation_notation` key in its YAML frontmatter.
+11. Confirm every skill or subskill entrypoint designator is a bare object path, every subcommand component has `()`, every intermediate command resolves to the immediate child it declares, and no command chain returns to a bare skill or subskill component.
+12. If a direct subskill and direct subcommand share a name, confirm their declarations and uses preserve the bare subskill form and parenthesized subcommand form.
+13. Confirm every capability with a private bundled-resource tree is a skill or subskill rather than a subcommand, and confirm each subcommand uses resources owned by its containing skill or subskill.
+14. If the skill includes use-case or chat-turn examples, confirm AI response examples show only visible response content and do not expose hidden reasoning or thinking process unless the user explicitly requested that, and confirm the examples include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
+15. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
 
 Report any validation failures and fix them before returning the summary.
 

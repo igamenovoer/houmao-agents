@@ -9,6 +9,12 @@ Source skill: [{{SOURCE_LABEL}}]({{RELATIVE_SOURCE_PATH}})
 
 Parent skill: {{PARENT_SKILL_NAME_OR_NONE}}
 
+Parent command: {{PARENT_COMMAND_CHAIN_OR_NONE}}
+
+Invocation designator: {{FULL_OBJECT_INVOCATION_OR_NONE}}
+
+Resource owner: {{OWNING_SKILL_OR_SUBSKILL}}
+
 Report unit: {{entrypoint | subcommand | mode | workflow | primitive}}
 
 Role: {{ROLE_IN_SKILL}}
@@ -64,6 +70,8 @@ Use "Explicit" when the skill states the artifact directly and "Inferred" when t
 <!--
 Include this section when the analyzed skill routes work to subskills, subcommands, modes, or external skills.
 Use a Mermaid flowchart TD diagram to show caller-to-callee relationships.
+Place nested subcommands below their immediate parent command and label the edge with the full parenthesized invocation chain.
+Treat intermediate commands as object generators and the final command as the invoked leaf.
 Follow references/mermaid-style.md for callgraph syntax and styling.
 Label edges with the trigger condition or explicit invocation form.
 Omit this section entirely when the report unit has no runtime skill routing.

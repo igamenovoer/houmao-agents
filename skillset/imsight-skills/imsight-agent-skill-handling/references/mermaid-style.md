@@ -59,6 +59,7 @@ Use `flowchart TD` for skill call graphs.
 
 - Use the primary analyzed skill or inspected skill as the root node.
 - Represent public subcommands, modes, or external skills as skill nodes.
+- Place a nested subcommand below its immediate parent command, label the edge with the full parenthesized invocation chain, and distinguish intermediate object generators from the terminal invoked command.
 - Use route nodes when the route condition is important enough to name.
 - Label edges with the trigger condition or explicit invocation form when that label helps the reader.
 - Keep passive context files out of the graph unless they are runtime routing targets.
@@ -86,4 +87,5 @@ flowchart TD
 - Check that every Mermaid fence opens and closes correctly.
 - Check that sequence message labels do not contain semicolons.
 - Check that flowchart labels with punctuation, slashes, parentheses, or `<br/>` are quoted.
+- Check that nested command nodes preserve immediate-parent ownership and do not imply that an intermediate generator executes its standalone terminal action.
 - Check that the diagram matches the surrounding step table or explanation.

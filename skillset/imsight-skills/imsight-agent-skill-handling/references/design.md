@@ -52,9 +52,11 @@ Use the **complex-procedure** flavor when the skill describes a multi-step proce
 
 For complex-procedure skills, put procedural subcommands in user-facing workflow order within their table, keep helper subcommands out of help output unless promoted, and say `No helper subcommands are currently exposed.` when the helper group is empty.
 
+Allow a subcommand to own child subcommands when it represents a command object with scoped operations. Record the immediate parent, full invocation chain, child detail page, inherited context, containing resource owner, and the parent's terminal behavior. In `X->parent()->child()`, treat `parent()` as an object generator and `child()` as the invoked leaf; do not imply that the parent's standalone terminal action also runs. Nested children may generate deeper command objects, but they remain inside the containing skill or subskill's resource boundary.
+
 Override the multi-subcommand default only when the task clearly maps to a single technique or pattern with no meaningful subcommands. Document the override reason in the design overview.
 
-Decide whether any capability should be a bundled subskill under `subskills/<subskill-name>/` rather than a subcommand detail page. Use a subskill when the capability is large or self-contained enough to be a full skill but only meaningful as part of the parent skill. List proposed subskills under `## Subcommands Design`, and when the proposed skill will use object-style invocation designators such as `X->Y->cmd()`, note that the created skill must declare the `skill_invocation_notation` key in the frontmatter of each page that uses them.
+Decide whether any capability should be a bundled subskill under `subskills/<subskill-name>/` rather than a subcommand detail page. Make it a subskill when it needs its own private scripts, references, commands, assets, templates, runtime metadata, or other bundled resources; keep it as a direct or nested subcommand when it can use resources owned by the containing skill or subskill. Private means scoped ownership, not secrecy. List proposed subskills under `## Subcommands Design` and designate their entrypoints with bare paths such as `X->Y`. Write every subcommand component with `()`, including intermediate generators in `X->parent()->child()`. A direct subskill and direct subcommand may share a name when the design consistently uses their distinct component forms. When the proposed skill uses these object-style invocation designators, note that the created skill must declare the `skill_invocation_notation` key in the frontmatter of each page that uses them.
 
 ### Subcommand Design Guide
 
@@ -93,7 +95,7 @@ Rules for the frontmatter:
 1. **Purpose** — why the skill exists and who owns routing, blockers, and final output.
 2. **Concepts** — small user-facing vocabulary needed to read the workflow and examples.
 3. **Core Workflow** — concise numbered steps plus a freeform fallback.
-4. **Subcommands Design** — subcommands derived from **Subcommand Structure**.
+4. **Subcommands Design** — subskills, direct and nested subcommands, parent command contracts, full invocation chains, and resource owners derived from **Subcommand Structure**.
 5. **External Calls** — services or skills the proposed skill depends on instead of reimplementing.
 
 When the proposed skill has subcommands, apply **Subcommand Structure** before writing `## Subcommands Design`.
@@ -142,10 +144,13 @@ Validate the design document before writing the output file:
 5. Confirm the core workflow is a concise numbered list with a freeform fallback.
 6. Confirm long procedural detail has been moved out of the workflow into dedicated sections or future reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the proposed skill functionality and the subcommands are listed in the correct table(s).
-8. Confirm `Calls To External Skills` lists only external dependencies, not internal helper subcommands or context files.
-9. Confirm the output location was resolved and documented correctly according to **Output Contract**.
-10. Confirm the design document does not propose writing actual skill files.
-11. If the design includes user/AI chat examples, confirm they include the example-content warning.
+8. If the design includes nested subcommands, confirm every child has an immediate parent, full parenthesized invocation chain, detail-page owner, inherited-context contract, containing resource owner, and parent terminal behavior.
+9. Confirm every capability that needs a private bundled-resource tree is designed as a subskill, and every direct or nested subcommand uses resources owned by its containing skill or subskill.
+10. If the design includes subskills or object designators, confirm skill and subskill entrypoints use bare paths, every subcommand component uses `()`, and no command chain returns to a bare component, including when a direct subskill and direct subcommand share a name.
+11. Confirm `Calls To External Skills` lists only external dependencies, not internal helper subcommands or context files.
+12. Confirm the output location was resolved and documented correctly according to **Output Contract**.
+13. Confirm the design document does not propose writing actual skill files.
+14. If the design includes user/AI chat examples, confirm they include the example-content warning.
 
 Report any validation failures and fix them before writing the output file.
 

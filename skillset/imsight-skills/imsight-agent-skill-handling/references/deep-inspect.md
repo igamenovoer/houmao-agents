@@ -6,9 +6,9 @@ Use this reference to generate one self-contained skill-process design document 
 
 1. **Locate the skill folder**. Resolve the target folder from the user's request, then confirm it contains `SKILL.md`.
 2. **Resolve the output file** using **Output Contract**.
-3. **Read the target skill completely and inventory its files**. Read `SKILL.md`, `agents/openai.yaml` when present, and every directly linked reference page that defines public subcommands, modes, workflows, primitives, or routing behavior. Then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, script, asset, or other), and a one-sentence explanation of its purpose.
+3. **Read the target skill completely and inventory its files**. Read `SKILL.md`, `agents/openai.yaml` when present, and every directly linked reference page that defines public direct or nested subcommands, modes, workflows, primitives, or routing behavior. Then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, script, asset, or other), resource owner, and a one-sentence explanation of its purpose.
 4. **Load local supporting references**. Read `references/skill-pseudo-lang.md` before drafting `## Formal Skill Process`, and read `references/mermaid-style.md` before drafting Mermaid diagrams.
-5. **Map the process model**. Extract entrypoints, public subcommands, internal stages, external skill calls, input evidence, output evidence, durable side effects, blockers, and ownership boundaries.
+5. **Map the process model**. Extract entrypoints, public direct and nested subcommands, full command chains, intermediate object-generator commands, terminal invoked commands, resource owners, internal stages, external skill calls, input evidence, output evidence, durable side effects, blockers, and ownership boundaries.
 6. **Choose the important concepts**. Select terms a reader must know to understand the process, then define them inside the generated document. Prefer terms from the target skill itself; do not require the reader to open another glossary.
 7. **Draft the design document** using **Document Template**.
 8. **Validate self-containment** using **Self-Containment Checklist**.
@@ -41,11 +41,11 @@ The key orchestration rule is: <one sentence describing who owns routing, eviden
 
 ## File Inventory
 
-| Relative Path | Category | Purpose |
-| --- | --- | --- |
-| `<target-skill-path>/SKILL.md` | Entrypoint | <One-sentence explanation of the skill entrypoint.> |
-| `<target-skill-path>/agents/openai.yaml` | Agent config | <One-sentence explanation of the agent configuration, if present.> |
-| `<target-skill-path>/references/<file>.md` | Reference | <One-sentence explanation of the reference file.> |
+| Relative Path | Category | Resource Owner | Purpose |
+| --- | --- | --- | --- |
+| `<target-skill-path>/SKILL.md` | Entrypoint | `<target-skill-id>` | <One-sentence explanation of the skill entrypoint.> |
+| `<target-skill-path>/agents/openai.yaml` | Agent config | `<target-skill-id>` | <One-sentence explanation of the agent configuration, if present.> |
+| `<target-skill-path>/references/<file>.md` | Reference | `<owning-skill-or-subskill-id>` | <One-sentence explanation of the reference file.> |
 
 ## Concepts
 
@@ -73,7 +73,7 @@ sequenceDiagram
 
 ## Skill Call Graph
 
-This graph shows top-level skill and public subcommand calls used by this process. Route nodes name the condition or public route that creates the edge.
+This graph shows top-level skill and public subcommand calls used by this process. Nested subcommands appear below their immediate parent command. Route nodes name the condition or public route that creates the edge.
 
 ```mermaid
 flowchart TD
@@ -81,19 +81,22 @@ flowchart TD
     classDef route fill:#f8fafc,stroke:#94a3b8,stroke-width:1px,color:#334155
 
     Entry["<target><br/>skill"]:::skill
-    SubA["<public><br/>subcommand>"]:::skill
+    SubA["<public parent><br/>subcommand>"]:::skill
+    SubChild["<nested child><br/>subcommand>"]:::skill
     SubB["<external><br/>skill>"]:::skill
 
     S1["S1<br/><route name>"]:::route
+    S1Child["S1.1<br/><parent()->child()>"]:::route
     S2["S2<br/><route name>"]:::route
 
-    Entry --> S1 --> SubA
+    Entry --> S1 --> SubA --> S1Child --> SubChild
     Entry --> S2 --> SubB
 ```
 
 | ID | Caller | Route | Callee | Calling condition |
 | --- | --- | --- | --- | --- |
 | S1 | `<caller>` | `<route>` | `<callee>` | <Natural-language condition that causes this call.> |
+| S1.1 | `<parent-command>` | `<full parent()->child() chain>` | `<child-command>` | <Natural-language condition that selects this child from the generated command object.> |
 | S2 | `<caller>` | `<route>` | `<callee>` | <Natural-language condition that causes this call.> |
 
 ## Formal Skill Process
@@ -174,11 +177,11 @@ State what the inspected skill coordinates, which skill files or subcommands the
 
 ### File Inventory
 
-Include a table that lists every file in the target skill directory. For each file, give its path relative to the skill folder, a category such as entrypoint, reference, agent config, subcommand, script, asset, or other, and a one-sentence explanation of its purpose.
+Include a table that lists every file in the target skill directory. For each file, give its path relative to the skill folder, a category such as entrypoint, reference, agent config, subcommand, script, asset, or other, its owning skill or subskill, and a one-sentence explanation of its purpose. A subcommand may own child routes, but its files remain resources of the containing skill or subskill.
 
 ### Concepts
 
-Define the terms a reader must remember. Include skill-owned terms such as subcommands, modes, artifact names, evidence names, and external actors. Keep each definition to one sentence. Format important domain terms consistently; use code style only for literal file paths, skill ids, subcommands, environment variables, and commands.
+Define the terms a reader must remember. Include skill-owned terms such as direct and nested subcommands, full command chains, modes, artifact names, evidence names, resource owners, and external actors. Keep each definition to one sentence. Format important domain terms consistently; use code style only for literal file paths, skill ids, subcommands, environment variables, and commands.
 
 ### High Level Process
 
@@ -186,7 +189,7 @@ Use one Mermaid `sequenceDiagram` for the reader-facing process. Keep calls and 
 
 ### Skill Call Graph
 
-Use one Mermaid `flowchart TD` call graph. Include top-level skills and public subcommands that create meaningful call paths. Use route nodes when they explain why one skill or subcommand calls another. Follow `references/mermaid-style.md` for graph syntax and styling.
+Use one Mermaid `flowchart TD` call graph. Include top-level skills and public subcommands that create meaningful call paths. Place each nested subcommand below its immediate parent command, label the edge with the full parenthesized chain, and distinguish intermediate object generators from the terminal invoked command. Use route nodes when they explain why one skill or subcommand calls another. Follow `references/mermaid-style.md` for graph syntax and styling.
 
 After the graph, include a table:
 
@@ -228,6 +231,9 @@ Before writing the output file, confirm:
 - A reader can understand the process without opening `SKILL.md` or generated analysis reports.
 - The high-level process and formal process agree on stage order.
 - The skill call graph includes only runtime routing relationships, not passive file reads.
+- Every nested subcommand has one immediate parent, a full parenthesized invocation chain, and a containing skill or subskill resource owner.
+- Intermediate command generators are not described as automatically executing their standalone terminal actions.
+- Capabilities with private bundled resources are represented as skills or subskills rather than subcommands.
 - External calls, blockers, and durable outputs are labeled as explicit or inferred when needed.
 - The output file is a single Markdown document.
 

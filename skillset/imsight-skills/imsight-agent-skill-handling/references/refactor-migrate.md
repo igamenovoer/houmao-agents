@@ -71,7 +71,7 @@ The inspection must cover:
 
 - `SKILL.md`.
 - `agents/openai.yaml` when it affects routing or invocation posture.
-- Every directly linked page that defines a public subcommand, mode, workflow, primitive, routing behavior, or executable procedure.
+- Every directly linked page that defines a public direct or nested subcommand, mode, workflow, primitive, routing behavior, or executable procedure.
 - Any additional source page that represents runtime behavior even if it is not linked cleanly from the entrypoint.
 
 Write the analysis to `<target-skill-dir>/org/analysis/analysis-of-<source-skill-name>.md`. After inspection, write `<target-skill-dir>/org/README.md` with the copied file inventory and analysis coverage.
@@ -83,8 +83,8 @@ Write `<target-skill-dir>/migrate/migration-plan.md` before rewriting runtime fi
 Include these sections:
 
 - **Scope**: source skill, target skill, migration mode, and whether this is self-migration.
-- **Source Behavior to Preserve**: essential triggers, workflows, subcommands, inputs, outputs, gates, blockers, evidence handoffs, and side effects.
-- **Target Runtime Shape**: target entrypoint, target metadata, reference pages, commands, subskills, scripts, assets, and files to remove from runtime.
+- **Source Behavior to Preserve**: essential triggers, workflows, direct and nested subcommands, parent-child command chains, object-generator context, inputs, outputs, gates, blockers, evidence handoffs, resource ownership, and side effects.
+- **Target Runtime Shape**: target entrypoint, target metadata, reference pages, commands, subskills, scripts, assets, resource owners, and files to remove from runtime. Use subcommands for procedures that consume containing-skill resources and subskills for capabilities that need private bundled resources.
 - **Term Adaptations**: source terms mapped to target terms, with unresolved terms listed as placeholders.
 - **Tool and Harness Adaptations**: source tool calls, CLIs, runtimes, service assumptions, or unavailable dependencies mapped to target equivalents or placeholders.
 - **Artifact and Storage Adaptations**: source artifacts, paths, state files, outputs, and handoffs mapped to target semantics or placeholders.
@@ -121,6 +121,7 @@ The rewritten target should:
 - Keep `SKILL.md` concise, with YAML frontmatter, `## Overview`, `## Workflow`, `## Subcommands` when needed, and a short common-mistake or maintenance section when useful.
 - Keep long executable detail in `references/<name>.md` or the target's established detail-page directory.
 - Use the target's subcommand structure flavor from `references/imsight-skill-style-guide.md`.
+- Preserve nested subcommand ownership and full parenthesized chains. Treat intermediate parent commands as object generators, keep their descendants inside the containing skill or subskill's resource boundary, and make any capability that needs a private bundled-resource tree a subskill.
 - Preserve source inputs, outputs, decision gates, blockers, quality gates, evidence handoffs, and stop conditions.
 - Reference the support page or section needed by every main workflow step.
 - Preserve passive templates, examples, scripts, assets, and data files only when they remain useful to target runtime behavior.
@@ -205,8 +206,10 @@ Before finishing, validate both structure and semantic preservation.
 7. Confirm substitutions in the migration plan are reflected in rewritten pages.
 8. Confirm every unresolved source artifact, route, term, tool, storage binding, or environment assumption outside `org/` has a placeholder in `migrate/placeholders.md`.
 9. Confirm every rewritten runtime page that uses placeholders references `migrate/placeholders.md`.
-10. Run the available skill validator or repository skillset validation command when present.
-11. Inspect leftovers outside provenance material for stale source-specific paths, tool calls, metadata, or trigger language that the migration plan did not intentionally preserve.
+10. Confirm every nested subcommand retains its immediate parent, full parenthesized invocation chain, generator-context contract, and containing skill or subskill resource owner.
+11. Confirm every capability that needs private bundled resources is represented as a skill or subskill rather than a subcommand.
+12. Run the available skill validator or repository skillset validation command when present.
+13. Inspect leftovers outside provenance material for stale source-specific paths, tool calls, metadata, or trigger language that the migration plan did not intentionally preserve.
 
 ## Output Contract
 
@@ -231,3 +234,4 @@ Return a concise chat summary with:
 - DO NOT bind unresolved storage, tools, routes, or environment assumptions to guessed concrete values.
 - DO NOT leave workflow steps dependent on hidden source knowledge that is absent from the target runtime files.
 - DO NOT mix guidance, preferences, constraints, and quality gates into one prose block.
+- DO NOT flatten nested subcommand chains, execute an intermediate generator's standalone action implicitly, or assign private bundled resources to a subcommand.

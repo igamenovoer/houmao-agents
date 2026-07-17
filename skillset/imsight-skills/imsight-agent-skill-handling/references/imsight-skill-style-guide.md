@@ -87,35 +87,58 @@ Misc subcommands are public support commands and shortcuts that do not represent
 - Put shortcuts such as `fast-forward` or `step-by-step` here. `fast-forward` should run the full procedural workflow automatically. `step-by-step` should run the same required workflow but pause for user confirmation between stages.
 - Include misc subcommands in help output because they are part of the public interface.
 
+### Nested subcommands
+
+A subcommand may define child subcommands. Treat such a parent subcommand as an object generator: when another `->child()` component follows it, the parent establishes the scoped command context and exposes only the children declared by its own `## Subcommands` section.
+
+- List every direct child in the immediate parent subcommand page and link the child's executable detail page.
+- Use `X->parent()->child()` to invoke child subcommand `child` defined by parent subcommand `parent` of skill `X`. A child may generate another command object, so chains may continue to any declared depth.
+- Treat the complete chain as one invocation of the terminal child. An intermediate parent applies only generator or inherited-context behavior that its contract explicitly declares; it does not automatically execute its standalone terminal action.
+- When `X->parent()` is terminal, invoke the parent subcommand's own declared workflow. A routing-only parent must define its terminal help, selection, or blocker behavior explicitly.
+- Once a command chain begins, every remaining component is a subcommand and therefore includes `()`. Do not route from an intermediate subcommand to a bare skill or subskill component.
+- A child name is scoped to its immediate parent command. Record and validate the full command chain rather than resolving the child by its unqualified name.
+- Keep nested subcommands inside the resource boundary of their containing skill or subskill. A parent command may own child routes and detail pages, but it does not own a private bundled-resource root.
+
 ## Subskills
 
 A skill may bundle nested skills under `subskills/<subskill-name>/`. Each subskill is a self-contained skill folder with its own required `SKILL.md` and, when needed, the same optional bundled resource directories (`agents/`, `references/`, `commands/`, `scripts/`, `assets/`) as a top-level skill.
 
-Read the structure with object semantics: the main skill is an object, its `SKILL.md` is the object's `()` operator, and a subskill is an inner object of the main skill. A subskill is scoped to and owned by its parent skill; it is not independently installed or discovered.
+Read the structure with object semantics: the main skill is an object, its `SKILL.md` is the object's entrypoint, and a subskill is an inner object of the main skill. A subskill is scoped to and owned by its parent skill; it is not independently installed or discovered.
 
-- Use a subskill when a capability is large or self-contained enough to be a full skill but only meaningful as part of the parent skill.
-- Keep ordinary subcommand procedures on `commands/` or `references/` detail pages; do not promote every subcommand to a subskill.
+- Use a subskill when a capability needs its own private resource boundary, such as dedicated `scripts/`, `references/`, `commands/`, `assets/`, templates, or runtime metadata, while remaining meaningful only as part of the parent skill. Private means scoped ownership here, not secrecy or access control.
+- Use a subcommand, including a nested subcommand, when the procedure can operate with resources owned by its containing skill or subskill. A subcommand may have an executable detail page and child subcommands, but it does not own an independent bundled-resource tree.
+- Promote a subcommand to a subskill when it acquires resources that should be maintained, loaded, validated, or distributed as its own bundle. Size or workflow complexity alone does not require promotion.
 - List bundled subskills in the parent `SKILL.md`, either in the `## Subcommands` table or in a dedicated `## Subskills` section, so the entrypoint can route invocation designators.
 - Every rule in this guide applies to each subskill's `SKILL.md` and subcommand-like pages as well.
 
 ## Skill Invocation Notations
 
-Skills designate skill and subskill invocations with object-style notation. The notation extends the plain convention other writers already use, so prefer the plain form whenever context makes the target clear.
+Skills designate skill, subskill, and subcommand invocations with object-style notation. Bare components form the skill and subskill path; parenthesized components form a possibly nested subcommand chain:
 
-- Skill-to-skill invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". The bare path invokes the named skill or subskill entrypoint (its `SKILL.md`). This is the public convention; the explicit `()` forms below are a well-defined calling syntax with the same meaning.
-- Skill-to-subcommand invocation: write "invoke skill subcommand `X->cmd()`" for a subcommand of skill `X`, "invoke skill subcommand `X->Y->cmd()`" for a subcommand of subskill `Y` inside skill `X`, and "invoke subcommand `cmd()`" for a subcommand of the current skill. Prefer keeping the `()` on the subcommand symbol; omit it only when context already makes clear which symbol is the subcommand.
-- Explicit forms: when a symbol appears without enough context to tell a skill from a subcommand, prefer the explicit form, such as `X()` or `X->Y()` for a skill or subskill entrypoint and `X->cmd()` or `X->Y->cmd()` for a subcommand.
+```text
+skill-path := skill-name ("->" subskill-name)*
+subcommand-chain := subcommand-name "()" ("->" subcommand-name "()")*
+invocation := skill-path | skill-path "->" subcommand-chain
+relative-subcommand-invocation := subcommand-chain
+```
+
+- Skill and subskill entrypoint invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". A bare object path invokes the named skill or terminal subskill entrypoint (its `SKILL.md`). Never append `()` to a skill or subskill entrypoint.
+- Skill-to-subcommand invocation: write "invoke skill subcommand `X->cmd()`" for a direct subcommand of skill `X`, "invoke skill subcommand `X->Y->cmd()`" for a direct subcommand of subskill `Y`, and "invoke subcommand `cmd()`" for a direct subcommand of the current skill or command context.
+- Nested-subcommand invocation: write `X->parent()->child()` for child subcommand `child` owned by parent subcommand `parent`, and continue the parenthesized chain for deeper descendants. Every subcommand component includes `()`, including intermediate object generators.
+- Same-name routing: a direct subskill and direct subcommand may share a name because the component syntax remains authoritative. For example, `X->Y` invokes subskill `Y`, while `X->Y()` invokes subcommand `Y` of skill `X`.
+
+Forms such as `X()` and `X->Y()` do not invoke skill or subskill entrypoints. Under this grammar, `X->Y()` means subcommand `Y` of skill `X`, and `X->parent()->child()` means child subcommand `child` of parent subcommand `parent`.
 
 Any skill or subcommand page that uses these designators must declare the notation in its YAML frontmatter with the `skill_invocation_notation` key, adding frontmatter when the page has none. Use this standard value:
 
 ```yaml
 skill_invocation_notation: >
-  Skill and subskill invocations use object-style notation: `X` or `X->Y->Z`
-  invokes the named skill or subskill entrypoint (its SKILL.md), `X->cmd()`
-  and `X->Y->cmd()` invoke subcommand `cmd` of skill `X` or of subskill `Y`
-  inside skill `X`, and bare `cmd()` invokes a subcommand of the current
-  skill. The explicit forms `X()` and `X->Y()` are equivalent to the bare
-  paths and appear when context does not make the symbol kind clear.
+  Skill and subskill entrypoints use bare object paths: `X` invokes skill X and
+  `X->Y->Z` invokes subskill Z. Subcommands use parenthesized components:
+  `X->cmd()` invokes a direct subcommand, `X->Y->cmd()` invokes a subcommand of
+  subskill Y, and `X->parent()->child()` invokes child subcommand child exposed
+  by parent subcommand parent. Intermediate subcommands act as object generators.
+  Forms such as `X()` and `X->Y()` are invalid for skill or subskill entrypoints.
 ```
 
 A skill that never uses these designators does not need the key.

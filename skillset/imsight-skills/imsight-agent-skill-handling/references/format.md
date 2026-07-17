@@ -32,7 +32,13 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - The skill entrypoint has a concise `## Guardrails` section in which every bullet starts with `DO NOT ...` and prevents a negative action specific to the skill.
 - Guardrails do not contain positive requirements, operation steps, workflow repetitions, or a second procedural checklist; those instructions appear in substantive skill sections.
 - If the skill bundles subskills under `subskills/`, each subskill has its own `SKILL.md` entrypoint, follows the same structural rules as a top-level skill, and is listed in the parent `SKILL.md` (in the `## Subcommands` table or a `## Subskills` section).
-- Any page that uses object-style invocation designators such as `X->Y->cmd()` declares the `skill_invocation_notation` key in its YAML frontmatter.
+- Any page that uses object-style invocation designators such as `X->Y`, `X->Y->cmd()`, or `X->parent()->child()` declares the `skill_invocation_notation` key in its YAML frontmatter.
+- Skill and subskill entrypoint designators are bare object paths such as `X` or `X->Y`; they never use `X()` or `X->Y()`.
+- Parentheses appear on every subcommand component, including intermediate object generators such as `parent()` in `X->parent()->child()`, and are never omitted from an object-style subcommand designator.
+- Once a subcommand chain begins, every remaining component is a parenthesized subcommand declared by its immediate parent; the chain never returns to a bare skill or subskill component.
+- A subcommand page that owns children lists them in `## Subcommands`, links their detail pages, defines what terminal invocation of the parent itself does, and keeps support resources under the containing skill or subskill.
+- A capability with a private `scripts/`, `references/`, `commands/`, `assets/`, templates, runtime metadata, or other bundled-resource tree is represented as a skill or subskill rather than a subcommand.
+- When a direct subskill and direct subcommand share a name, every designator preserves the bare subskill form or parenthesized subcommand form that identifies its declared kind.
 - Skill-based use cases and chat-turn examples show the visible user prompt or user action and the expected final AI response shape; they do not include hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or thinking process unless the user explicitly asks for that process to be documented. They also include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
 
 ## Subcommand Structure Checks
@@ -48,6 +54,8 @@ Use the complex-procedure flavor when the skill describes a multi-step procedure
 - `### Misc Subcommands` for `help` and public shortcuts.
 
 For the complex-procedure flavor, keep helper subcommands out of help output unless they are promoted to public workflow steps. If no helper subcommands exist, write `No helper subcommands are currently exposed.`
+
+When a subcommand owns child subcommands, preserve that hierarchy rather than flattening it during formatting. Treat each intermediate parent as an object generator, require it to declare its direct children, and verify that the complete parenthesized chain resolves to the terminal child. Keep independent peer operations at the skill or subskill level, and keep nested command resources owned by that containing skill or subskill.
 
 ## Description Optimization
 
@@ -83,6 +91,7 @@ When `create` or `format` edits a skill, task-specific detail is welcome but mus
 - If the skill is a collection of peer routines, keep one plain `## Subcommands` table. If the skill is a complex procedure, use the three-type split from **Subcommand Structure Checks**.
 - Preserve all domain-specific content: examples, guardrails, success criteria, and output templates. Only the structure should change, not the substance.
 - Normalize guardrails into negative-action prevention: rewrite each retained prohibition as one `DO NOT ...` bullet, and move positive requirements or operation steps into the workflow, procedure, contract, or another substantive section without changing their meaning.
+- Normalize object designators using the declared route kind: rewrite a skill or subskill entrypoint to its bare path, add `()` to every command component, preserve intermediate generator commands, and reject a command chain that returns to a bare component.
 - When examples expose hidden reasoning or thinking process, revise them into observable response contracts: decisions, commands, diagnostics, files, validation, or next-step guidance.
 
 The goal is a skill that is both well-formatted and rich enough to execute the user's task correctly.
@@ -92,6 +101,7 @@ The goal is a skill that is both well-formatted and rich enough to execute the u
 - Preserve frontmatter `name` and `description` unless they are invalid or stale because of structural edits.
 - Do not broaden trigger behavior while formatting.
 - Do not rename public subcommands, files, or output paths unless the user explicitly asks or the current name is broken.
+- Do not silently promote a subcommand to a subskill or move its resources when that would change invocation or loading behavior; report the resource-ownership conflict unless the requested format work authorizes that structural change.
 - Do not remove domain-specific guardrails, approval rules, or output contracts.
 - Move long procedural detail out of the workflow into existing sections when possible.
 - Add a new detail section only when no suitable section exists.
@@ -122,5 +132,6 @@ After validation, inspect changed files for:
 - guardrails that do not start with `DO NOT ...`,
 - positive requirements or operation steps presented as guardrails,
 - accidental changes to trigger or output semantics,
+- skill or subskill entrypoints written with `()`, any subcommand component written without `()`, undeclared parent-to-child command edges, command chains that return to bare components, same-name subskill and subcommand routes that use the wrong component form, or subcommands that claim private bundled-resource roots,
 - AI response examples that expose hidden reasoning or thinking process without an explicit user request,
 - AI response examples that omit the example-content warning when the skill includes user/AI chat examples.

@@ -25,31 +25,47 @@ If the user's task does not map cleanly to these steps, <FREEFORM_FALLBACK_RULE>
 
 ## Subcommands Design
 
-This section lists the public workflows and low-level primitives the skill can route to. Procedural subcommands represent user-facing tasks; helper subcommands represent reusable authoring or inspection steps.
+This section lists the public workflows, nested command objects, subskills, and low-level primitives the skill can route to. Procedural subcommands represent user-facing tasks; helper subcommands represent reusable authoring or inspection steps. Direct and nested subcommands use resources owned by their containing skill or subskill. A capability that needs a private bundled-resource tree is a subskill.
+
+### Subskills
+
+<SUBSKILL_INTRO_OR_NO_SUBSKILLS_SENTENCE>
+
+| Subskill | Invocation | Private Resources | Use For |
+| --- | --- | --- | --- |
+| `<SUBSKILL>` | `<PARENT_SKILL>-><SUBSKILL>` | `<SCRIPTS_REFERENCES_ASSETS_OR_OTHER_PRIVATE_RESOURCES>` | <PURPOSE> |
+
+### Parent Command Contracts
+
+<PARENT_COMMAND_INTRO_OR_NO_NESTED_COMMANDS_SENTENCE>
+
+| Parent Command | Full Invocation | Terminal Behavior | Generated Child Context | Direct Children | Resource Owner |
+| --- | --- | --- | --- | --- | --- |
+| `<PARENT_COMMAND>` | `<SKILL_OR_SUBSKILL>-><PARENT_COMMAND>()` | <STANDALONE_TERMINAL_ACTION_HELP_OR_BLOCKER> | <CONTEXT_EXPOSED_TO_CHILDREN> | `<CHILD_COMMANDS>` | `<CONTAINING_SKILL_OR_SUBSKILL>` |
 
 ### Helper Subcommands
 
 <HELPER_SUBCOMMAND_INTRO_OR_NO_HELPERS_SENTENCE>
 
-| Subcommand | Use For | Load |
-| --- | --- | --- |
-| `<SUBCOMMAND>` | <PURPOSE> | `<DETAIL_PATH>` or this entrypoint |
+| Subcommand | Invocation | Resource Owner | Use For | Load |
+| --- | --- | --- | --- | --- |
+| `<SUBCOMMAND>` | `<FULL_SUBCOMMAND_INVOCATION>` | `<CONTAINING_SKILL_OR_SUBSKILL>` | <PURPOSE> | `<DETAIL_PATH>` or this entrypoint |
 
 ### Procedural Subcommands
 
 <PROCEDURAL_SUBCOMMAND_INTRO_OR_NO_PROCEDURAL_SUBCOMMANDS_SENTENCE>
 
-| Subcommand | Use For | Load |
-| --- | --- | --- |
-| `<SUBCOMMAND>` | <PURPOSE> | `<DETAIL_PATH>` or this entrypoint |
+| Subcommand | Invocation | Resource Owner | Use For | Load |
+| --- | --- | --- | --- | --- |
+| `<SUBCOMMAND>` | `<FULL_SUBCOMMAND_INVOCATION>` | `<CONTAINING_SKILL_OR_SUBSKILL>` | <PURPOSE> | `<DETAIL_PATH>` or this entrypoint |
 
 ### Misc Subcommands
 
 <MISC_SUBCOMMAND_INTRO_OR_NO_MISC_SUBCOMMANDS_SENTENCE>
 
-| Subcommand | Use For | Load |
-| --- | --- | --- |
-| `help` | Explain this skill and list public subcommands. | This entrypoint |
+| Subcommand | Invocation | Resource Owner | Use For | Load |
+| --- | --- | --- | --- | --- |
+| `help` | `<PROPOSED_SKILL_ID>->help()` | `<PROPOSED_SKILL_ID>` | Explain this skill and list public subcommands. | This entrypoint |
 
 ## Core Workflow Diagram
 

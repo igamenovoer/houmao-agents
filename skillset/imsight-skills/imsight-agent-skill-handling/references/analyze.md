@@ -8,18 +8,18 @@ Use this reference to analyze a given agent skill from the skill files themselve
 2. **Resolve `<output-dir>`** using **Output Contract**.
 3. **Read the entrypoint completely**. Read `SKILL.md` from start to finish.
 4. **Inspect runtime metadata**. Read `agents/openai.yaml` when present.
-5. **Map linked resources and inventory files**. Identify directly linked `references/`, `commands/`, `subskills/`, `scripts/`, `assets/`, and workflow pages, then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, subskill, script, asset, or other), and a one-sentence explanation of its purpose. Include this inventory table in the entrypoint report.
-6. **Choose report units**. Always create an entrypoint report for `SKILL.md`. For multi-part skills, choose one report unit for each public subcommand, mode, workflow, or primitive page that has distinct workflow logic.
+5. **Map linked resources and inventory files**. Identify directly linked `references/`, `commands/`, `subskills/`, `scripts/`, `assets/`, and workflow pages, then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, subskill, script, asset, or other), resource owner, and a one-sentence explanation of its purpose. Treat the containing skill or subskill as the resource owner for every direct or nested subcommand. Include this inventory table in the entrypoint report.
+6. **Choose report units**. Always create an entrypoint report for `SKILL.md`. For multi-part skills, choose one report unit for each public direct or nested subcommand, mode, workflow, or primitive page that has distinct workflow logic.
 7. **Load workflow-critical resources** for each report unit. Read the linked pages needed to reconstruct execution flow and output artifacts. Do not load unrelated references just because they exist.
 8. **Infer workflow logic**. Build a step model from frontmatter, invocation contract, workflow sections, subcommands, routing rules, guardrails, output contracts, and linked task pages.
-9. **Map skill routing**. Identify calls to subskills, subcommands, modes, and external skills. Record the caller, callee, trigger condition, and whether the call is explicit (e.g., `$skill-name use <subskill>` or an object-style designator such as `X->Y->cmd()`) or implicit (e.g., routed by task type or mode table). Include skill-owned references and linked workflow pages only when they are invoked as runtime routing targets, not when they are merely read for context.
+9. **Map skill routing**. Identify calls to subskills, direct and nested subcommands, modes, and external skills. Record the caller, callee, trigger condition, full invocation chain, immediate parent, resource owner, and whether the call is explicit (e.g., `$skill-name use <subskill>` or an object-style designator such as `X->parent()->child()`) or implicit (e.g., routed by task type or mode table). For a nested chain, distinguish intermediate object-generator commands from the terminal invoked command and do not infer that an intermediate command's standalone action runs. Include skill-owned references and linked workflow pages only when they are invoked as runtime routing targets, not when they are merely read for context.
 10. **Infer durable outputs**. Extract explicit artifact paths, reports, manifests, generated files, modified files, branches, worktrees, messages, or other durable side effects. Label inferred outputs as inferred when no explicit path is stated.
 11. **Load shared Mermaid style**. Read `references/mermaid-style.md` before drafting Markdown workflow diagrams or skill routing callgraphs.
 12. **Fill the Markdown output template**. Use `references/md-output-template.md` for every report file.
 13. **Write report files** using **Report Files** and **Output Formats**.
 14. **Return a brief in-chat response** using `references/chat-response-template.md`.
 
-If a skill has multiple subcommands or modes, write `ENTRYPOINT.md` for the top-level routing flow, then write one Markdown file for each analyzed subcommand or mode. If no specific subcommand is requested, analyze all public subcommands at a concise level.
+If a skill has multiple subcommands or modes, write `ENTRYPOINT.md` for the top-level routing flow, then write one Markdown file for each analyzed direct or nested subcommand or mode. If no specific subcommand is requested, analyze all public subcommands at a concise level while preserving their parent-child hierarchy.
 
 ## Output Contract
 
@@ -34,7 +34,7 @@ Resolve `<output-dir>` in this order:
 Write reports using these names:
 
 - Primary `SKILL.md` entrypoint report: `<output-dir>/ENTRYPOINT.md`.
-- Multi-part skill reports: `<output-dir>/<subcommand-name>.md` for each public subcommand, mode, workflow, or primitive page that deserves its own analysis.
+- Multi-part skill reports: `<output-dir>/<scoped-part-name>.md` for each public subcommand, mode, workflow, or primitive page that deserves its own analysis. For a nested subcommand, derive the scoped part name from its command chain, such as `parent-child.md` for `parent()->child()`.
 
 Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary `SKILL.md` report. Prefer the public subcommand name over the source file stem when they differ.
 
@@ -42,6 +42,7 @@ Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT
 
 - Treat `SKILL.md` as authoritative for trigger behavior and top-level workflow.
 - Treat linked reference, subcommand, workflow, mode, and primitive files as authoritative for their owned steps.
+- Treat a skill or subskill as the resource owner for its direct and nested subcommands. A subcommand may own child routes but does not introduce a private bundled-resource root.
 - Use `agents/openai.yaml` for UI metadata and implicit-invocation policy only.
 - Distinguish explicit behavior from inferred behavior.
 - Cite file paths and line numbers for important claims when practical.
@@ -55,9 +56,10 @@ Write these files under `<output-dir>`:
 | --- | --- |
 | Primary `SKILL.md` entrypoint | `ENTRYPOINT.md` |
 | Public subcommand | `<subcommand-name>.md` |
+| Nested public subcommand | `<parent-command>-<child-command>.md`, extended with each additional ancestor |
 | Public mode, workflow, or primitive page | `<public-name>.md` |
 
-Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary `SKILL.md` report. Prefer public names from the subcommand table, mode table, or invocation contract over source file stems. If two report units normalize to the same file name, add a short disambiguating suffix from the parent folder, such as `deploy-workflow.md` or `deploy-mode.md`.
+Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary `SKILL.md` report. Prefer public names from the subcommand table, mode table, or invocation contract over source file stems. Preserve the full ancestor chain in nested-subcommand report names. If two other report units normalize to the same file name, add a short disambiguating suffix from the parent folder, such as `deploy-workflow.md` or `deploy-mode.md`.
 
 For single-part skills, write only `ENTRYPOINT.md` unless the user requests deeper resource-level analysis.
 
@@ -146,12 +148,13 @@ When the analyzed skill routes work to subskills, subcommands, modes, or externa
 Represent:
 
 - The primary analyzed skill entrypoint as the root node.
-- Each public subcommand or mode as a direct child of the entrypoint.
+- Each direct public subcommand or mode as a direct child of the entrypoint.
+- Each nested subcommand as a child of its immediate parent command, with the edge labeled by the full parenthesized invocation chain.
 - Each invoked subskill as a child of the caller that routes to it.
 - Each external skill as a separate node, grouped visually by caller when helpful.
 - Edges labeled with the trigger condition or explicit invocation form.
 
-When a subskill is invoked from multiple callers, draw one node per subskill and multiple edges. When a call is conditional, label the edge with the condition. When a call is explicit (e.g., `$skill-name subcommand`), include the invocation form in the label. When a call is implicit (e.g., routed by task type), label the edge with the routing rule.
+When a subskill is invoked from multiple callers, draw one node per subskill and multiple edges. When a parent command generates a child command context, draw the child below that parent and identify the terminal child as the invoked workflow. When a call is conditional, label the edge with the condition. When a call is explicit (e.g., `$skill-name subcommand`), include the invocation form in the label. When a call is implicit (e.g., routed by task type), label the edge with the routing rule.
 
 Keep the callgraph focused on runtime routing relationships. Do not include files that are only read for context, such as templates or style guides, unless the skill explicitly loads them as a routing step. Split the callgraph into an overview and a detail view when it has more than roughly seven nodes in one row or more than two nested groups.
 
