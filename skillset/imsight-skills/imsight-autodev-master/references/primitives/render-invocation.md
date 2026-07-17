@@ -42,6 +42,9 @@ Slave skill commands target predefined operations owned by `imsight-autodev-slav
 
 - Preserve the user's request text, target repository/workspace, change id, and constraints in the rendered command.
 - If the tool lane is unknown, ask for clarification instead of guessing.
-- Do not mix Codex `$...` syntax with Claude `/...` syntax.
-- Do not render raw OpenSpec commands for predefined slave-skill operations such as `init-openspec`.
-- Do not render `imsight-autodev-slave` commands when the intent is a direct single OpenSpec phase unless the workflow explicitly selects the slave mega-skill.
+
+## Guardrails
+
+- DO NOT mix Codex `$...` syntax with Claude `/...` syntax.
+- DO NOT render raw OpenSpec commands for predefined slave-skill operations such as `init-openspec`.
+- DO NOT render `imsight-autodev-slave` commands when the intent is a direct single OpenSpec phase unless the workflow explicitly selects the slave mega-skill.
