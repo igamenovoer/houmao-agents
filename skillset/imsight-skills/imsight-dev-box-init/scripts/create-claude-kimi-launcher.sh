@@ -14,8 +14,11 @@ Options:
                      Defaults to KIMI_API_KEY, then ANTHROPIC_API_KEY.
   --output PATH      Launcher path. Default: $HOME/.local/bin/claude-kimi.
   --key-file PATH    Shared key file. Default: <launcher-dir>/kimi-api-key.
-  --base-url URL     Anthropic-compatible Kimi endpoint. Default: https://api.kimi.com/coding/.
-  --model MODEL      Default Claude Code model argument. Default: kimi-for-coding.
+  --base-url URL     Anthropic-compatible Kimi endpoint. Default: https://api.moonshot.ai/anthropic.
+  --model MODEL      Default Claude Code model argument. Default: kimi-k3.
+  --compact-window N Auto-compaction window. Default: derived from the model
+                     (262144 for K2-series, kimi-for-coding, and coding-plan
+                     k3; 1048576 otherwise).
   --claude-bin PATH  Optional fixed Claude Code executable path.
   -h, --help         Show this help.
 EOF
@@ -24,8 +27,9 @@ EOF
 api_key="${KIMI_API_KEY:-${ANTHROPIC_API_KEY:-}}"
 output="$HOME/.local/bin/claude-kimi"
 key_file=""
-base_url="https://api.kimi.com/coding/"
-model="kimi-for-coding"
+base_url="https://api.moonshot.ai/anthropic"
+model="kimi-k3"
+compact_window=""
 claude_bin=""
 
 while [[ $# -gt 0 ]]; do
@@ -70,6 +74,14 @@ while [[ $# -gt 0 ]]; do
       model="${1#*=}"
       shift
       ;;
+    --compact-window)
+      compact_window="${2:?missing value for --compact-window}"
+      shift 2
+      ;;
+    --compact-window=*)
+      compact_window="${1#*=}"
+      shift
+      ;;
     --claude-bin)
       claude_bin="${2:?missing value for --claude-bin}"
       shift 2
@@ -93,6 +105,45 @@ done
 output_dir="$(dirname "$output")"
 if [[ -z "$key_file" ]]; then
   key_file="$output_dir/kimi-api-key"
+fi
+
+if [[ -z "$compact_window" ]]; then
+  case "$model" in
+    *k2.*|kimi-for-coding*|k3)
+      # K2-series models, the K2.7 Code family, and coding-plan k3
+      # (Moderato tier) use a 256K context window.
+      compact_window=262144
+      ;;
+    *)
+      # kimi-k3 and coding-plan k3[1m] use a 1M context window.
+      compact_window=1048576
+      ;;
+  esac
+fi
+if [[ ! "$compact_window" =~ ^[0-9]+$ ]]; then
+  echo "invalid --compact-window: $compact_window (expected a number)" >&2
+  exit 2
+fi
+
+# The Kimi Coding Plan endpoint (api.kimi.com) authenticates with
+# ANTHROPIC_API_KEY; the Kimi Platform API endpoint authenticates with
+# ANTHROPIC_AUTH_TOKEN. Each lane also carries its own guide-mandated
+# variable set, emitted after KIMI_MODEL is resolved in the launcher.
+if [[ "$base_url" == *api.kimi.com* ]]; then
+  auth_export='export ANTHROPIC_API_KEY="$kimi_key"'
+  auth_unset='unset ANTHROPIC_AUTH_TOKEN CLAUDE_CODE_OAUTH_TOKEN'
+  lane_exports="export ANTHROPIC_DEFAULT_FABLE_MODEL=\"\$KIMI_MODEL\"
+export CLAUDE_CODE_MAX_CONTEXT_TOKENS=\"\${CLAUDE_CODE_MAX_CONTEXT_TOKENS:-$compact_window}\"
+case \"\$KIMI_MODEL\" in
+  k3|'k3[1m]')
+    # Only K3 supports CLAUDE_CODE_EFFORT_LEVEL, and only max.
+    export CLAUDE_CODE_EFFORT_LEVEL=\"\${CLAUDE_CODE_EFFORT_LEVEL:-max}\"
+    ;;
+esac"
+else
+  auth_export='export ANTHROPIC_AUTH_TOKEN="$kimi_key"'
+  auth_unset='unset ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN'
+  lane_exports='export ENABLE_TOOL_SEARCH="${ENABLE_TOOL_SEARCH:-false}"'
 fi
 
 shell_quote() {
@@ -123,29 +174,34 @@ if [[ ! -r "\$key_file" ]]; then
     echo "claude-kimi: missing \$key_file and cannot prompt for a key without a terminal" >&2
     exit 2
   fi
-  read -r -s -p "Kimi API key: " ANTHROPIC_API_KEY
+  read -r -s -p "Kimi API key: " kimi_key
   echo >&2
-  if [[ -z "\$ANTHROPIC_API_KEY" ]]; then
+  if [[ -z "\$kimi_key" ]]; then
     echo "claude-kimi: empty Kimi API key" >&2
     exit 2
   fi
   mkdir -p "\$(dirname "\$key_file")"
   umask 077
-  printf '%s\n' "\$ANTHROPIC_API_KEY" > "\$key_file"
+  printf '%s\n' "\$kimi_key" > "\$key_file"
   chmod 600 "\$key_file" 2>/dev/null || true
 else
-  IFS= read -r ANTHROPIC_API_KEY < "\$key_file" || true
-  if [[ -z "\$ANTHROPIC_API_KEY" ]]; then
+  IFS= read -r kimi_key < "\$key_file" || true
+  if [[ -z "\$kimi_key" ]]; then
     echo "claude-kimi: empty Kimi API key in \$key_file" >&2
     exit 2
   fi
 fi
 
-export ANTHROPIC_API_KEY
+$auth_export
+$auth_unset
 export ANTHROPIC_BASE_URL=$base_url_q
-unset ANTHROPIC_AUTH_TOKEN CLAUDE_CODE_OAUTH_TOKEN
-export CLAUDE_CODE_AUTO_COMPACT_WINDOW="\${CLAUDE_CODE_AUTO_COMPACT_WINDOW:-262144}"
-KIMI_MODEL="\${CLAUDE_KIMI_MODEL:-$model_q}"
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW="\${CLAUDE_CODE_AUTO_COMPACT_WINDOW:-$compact_window}"
+KIMI_MODEL=\${CLAUDE_KIMI_MODEL:-$model_q}
+export ANTHROPIC_DEFAULT_OPUS_MODEL="\$KIMI_MODEL"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="\$KIMI_MODEL"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="\$KIMI_MODEL"
+export CLAUDE_CODE_SUBAGENT_MODEL="\$KIMI_MODEL"
+$lane_exports
 
 if command -v node >/dev/null 2>&1; then
   node --eval "
