@@ -62,9 +62,11 @@ Use the complex-procedure flavor when the skill describes a multi-step procedure
 
 For complex-procedure skills, put procedural subcommands in user-facing workflow order, keep helper subcommands out of help output unless promoted, and say `No helper subcommands are currently exposed.` when the helper group is empty.
 
+When a capability is large or self-contained enough to be a full skill but only meaningful as part of the parent skill, make it a bundled subskill under `subskills/<subskill-name>/` instead of a subcommand detail page. See **Skill Layout** and [skill-layout.md](skill-layout.md).
+
 ## Skill Layout
 
-A skill folder follows the OpenAI skill-creator layout: a required `SKILL.md`, a recommended `agents/openai.yaml`, and optional bundled resource directories (`scripts/`, `references/`, `assets/`). See [skill-layout.md](skill-layout.md) for the full layout, including the Imsight `commands/` convention for subcommand detail pages.
+A skill folder follows the OpenAI skill-creator layout: a required `SKILL.md`, a recommended `agents/openai.yaml`, and optional bundled resource directories (`scripts/`, `references/`, `assets/`). See [skill-layout.md](skill-layout.md) for the full layout, including the Imsight `commands/` convention for subcommand detail pages and the Imsight `subskills/` convention for bundled nested skills.
 
 When initializing a skill:
 
@@ -74,6 +76,7 @@ When initializing a skill:
 - Create `references/` only when the skill has detail pages, style guides, schemas, or other reference material.
 - Create `assets/` only when the skill bundles static resources used in output.
 - Create `commands/` only when the skill has subcommand detail pages.
+- Create `subskills/` only when the skill bundles nested skills. Each subskill is a self-contained skill folder with its own `SKILL.md` and follows this same layout recursively.
 - Do not create empty directories purely for symmetry.
 - If the target skill home already exists, do not overwrite or remove any existing files or directories. If a required file such as `SKILL.md` already exists and conflicts with the new skill, stop and report the conflict.
 
@@ -97,6 +100,7 @@ Rules for the frontmatter:
 - Keep the description under 500 characters if possible, 1024 maximum.
 - Write in third person.
 - Include keywords agents would search for: error messages, symptoms, tools, library names.
+- Add the optional `skill_invocation_notation` key when the page uses object-style invocation designators; use the standard value from `references/imsight-skill-style-guide.md`.
 
 ### Required Sections
 
@@ -120,6 +124,8 @@ Focus on problems tightly related to the actions described by this skill. Avoid 
 Write the workflow as numbered steps. Keep each step concise and point to a detail section when it needs more explanation. If a main step has several internal branches or substeps, present them as a nested list under that step instead of a long paragraph. Keep the nesting depth to three levels or fewer. End with a fallback for freeform tasks. Move long procedural detail, examples, edge cases, and configuration notes out of the workflow into dedicated sections or `references/<page>.md` files.
 
 When the skill has subcommands, apply **Subcommand Structure** before writing the `## Subcommands` section. Do not use the three-type split for a simple collection of unordered routines.
+
+When the skill bundles subskills, list them in the `## Subcommands` table or a dedicated `## Subskills` section of `SKILL.md` so the entrypoint can route invocation designators. When any page of the skill uses object-style invocation designators such as `X->Y->cmd()`, declare the notation in that page's YAML frontmatter with the `skill_invocation_notation` key; use the standard value from `references/imsight-skill-style-guide.md`.
 
 For discipline-enforcing skills, also include:
 
@@ -162,8 +168,10 @@ Validate the skill before finishing:
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long detail has been moved out of the workflow into dedicated sections or reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the skill functionality.
-8. If the skill includes use-case or chat-turn examples, confirm AI response examples show only visible response content and do not expose hidden reasoning or thinking process unless the user explicitly requested that, and confirm the examples include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
-9. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
+8. If the skill bundles subskills, confirm each `subskills/<subskill-name>/SKILL.md` exists with valid frontmatter and follows this same checklist, and confirm the parent `SKILL.md` lists the subskills in its `## Subcommands` table or a `## Subskills` section.
+9. If any page uses object-style invocation designators such as `X->Y->cmd()`, confirm that page declares the `skill_invocation_notation` key in its YAML frontmatter.
+10. If the skill includes use-case or chat-turn examples, confirm AI response examples show only visible response content and do not expose hidden reasoning or thinking process unless the user explicitly requested that, and confirm the examples include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
+11. If a skill validator such as `skill-creator/scripts/quick_validate.py` is available, run it on the target skill folder.
 
 Report any validation failures and fix them before returning the summary.
 

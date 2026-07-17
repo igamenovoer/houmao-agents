@@ -55,7 +55,7 @@ Do not edit files under `<target-skill-dir>/org/src/` after copying them. They a
 
 ## Source Copy Rules
 
-Inspect the source and target before editing, and preserve unrelated user changes in the target. Inventory every file in `<source-skill-dir>/`, including entrypoints, agent metadata, references, commands, scripts, templates, assets, and examples.
+Inspect the source and target before editing, and preserve unrelated user changes in the target. Inventory every file in `<source-skill-dir>/`, including entrypoints, agent metadata, references, commands, subskills, scripts, templates, assets, and examples.
 
 Copy every source file into `<target-skill-dir>/org/src/` while preserving paths relative to `<source-skill-dir>/`. The original source entrypoint remains at `<target-skill-dir>/org/src/SKILL.md`.
 
@@ -84,7 +84,7 @@ Include these sections:
 
 - **Scope**: source skill, target skill, migration mode, and whether this is self-migration.
 - **Source Behavior to Preserve**: essential triggers, workflows, subcommands, inputs, outputs, gates, blockers, evidence handoffs, and side effects.
-- **Target Runtime Shape**: target entrypoint, target metadata, reference pages, commands, scripts, assets, and files to remove from runtime.
+- **Target Runtime Shape**: target entrypoint, target metadata, reference pages, commands, subskills, scripts, assets, and files to remove from runtime.
 - **Term Adaptations**: source terms mapped to target terms, with unresolved terms listed as placeholders.
 - **Tool and Harness Adaptations**: source tool calls, CLIs, runtimes, service assumptions, or unavailable dependencies mapped to target equivalents or placeholders.
 - **Artifact and Storage Adaptations**: source artifacts, paths, state files, outputs, and handoffs mapped to target semantics or placeholders.

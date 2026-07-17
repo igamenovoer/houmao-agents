@@ -87,6 +87,39 @@ Misc subcommands are public support commands and shortcuts that do not represent
 - Put shortcuts such as `fast-forward` or `step-by-step` here. `fast-forward` should run the full procedural workflow automatically. `step-by-step` should run the same required workflow but pause for user confirmation between stages.
 - Include misc subcommands in help output because they are part of the public interface.
 
+## Subskills
+
+A skill may bundle nested skills under `subskills/<subskill-name>/`. Each subskill is a self-contained skill folder with its own required `SKILL.md` and, when needed, the same optional bundled resource directories (`agents/`, `references/`, `commands/`, `scripts/`, `assets/`) as a top-level skill.
+
+Read the structure with object semantics: the main skill is an object, its `SKILL.md` is the object's `()` operator, and a subskill is an inner object of the main skill. A subskill is scoped to and owned by its parent skill; it is not independently installed or discovered.
+
+- Use a subskill when a capability is large or self-contained enough to be a full skill but only meaningful as part of the parent skill.
+- Keep ordinary subcommand procedures on `commands/` or `references/` detail pages; do not promote every subcommand to a subskill.
+- List bundled subskills in the parent `SKILL.md`, either in the `## Subcommands` table or in a dedicated `## Subskills` section, so the entrypoint can route invocation designators.
+- Every rule in this guide applies to each subskill's `SKILL.md` and subcommand-like pages as well.
+
+## Skill Invocation Notations
+
+Skills designate skill and subskill invocations with object-style notation. The notation extends the plain convention other writers already use, so prefer the plain form whenever context makes the target clear.
+
+- Skill-to-skill invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". The bare path invokes the named skill or subskill entrypoint (its `SKILL.md`). This is the public convention; the explicit `()` forms below are a well-defined calling syntax with the same meaning.
+- Skill-to-subcommand invocation: write "invoke skill subcommand `X->cmd()`" for a subcommand of skill `X`, "invoke skill subcommand `X->Y->cmd()`" for a subcommand of subskill `Y` inside skill `X`, and "invoke subcommand `cmd()`" for a subcommand of the current skill. Prefer keeping the `()` on the subcommand symbol; omit it only when context already makes clear which symbol is the subcommand.
+- Explicit forms: when a symbol appears without enough context to tell a skill from a subcommand, prefer the explicit form, such as `X()` or `X->Y()` for a skill or subskill entrypoint and `X->cmd()` or `X->Y->cmd()` for a subcommand.
+
+Any skill or subcommand page that uses these designators must declare the notation in its YAML frontmatter with the `skill_invocation_notation` key, adding frontmatter when the page has none. Use this standard value:
+
+```yaml
+skill_invocation_notation: >
+  Skill and subskill invocations use object-style notation: `X` or `X->Y->Z`
+  invokes the named skill or subskill entrypoint (its SKILL.md), `X->cmd()`
+  and `X->Y->cmd()` invoke subcommand `cmd` of skill `X` or of subskill `Y`
+  inside skill `X`, and bare `cmd()` invokes a subcommand of the current
+  skill. The explicit forms `X()` and `X->Y()` are equivalent to the bare
+  paths and appear when context does not make the symbol kind clear.
+```
+
+A skill that never uses these designators does not need the key.
+
 ## Freeform skills
 
 If the skill mainly provides tools, constraints, or subcommands rather than a rigid procedure:

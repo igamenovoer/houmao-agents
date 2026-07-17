@@ -31,6 +31,8 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
 - The skill entrypoint has a concise `## Guardrails` section in which every bullet starts with `DO NOT ...` and prevents a negative action specific to the skill.
 - Guardrails do not contain positive requirements, operation steps, workflow repetitions, or a second procedural checklist; those instructions appear in substantive skill sections.
+- If the skill bundles subskills under `subskills/`, each subskill has its own `SKILL.md` entrypoint, follows the same structural rules as a top-level skill, and is listed in the parent `SKILL.md` (in the `## Subcommands` table or a `## Subskills` section).
+- Any page that uses object-style invocation designators such as `X->Y->cmd()` declares the `skill_invocation_notation` key in its YAML frontmatter.
 - Skill-based use cases and chat-turn examples show the visible user prompt or user action and the expected final AI response shape; they do not include hidden reasoning, chain-of-thought, scratchpad notes, private tool-selection deliberation, or thinking process unless the user explicitly asks for that process to be documented. They also include a visible warning that the user/AI chat content is for example purposes only and that implementations should learn its style, intent, and semantics rather than hardcoding the example content.
 
 ## Subcommand Structure Checks

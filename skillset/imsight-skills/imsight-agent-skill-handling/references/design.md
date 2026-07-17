@@ -54,6 +54,8 @@ For complex-procedure skills, put procedural subcommands in user-facing workflow
 
 Override the multi-subcommand default only when the task clearly maps to a single technique or pattern with no meaningful subcommands. Document the override reason in the design overview.
 
+Decide whether any capability should be a bundled subskill under `subskills/<subskill-name>/` rather than a subcommand detail page. Use a subskill when the capability is large or self-contained enough to be a full skill but only meaningful as part of the parent skill. List proposed subskills under `## Subcommands Design`, and when the proposed skill will use object-style invocation designators such as `X->Y->cmd()`, note that the created skill must declare the `skill_invocation_notation` key in the frontmatter of each page that uses them.
+
 ### Subcommand Design Guide
 
 Group CRUD operations that target the same domain object into one subcommand with action arguments. Prefer `manage-toolbox` over separate `list-toolboxes`, `show-toolbox`, `enable-toolbox`, `disable-toolbox`, and `uninstall-toolbox` subcommands unless the actions have different audiences, safety gates, or workflow dependencies.
@@ -112,7 +114,7 @@ By default, `design` writes one Markdown document named `design-overview.md`. Re
 
 Derive `<slug>` from the proposed skill `name` by taking up to the first six meaningful words, lowercasing, and joining with hyphens. If the skill name is shorter than six words, use the full name.
 
-Do not write any other skill files. Do not create `SKILL.md`, `agents/openai.yaml`, `references/`, `commands/`, `scripts/`, or `assets/` directories for the proposed skill.
+Do not write any other skill files. Do not create `SKILL.md`, `agents/openai.yaml`, `references/`, `commands/`, `subskills/`, `scripts/`, or `assets/` directories for the proposed skill.
 
 ## Design Document Template
 
