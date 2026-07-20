@@ -60,12 +60,17 @@ No helper subcommands are currently exposed.
 When output artifacts are involved, resolve the feature design directory in this order:
 
 1. Use an absolute or host-project-relative output location explicitly provided by the user.
-2. If no user location is provided and `IMSIGHT_SKILL_OUTPUT_DIR` is set, use that directory. Resolve relative values against the active host project directory.
-3. If neither is provided, use `<host-project-dir>/.imsight-arts/feature-design/<YYYY-MM-DD-kebab-feature-name>/` with the current local date.
+2. If the user is targeting an OpenSpec change directory and is not continuing an existing feature design directory, use `<openspec-change-dir>/imsight-design/`. An OpenSpec change directory contains `.openspec.yaml`, `proposal.md`, `design.md`, `tasks.md`, and/or `specs/`. [OpenSpec](https://github.com/Fission-AI/OpenSpec) is a structured, artifact-driven spec workflow; when the prompt names a change directory or references change-specific artifacts, treat that change as the design scope.
+3. If no user location is provided and `IMSIGHT_SKILL_OUTPUT_DIR` is set, use that directory. Resolve relative values against the active host project directory.
+4. If neither is provided, use `<host-project-dir>/.imsight-arts/feature-design/<YYYY-MM-DD-kebab-feature-name>/` with the current local date.
 
-If the user gives an artifact root and a feature name, create or update `<artifact-root>/<YYYY-MM-DD-kebab-feature-name>/` unless the root already names the intended feature design directory. If the task appears to continue an existing feature, search the user-provided location, then `IMSIGHT_SKILL_OUTPUT_DIR`, then `.imsight-arts/feature-design/` for matching directory names, README titles, feature requirement titles, or use case summaries before creating a new directory.
+If the user gives an artifact root and a feature name, create or update `<artifact-root>/<YYYY-MM-DD-kebab-feature-name>/` unless the root already names the intended feature design directory. If the task appears to continue an existing feature, search the user-provided location, then `IMSIGHT_SKILL_OUTPUT_DIR`, then `.imsight-arts/feature-design/`, then `<openspec-change-dir>/imsight-design/` when applicable, for matching directory names, README titles, feature requirement titles, or use case summaries before creating a new directory.
 
 For update subcommands, preserve unrelated sections and revise only the target artifact.
+
+### OpenSpec synchronization
+
+When the feature design directory is inside an OpenSpec change (i.e., `<openspec-change-dir>/imsight-design/`), also scan the OpenSpec change artifacts — `proposal.md`, `design.md`, `tasks.md`, and specs under `specs/` — for references to the same goals, interfaces, terms, or decisions. If a new design artifact contradicts or extends the OpenSpec artifacts, update the relevant OpenSpec documents or flag the inconsistency to the user before proceeding.
 
 ## Current Artifact Contracts
 
