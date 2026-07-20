@@ -109,6 +109,7 @@ Read the structure with object semantics: the main skill is an object, its `SKIL
 - Use a subcommand, including a nested subcommand, when the procedure can operate with resources owned by its containing skill or subskill. A subcommand may have an executable detail page and child subcommands, but it does not own an independent bundled-resource tree.
 - Promote a subcommand to a subskill when it acquires resources that should be maintained, loaded, validated, or distributed as its own bundle. Size or workflow complexity alone does not require promotion.
 - List bundled subskills in the parent `SKILL.md`, either in the `## Subcommands` table or in a dedicated `## Subskills` section, so the entrypoint can route invocation designators.
+- Give every direct subskill one `When to Route Here` sentence in that parent table. Synthesize the sentence from the child's frontmatter description and `## When to Use` guidance, omit context already established by the parent, retain the condition that distinguishes sibling routes, and do not copy the child description or agent short description verbatim. The sentence is routing guidance, not a replacement for loading the selected child `SKILL.md`.
 - Every rule in this guide applies to each subskill's `SKILL.md` and subcommand-like pages as well.
 
 ## Skill Invocation Notations

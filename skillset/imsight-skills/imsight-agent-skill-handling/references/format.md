@@ -6,7 +6,7 @@ Use this reference to revise a given skill so its structure conforms to the bund
 
 1. **Locate the target skill**. Resolve the skill folder from the user's request and confirm it contains `SKILL.md`.
 2. **Load the local style guide**. Read `references/imsight-skill-style-guide.md`; do not rely on any style guide outside this skill directory.
-3. **Read target skill files**. Read the target `SKILL.md`, `agents/openai.yaml` when present, and any directly linked subcommand, mode, workflow, primitive, or reference page that acts as an executable skill page.
+3. **Read target skill files**. Read the target `SKILL.md`, `agents/openai.yaml` when present, each direct subskill `SKILL.md` and agent summary listed by the parent, and any directly linked subcommand, mode, workflow, primitive, or reference page that acts as an executable skill page.
 4. **Identify style gaps**. Check **Formatting Checks** for the entrypoint and each subcommand-like page.
 5. **Select the subcommand structure flavor** when the skill has subcommands. See **Subcommand Structure Checks**.
 6. **Optimize the description**. Check **Description Optimization**.
@@ -32,6 +32,7 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - The skill entrypoint has a concise `## Guardrails` section in which every bullet starts with `DO NOT ...` and prevents a negative action specific to the skill.
 - Guardrails do not contain positive requirements, operation steps, workflow repetitions, or a second procedural checklist; those instructions appear in substantive skill sections.
 - If the skill bundles subskills under `subskills/`, each subskill has its own `SKILL.md` entrypoint, follows the same structural rules as a top-level skill, and is listed in the parent `SKILL.md` (in the `## Subcommands` table or a `## Subskills` section).
+- Every direct subskill row has one substantive `When to Route Here` sentence that uses the parent context, distinguishes sibling routes, and is not copied verbatim from the child frontmatter description or agent short description.
 - Any page that uses object-style invocation designators such as `X->Y`, `X->Y->cmd()`, or `X->parent()->child()` declares the `skill_invocation_notation` key in its YAML frontmatter.
 - Skill and subskill entrypoint designators are bare object paths such as `X` or `X->Y`; they never use `X()` or `X->Y()`.
 - Parentheses appear on every subcommand component, including intermediate object generators such as `parent()` in `X->parent()->child()`, and are never omitted from an object-style subcommand designator.
@@ -91,6 +92,7 @@ When `create` or `format` edits a skill, task-specific detail is welcome but mus
 - If the skill is a collection of peer routines, keep one plain `## Subcommands` table. If the skill is a complex procedure, use the three-type split from **Subcommand Structure Checks**.
 - Preserve all domain-specific content: examples, guardrails, success criteria, and output templates. Only the structure should change, not the substance.
 - Normalize guardrails into negative-action prevention: rewrite each retained prohibition as one `DO NOT ...` bullet, and move positive requirements or operation steps into the workflow, procedure, contract, or another substantive section without changing their meaning.
+- Repair parent subskill inventories that lack usable routing guidance: add one `When to Route Here` sentence per direct child, and rewrite phrase-only, parent-redundant, stale, or directly copied descriptions from the parent entrypoint's selection context while preserving the child's authoritative trigger boundary.
 - Normalize object designators using the declared route kind: rewrite a skill or subskill entrypoint to its bare path, add `()` to every command component, preserve intermediate generator commands, and reject a command chain that returns to a bare component.
 - When examples expose hidden reasoning or thinking process, revise them into observable response contracts: decisions, commands, diagnostics, files, validation, or next-step guidance.
 
@@ -132,6 +134,7 @@ After validation, inspect changed files for:
 - guardrails that do not start with `DO NOT ...`,
 - positive requirements or operation steps presented as guardrails,
 - accidental changes to trigger or output semantics,
+- missing, phrase-only, parent-redundant, stale, multi-sentence, or directly copied `When to Route Here` guidance for any direct subskill,
 - skill or subskill entrypoints written with `()`, any subcommand component written without `()`, undeclared parent-to-child command edges, command chains that return to bare components, same-name subskill and subcommand routes that use the wrong component form, or subcommands that claim private bundled-resource roots,
 - AI response examples that expose hidden reasoning or thinking process without an explicit user request,
 - AI response examples that omit the example-content warning when the skill includes user/AI chat examples.

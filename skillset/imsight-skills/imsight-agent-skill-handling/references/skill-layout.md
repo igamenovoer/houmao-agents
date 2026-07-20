@@ -96,7 +96,7 @@ Imsight skills add one more hierarchy level to the standard layout: a skill may 
 
 Read the structure with object semantics: treat the main skill as an object and its `SKILL.md` as the object's entrypoint. A subskill is an inner object of the main skill: a member capability scoped to and owned by the parent skill, not independently installed or discovered. Use a subskill when a capability needs its own private bundled-resource boundary while remaining meaningful as part of the parent. Private means scoped ownership, not secrecy. Keep procedures that use the containing skill's resources as direct or nested subcommands on `commands/` or `references/` detail pages.
 
-The parent skill owns routing to its subskills. List bundled subskills in the `## Subcommands` table or a dedicated `## Subskills` section of the parent `SKILL.md` so the entrypoint can resolve invocation designators.
+The parent skill owns routing to its subskills. List bundled subskills in the `## Subcommands` table or a dedicated `## Subskills` section of the parent `SKILL.md` so the entrypoint can resolve invocation designators. Give every direct subskill one `When to Route Here` sentence that lets the parent distinguish it before loading the child. Derive the sentence from the child's trigger metadata and `## When to Use` guidance, remove context already supplied by the parent, and do not copy the child description or agent short description verbatim. Apply the rule recursively when a subskill owns further subskills.
 
 ### Skill Invocation Notation
 

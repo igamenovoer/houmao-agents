@@ -56,7 +56,7 @@ Allow a subcommand to own child subcommands when it represents a command object 
 
 Override the multi-subcommand default only when the task clearly maps to a single technique or pattern with no meaningful subcommands. Document the override reason in the design overview.
 
-Decide whether any capability should be a bundled subskill under `subskills/<subskill-name>/` rather than a subcommand detail page. Make it a subskill when it needs its own private scripts, references, commands, assets, templates, runtime metadata, or other bundled resources; keep it as a direct or nested subcommand when it can use resources owned by the containing skill or subskill. Private means scoped ownership, not secrecy. List proposed subskills under `## Subcommands Design` and designate their entrypoints with bare paths such as `X->Y`. Write every subcommand component with `()`, including intermediate generators in `X->parent()->child()`. A direct subskill and direct subcommand may share a name when the design consistently uses their distinct component forms. When the proposed skill uses these object-style invocation designators, note that the created skill must declare the `skill_invocation_notation` key in the frontmatter of each page that uses them.
+Decide whether any capability should be a bundled subskill under `subskills/<subskill-name>/` rather than a subcommand detail page. Make it a subskill when it needs its own private scripts, references, commands, assets, templates, runtime metadata, or other bundled resources; keep it as a direct or nested subcommand when it can use resources owned by the containing skill or subskill. Private means scoped ownership, not secrecy. List proposed subskills under `## Subcommands Design`, give each one a `When to Route Here` sentence that captures the decisive child trigger without repeating parent context, and designate their entrypoints with bare paths such as `X->Y`. Keep the routing sentence separate from private-resource justification and do not copy a proposed child description verbatim. Write every subcommand component with `()`, including intermediate generators in `X->parent()->child()`. A direct subskill and direct subcommand may share a name when the design consistently uses their distinct component forms. When the proposed skill uses these object-style invocation designators, note that the created skill must declare the `skill_invocation_notation` key in the frontmatter of each page that uses them.
 
 ### Subcommand Design Guide
 
@@ -95,7 +95,7 @@ Rules for the frontmatter:
 1. **Purpose** — why the skill exists and who owns routing, blockers, and final output.
 2. **Concepts** — small user-facing vocabulary needed to read the workflow and examples.
 3. **Core Workflow** — concise numbered steps plus a freeform fallback.
-4. **Subcommands Design** — subskills, direct and nested subcommands, parent command contracts, full invocation chains, and resource owners derived from **Subcommand Structure**.
+4. **Subcommands Design** — subskills with parent-oriented routing sentences, direct and nested subcommands, parent command contracts, full invocation chains, and resource owners derived from **Subcommand Structure**.
 5. **External Calls** — services or skills the proposed skill depends on instead of reimplementing.
 
 When the proposed skill has subcommands, apply **Subcommand Structure** before writing `## Subcommands Design`.
@@ -146,11 +146,12 @@ Validate the design document before writing the output file:
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the proposed skill functionality and the subcommands are listed in the correct table(s).
 8. If the design includes nested subcommands, confirm every child has an immediate parent, full parenthesized invocation chain, detail-page owner, inherited-context contract, containing resource owner, and parent terminal behavior.
 9. Confirm every capability that needs a private bundled-resource tree is designed as a subskill, and every direct or nested subcommand uses resources owned by its containing skill or subskill.
-10. If the design includes subskills or object designators, confirm skill and subskill entrypoints use bare paths, every subcommand component uses `()`, and no command chain returns to a bare component, including when a direct subskill and direct subcommand share a name.
-11. Confirm `Calls To External Skills` lists only external dependencies, not internal helper subcommands or context files.
-12. Confirm the output location was resolved and documented correctly according to **Output Contract**.
-13. Confirm the design document does not propose writing actual skill files.
-14. If the design includes user/AI chat examples, confirm they include the example-content warning.
+10. If the design includes subskills, confirm every direct child has one `When to Route Here` sentence that distinguishes it from sibling routes, omits parent-established context, and remains separate from private-resource justification.
+11. If the design includes subskills or object designators, confirm skill and subskill entrypoints use bare paths, every subcommand component uses `()`, and no command chain returns to a bare component, including when a direct subskill and direct subcommand share a name.
+12. Confirm `Calls To External Skills` lists only external dependencies, not internal helper subcommands or context files.
+13. Confirm the output location was resolved and documented correctly according to **Output Contract**.
+14. Confirm the design document does not propose writing actual skill files.
+15. If the design includes user/AI chat examples, confirm they include the example-content warning.
 
 Report any validation failures and fix them before writing the output file.
 

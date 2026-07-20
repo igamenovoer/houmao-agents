@@ -31,9 +31,9 @@ This section lists the public workflows, nested command objects, subskills, and 
 
 <SUBSKILL_INTRO_OR_NO_SUBSKILLS_SENTENCE>
 
-| Subskill | Invocation | Private Resources | Use For |
+| Subskill | Invocation | Private Resources | When to Route Here |
 | --- | --- | --- | --- |
-| `<SUBSKILL>` | `<PARENT_SKILL>-><SUBSKILL>` | `<SCRIPTS_REFERENCES_ASSETS_OR_OTHER_PRIVATE_RESOURCES>` | <PURPOSE> |
+| `<SUBSKILL>` | `<PARENT_SKILL>-><SUBSKILL>` | `<SCRIPTS_REFERENCES_ASSETS_OR_OTHER_PRIVATE_RESOURCES>` | <ONE_PARENT_CONTEXT_SENTENCE_THAT_DISTINGUISHES_THIS_CHILD_ROUTE> |
 
 ### Parent Command Contracts
 
