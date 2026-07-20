@@ -1,6 +1,6 @@
 ---
 name: imsight-dev-box-network
-description: Use when explicitly invoking imsight-dev-box-network, routing from another Imsight skill, or using Imsight context to configure, audit, repair, or document dev-box networking, SSH tunnels, proxy access, relay access, exposed ports, systemd user tunnel services, or host-to-host access. Do not use for generic networking tasks without Imsight context.
+description: Use when explicitly invoking imsight-dev-box-network, routing from another Imsight skill, or using Imsight context to configure, audit, repair, or document dev-box networking, SSH tunnels, proxy access, relay access, exposed ports, remote Playwright browser control, systemd user tunnel services, or host-to-host access. Do not use for generic networking tasks without Imsight context.
 ---
 
 # Imsight Dev Box Network
@@ -13,6 +13,7 @@ Use this skill as the entrypoint for development box networking tasks. Keep `SKI
 
 - Use for an explicit `imsight-dev-box-network` invocation or route from another Imsight skill.
 - Use when `imsight` context requests supported proxy, tunnel, relay, port, systemd, or host-access work.
+- Use when an Imsight dev box must host a visible Chrome instance for control by a remote Playwright client.
 - Do not use for generic networking, proxy, tunnel, or dev-box tasks without Imsight context.
 
 ## Workflow
@@ -21,10 +22,11 @@ Use this skill as the entrypoint for development box networking tasks. Keep `SKI
 2. Load the named networking page, or select the applicable subcommand or sequence from a task-only request.
 3. Select any second-level operation from that page.
 4. For `proxy-scan`, obtain the port range, run the bundled scanner, and persist candidates only when requested.
-5. For `via-ssh`, distinguish dynamic SOCKS5 from forwarding an existing proxy before choosing commands or units.
-6. For vague tunnel requests, ask for the required details; inspect current services and ports before changes.
-7. Prefer user systemd for persistent tunnels unless tmux or foreground operation is requested, and apply the non-blocking unit rules below.
-8. For cleanup, remove only the requested stale service or process and verify the intended reverse SSH access tunnel remains healthy.
+5. For `chrome-start-for-remote-control`, gather the local runtime and port plus the remote transport inputs, then keep the Playwright endpoint private to loopback and print the exact remote handoff instructions.
+6. For `via-ssh`, distinguish dynamic SOCKS5 from forwarding an existing proxy before choosing commands or units.
+7. For vague tunnel requests, ask for the required details; inspect current services and ports before changes.
+8. Prefer user systemd for persistent tunnels unless tmux or foreground operation is requested, and apply the non-blocking unit rules below.
+9. For cleanup, remove only the requested stale service or process and verify the intended reverse SSH access tunnel remains healthy.
 
 If the task does not map cleanly to these steps, use your native planning tool with the existing networking references, bundled scripts, output contract, and safety rules; ask for missing topology instead of guessing.
 
@@ -53,6 +55,7 @@ This contract does not replace intentional operational destinations such as copi
 | `help` | Explain this dev-box networking skill and list available subcommands | This entrypoint |
 | `ssh-tunnels` | Set up, inspect, repair, or remove SSH reverse/forward tunnels | `references/ssh-tunnels.md` |
 | `proxy-setup` | Set up proxy access, install proxy environment scripts, or scan proxy candidates | `references/proxy-setup.md` |
+| `chrome-start-for-remote-control` | Launch visible local Chrome through a native Playwright endpoint and prepare secure remote client access | `commands/chrome-start-for-remote-control.md` |
 
 ## Bundled Scripts
 
