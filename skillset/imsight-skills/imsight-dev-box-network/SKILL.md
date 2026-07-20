@@ -56,6 +56,7 @@ This contract does not replace intentional operational destinations such as copi
 | `ssh-tunnels` | Set up, inspect, repair, or remove SSH reverse/forward tunnels | `references/ssh-tunnels.md` |
 | `proxy-setup` | Set up proxy access, install proxy environment scripts, or scan proxy candidates | `references/proxy-setup.md` |
 | `chrome-start-for-remote-control` | Launch visible local Chrome through a native Playwright endpoint and prepare secure remote client access | `commands/chrome-start-for-remote-control.md` |
+| `chrome-attach-for-remote-control` | Attach a local Playwright client or CLI to a remotely run Chrome instance | `commands/chrome-attach-for-remote-control.md` |
 
 ## Bundled Scripts
 
