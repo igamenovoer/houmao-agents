@@ -4,7 +4,7 @@
 
 Use this reference to run pressure scenarios with subagents to baseline or verify a skill.
 
-1. **Locate the target skill**. Resolve the skill folder from the user's request and confirm it contains `SKILL.md`.
+1. **Locate the target skill and entrypoint**. Resolve the skill folder from the user's request and resolve one unambiguous `SKILL.md` or `SKILL-MAIN.md` runtime entrypoint according to its standalone or parent-scoped role.
 2. **Determine the test mode**. See **Test Mode**.
 3. **Design or load pressure scenarios**. See **Pressure Scenarios**.
 4. **Run the scenarios** with subagents. See **Running Scenarios**.

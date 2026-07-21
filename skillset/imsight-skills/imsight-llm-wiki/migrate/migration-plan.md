@@ -92,7 +92,7 @@ imsight-llm-wiki/
 
 ## Step Support Mapping
 
-The source `SKILL.md` embeds step logic for each operation. The target maps each operation to a subcommand detail page under `commands/`:
+The source entrypoint preserved as `org/src/SKILL-SOURCE.md` embeds step logic for each operation. The target maps each operation to a subcommand detail page under `commands/`:
 
 | Source section | Target file | Support blocks |
 |---|---|---|
@@ -125,7 +125,7 @@ Each detail page will use the Imsight **Step Support Pattern** (Guidance, Prefer
 - Operations exposed as explicit subcommands with `commands/` detail pages.
 - `SKILL.md` reduced to a router; long prose moved to detail/reference pages.
 - `subskills/viewer-deploy.md` moved to `commands/deploy-viewer.md`.
-- Source `SKILL.md` author credit preserved in a migration note, not frontmatter.
+- Source `SKILL-SOURCE.md` author credit preserved in a migration note, not frontmatter.
 
 ## Validation Plan
 

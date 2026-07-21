@@ -4,9 +4,9 @@
 
 Use this reference to generate one self-contained skill-process design document for a target skill. Use `analyze` instead when the user only wants to understand a skill's working logic through report files and a brief chat summary.
 
-1. **Locate the skill folder**. Resolve the target folder from the user's request, then confirm it contains `SKILL.md`.
+1. **Locate the skill folder and entrypoint**. Resolve the target folder from the user's request, then resolve one unambiguous runtime entrypoint: `SKILL.md` for a standalone skill or `SKILL-MAIN.md` for a parent-scoped subskill. Accept nested `SKILL.md` only as legacy input. When the user or `refactor-migrate` explicitly selects a provenance snapshot, read `SKILL-SOURCE.md` as source evidence rather than a runtime entrypoint.
 2. **Resolve the output file** using **Output Contract**.
-3. **Read the target skill completely and inventory its files**. Read `SKILL.md`, `agents/openai.yaml` when present, and every directly linked reference page that defines public direct or nested subcommands, modes, workflows, primitives, or routing behavior. Then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, script, asset, or other), resource owner, and a one-sentence explanation of its purpose.
+3. **Read the target skill completely and inventory its files**. Read the resolved entrypoint, `agents/openai.yaml` when present, and every directly linked reference page that defines public direct or nested subcommands, modes, workflows, primitives, or routing behavior. Then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, script, asset, or other), resource owner, and a one-sentence explanation of its purpose.
 4. **Load local supporting references**. Read `references/skill-pseudo-lang.md` before drafting `## Formal Skill Process`, and read `references/mermaid-style.md` before drafting Mermaid diagrams.
 5. **Map the process model**. Extract entrypoints, public direct and nested subcommands, full command chains, intermediate object-generator commands, terminal invoked commands, resource owners, internal stages, external skill calls, input evidence, output evidence, durable side effects, blockers, and ownership boundaries.
 6. **Choose the important concepts**. Select terms a reader must know to understand the process, then define them inside the generated document. Prefer terms from the target skill itself; do not require the reader to open another glossary.
@@ -35,7 +35,7 @@ Use this template as the default scaffold. Replace placeholders with concrete co
 
 ## Purpose
 
-This note explains how `<target-skill-id>` operates as a skill process. It aligns `<target-skill-path>/SKILL.md`, its public subcommands or modes, and the directly linked workflow references that affect runtime behavior.
+This note explains how `<target-skill-id>` operates as a skill process. It aligns `<target-entrypoint-path>`, its public subcommands or modes, and the directly linked workflow references that affect runtime behavior.
 
 The key orchestration rule is: <one sentence describing who owns routing, evidence, blockers, and final output>.
 
@@ -43,7 +43,7 @@ The key orchestration rule is: <one sentence describing who owns routing, eviden
 
 | Relative Path | Category | Resource Owner | Purpose |
 | --- | --- | --- | --- |
-| `<target-skill-path>/SKILL.md` | Entrypoint | `<target-skill-id>` | <One-sentence explanation of the skill entrypoint.> |
+| `<target-entrypoint-path>` | Entrypoint | `<target-skill-id>` | <One-sentence explanation of the resolved `SKILL.md` or `SKILL-MAIN.md` entrypoint.> |
 | `<target-skill-path>/agents/openai.yaml` | Agent config | `<target-skill-id>` | <One-sentence explanation of the agent configuration, if present.> |
 | `<target-skill-path>/references/<file>.md` | Reference | `<owning-skill-or-subskill-id>` | <One-sentence explanation of the reference file.> |
 
@@ -228,7 +228,7 @@ Include only evidence that affects later routing, validation, finalization, or d
 Before writing the output file, confirm:
 
 - The document explains all important target-skill terms in `## Concepts`.
-- A reader can understand the process without opening `SKILL.md` or generated analysis reports.
+- A reader can understand the process without opening the resolved entrypoint or generated analysis reports.
 - The high-level process and formal process agree on stage order.
 - The skill call graph includes only runtime routing relationships, not passive file reads.
 - Every nested subcommand has one immediate parent, a full parenthesized invocation chain, and a containing skill or subskill resource owner.

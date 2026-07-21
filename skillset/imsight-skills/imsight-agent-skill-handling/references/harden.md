@@ -4,7 +4,7 @@
 
 Use this reference to harden a discipline-enforcing skill against rationalization. This is the REFACTOR phase of test-driven skill authoring.
 
-1. **Locate the target skill**. Resolve the skill folder from the user's request and confirm it contains `SKILL.md`.
+1. **Locate the target skill and entrypoint**. Resolve the skill folder from the user's request and resolve one unambiguous `SKILL.md` or `SKILL-MAIN.md` runtime entrypoint according to its standalone or parent-scoped role.
 2. **Confirm the skill type**. Hardening applies primarily to discipline-enforcing skills. For technique, pattern, or reference skills, use `format` instead.
 3. **Identify rationalizations**. Read test reports, run `test` in baseline mode, or ask the user for excuses agents have used.
 4. **Add a foundational principle** early in the skill. See **Foundational Principle**.

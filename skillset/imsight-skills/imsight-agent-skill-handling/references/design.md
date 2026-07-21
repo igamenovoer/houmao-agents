@@ -7,7 +7,7 @@ Use this reference to generate a self-contained design overview document for a p
 1. **Confirm the task and capture intent**. See **Intent Capture**.
 2. **Classify the skill type** based on what it must do. See **Skill Type**.
 3. **Choose the subcommand structure flavor**. See **Subcommand Structure**. Default to a multi-subcommand skill with a `help` subcommand unless the task clearly maps to a single technique or pattern.
-4. **Propose a name and description** that conform to the Imsight skill format. See **Authoring the Proposed SKILL.md**.
+4. **Propose a name, description, and role-aware entrypoint layout** that conform to the Imsight skill format. See **Authoring the Proposed Skill**.
 5. **Resolve the output location** using **Output Contract**.
 6. **Draft the design overview document** by reading and adapting **Design Document Template**.
 7. **Validate the design document** using **Validation**.
@@ -56,7 +56,7 @@ Allow a subcommand to own child subcommands when it represents a command object 
 
 Override the multi-subcommand default only when the task clearly maps to a single technique or pattern with no meaningful subcommands. Document the override reason in the design overview.
 
-Decide whether any capability should be a bundled subskill under `subskills/<subskill-name>/` rather than a subcommand detail page. Make it a subskill when it needs its own private scripts, references, commands, assets, templates, runtime metadata, or other bundled resources; keep it as a direct or nested subcommand when it can use resources owned by the containing skill or subskill. Private means scoped ownership, not secrecy. List proposed subskills under `## Subcommands Design`, give each one a `When to Route Here` sentence that captures the decisive child trigger without repeating parent context, and designate their entrypoints with bare paths such as `X->Y`. Keep the routing sentence separate from private-resource justification and do not copy a proposed child description verbatim. Write every subcommand component with `()`, including intermediate generators in `X->parent()->child()`. A direct subskill and direct subcommand may share a name when the design consistently uses their distinct component forms. When the proposed skill uses these object-style invocation designators, note that the created skill must declare the `skill_invocation_notation` key in the frontmatter of each page that uses them.
+Decide whether any capability should be a bundled subskill under `subskills/<subskill-name>/` rather than a subcommand detail page. Make it a subskill when it needs its own private scripts, references, commands, assets, templates, runtime metadata, or other bundled resources; keep it as a direct or nested subcommand when it can use resources owned by the containing skill or subskill. Private means scoped ownership, not secrecy. List proposed subskills under `## Subcommands Design`, assign each child `SKILL-MAIN.md`, give each one a `When to Route Here` sentence that captures the decisive child trigger without repeating parent context, and designate their entrypoints with bare paths such as `X->Y`. Require the parent to load only the selected child's `SKILL-MAIN.md`. Keep the routing sentence separate from private-resource justification and do not copy a proposed child description verbatim. Write every subcommand component with `()`, including intermediate generators in `X->parent()->child()`. A direct subskill and direct subcommand may share a name when the design consistently uses their distinct component forms. When the proposed skill uses these object-style invocation designators, note that the created skill must declare the `skill_invocation_notation` key in the frontmatter of each page that uses them.
 
 ### Subcommand Design Guide
 
@@ -71,7 +71,7 @@ Example:
 
 ## Authoring the Proposed Skill
 
-Define the proposed skill's frontmatter and core sections. Do not embed a full `SKILL.md` draft inside the design document; instead, capture the skill shape concisely and list subcommands in `## Subcommands Design`. For detailed skill-format rules, see `references/create.md`.
+Define the proposed top-level `SKILL.md` frontmatter and core sections plus each proposed subskill's `SKILL-MAIN.md` role. Do not embed a full entrypoint draft inside the design document; instead, capture the skill shape concisely and list subcommands in `## Subcommands Design`. For detailed skill-format rules, see `references/create.md`.
 
 ### Required Frontmatter
 
@@ -116,7 +116,7 @@ By default, `design` writes one Markdown document named `design-overview.md`. Re
 
 Derive `<slug>` from the proposed skill `name` by taking up to the first six meaningful words, lowercasing, and joining with hyphens. If the skill name is shorter than six words, use the full name.
 
-Do not write any other skill files. Do not create `SKILL.md`, `agents/openai.yaml`, `references/`, `commands/`, `subskills/`, `scripts/`, or `assets/` directories for the proposed skill.
+Do not write any other skill files. Do not create `SKILL.md`, `SKILL-MAIN.md`, `agents/openai.yaml`, `references/`, `commands/`, `subskills/`, `scripts/`, or `assets/` directories for the proposed skill.
 
 ## Design Document Template
 
@@ -146,7 +146,7 @@ Validate the design document before writing the output file:
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the proposed skill functionality and the subcommands are listed in the correct table(s).
 8. If the design includes nested subcommands, confirm every child has an immediate parent, full parenthesized invocation chain, detail-page owner, inherited-context contract, containing resource owner, and parent terminal behavior.
 9. Confirm every capability that needs a private bundled-resource tree is designed as a subskill, and every direct or nested subcommand uses resources owned by its containing skill or subskill.
-10. If the design includes subskills, confirm every direct child has one `When to Route Here` sentence that distinguishes it from sibling routes, omits parent-established context, and remains separate from private-resource justification.
+10. If the design includes subskills, confirm every direct child uses `SKILL-MAIN.md`, has one `When to Route Here` sentence that distinguishes it from sibling routes, omits parent-established context, remains separate from private-resource justification, and is explicitly loaded only after parent selection.
 11. If the design includes subskills or object designators, confirm skill and subskill entrypoints use bare paths, every subcommand component uses `()`, and no command chain returns to a bare component, including when a direct subskill and direct subcommand share a name.
 12. Confirm `Calls To External Skills` lists only external dependencies, not internal helper subcommands or context files.
 13. Confirm the output location was resolved and documented correctly according to **Output Contract**.

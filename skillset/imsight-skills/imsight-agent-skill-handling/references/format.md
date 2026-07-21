@@ -4,9 +4,9 @@
 
 Use this reference to revise a given skill so its structure conforms to the bundled style guide and its description is optimized for discovery. It applies to existing skills and to new skills created by `create`.
 
-1. **Locate the target skill**. Resolve the skill folder from the user's request and confirm it contains `SKILL.md`.
+1. **Locate the target skill and entrypoint**. Resolve the skill folder from the user's request and select `SKILL.md` for a standalone skill or `SKILL-MAIN.md` for a parent-scoped subskill. Accept nested `SKILL.md` as legacy input only, and reject a folder that contains both candidates.
 2. **Load the local style guide**. Read `references/imsight-skill-style-guide.md`; do not rely on any style guide outside this skill directory.
-3. **Read target skill files**. Read the target `SKILL.md`, `agents/openai.yaml` when present, each direct subskill `SKILL.md` and agent summary listed by the parent, and any directly linked subcommand, mode, workflow, primitive, or reference page that acts as an executable skill page.
+3. **Read target skill files**. Read the resolved target entrypoint, `agents/openai.yaml` when present, each direct subskill `SKILL-MAIN.md` or legacy nested `SKILL.md` and agent summary listed by the parent, and any directly linked subcommand, mode, workflow, primitive, or reference page that acts as an executable skill page.
 4. **Identify style gaps**. Check **Formatting Checks** for the entrypoint and each subcommand-like page.
 5. **Select the subcommand structure flavor** when the skill has subcommands. See **Subcommand Structure Checks**.
 6. **Optimize the description**. Check **Description Optimization**.
@@ -19,7 +19,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 ## Formatting Checks
 
-Apply these checks to the target `SKILL.md` and any subcommand-like Markdown page that another agent may execute as a workflow.
+Apply these checks to the resolved target entrypoint and any subcommand-like Markdown page that another agent may execute as a workflow.
 
 - The file has a `## Workflow` section near the top.
 - The workflow is written as numbered steps.
@@ -31,7 +31,7 @@ Apply these checks to the target `SKILL.md` and any subcommand-like Markdown pag
 - The workflow ends with a fallback for tasks that do not map cleanly to the default steps.
 - The skill entrypoint has a concise `## Guardrails` section in which every bullet starts with `DO NOT ...` and prevents a negative action specific to the skill.
 - Guardrails do not contain positive requirements, operation steps, workflow repetitions, or a second procedural checklist; those instructions appear in substantive skill sections.
-- If the skill bundles subskills under `subskills/`, each subskill has its own `SKILL.md` entrypoint, follows the same structural rules as a top-level skill, and is listed in the parent `SKILL.md` (in the `## Subcommands` table or a `## Subskills` section).
+- If the skill bundles subskills under `subskills/`, each subskill has its own `SKILL-MAIN.md` entrypoint, has no sibling `SKILL.md`, follows the same structural rules as a top-level skill, and is listed in the parent's role-canonical entrypoint (in the `## Subcommands` table or a `## Subskills` section).
 - Every direct subskill row has one substantive `When to Route Here` sentence that uses the parent context, distinguishes sibling routes, and is not copied verbatim from the child frontmatter description or agent short description.
 - Any page that uses object-style invocation designators such as `X->Y`, `X->Y->cmd()`, or `X->parent()->child()` declares the `skill_invocation_notation` key in its YAML frontmatter.
 - Skill and subskill entrypoint designators are bare object paths such as `X` or `X->Y`; they never use `X()` or `X->Y()`.
@@ -60,7 +60,7 @@ When a subcommand owns child subcommands, preserve that hierarchy rather than fl
 
 ## Description Optimization
 
-The `description` field in SKILL.md frontmatter determines whether future agents discover the skill. Apply these rules:
+The `description` field in the resolved entrypoint frontmatter controls routing metadata and, for top-level `SKILL.md`, host discovery. Apply these rules:
 
 - Start with "Use when...".
 - Describe triggering conditions and symptoms only.
@@ -93,6 +93,7 @@ When `create` or `format` edits a skill, task-specific detail is welcome but mus
 - Preserve all domain-specific content: examples, guardrails, success criteria, and output templates. Only the structure should change, not the substance.
 - Normalize guardrails into negative-action prevention: rewrite each retained prohibition as one `DO NOT ...` bullet, and move positive requirements or operation steps into the workflow, procedure, contract, or another substantive section without changing their meaning.
 - Repair parent subskill inventories that lack usable routing guidance: add one `When to Route Here` sentence per direct child, and rewrite phrase-only, parent-redundant, stale, or directly copied descriptions from the parent entrypoint's selection context while preserving the child's authoritative trigger boundary.
+- Normalize a parent-scoped child from legacy `SKILL.md` to `SKILL-MAIN.md`, update direct local links, and do not leave a nested compatibility copy. Stop if both filenames exist.
 - Normalize object designators using the declared route kind: rewrite a skill or subskill entrypoint to its bare path, add `()` to every command component, preserve intermediate generator commands, and reject a command chain that returns to a bare component.
 - When examples expose hidden reasoning or thinking process, revise them into observable response contracts: decisions, commands, diagnostics, files, validation, or next-step guidance.
 
@@ -102,12 +103,12 @@ The goal is a skill that is both well-formatted and rich enough to execute the u
 
 - Preserve frontmatter `name` and `description` unless they are invalid or stale because of structural edits.
 - Do not broaden trigger behavior while formatting.
-- Do not rename public subcommands, files, or output paths unless the user explicitly asks or the current name is broken.
+- Do not rename public subcommands, files, or output paths unless the user explicitly asks, the current name is broken, or a parent-scoped entrypoint must be normalized from legacy `SKILL.md` to `SKILL-MAIN.md`.
 - Do not silently promote a subcommand to a subskill or move its resources when that would change invocation or loading behavior; report the resource-ownership conflict unless the requested format work authorizes that structural change.
 - Do not remove domain-specific guardrails, approval rules, or output contracts.
 - Move long procedural detail out of the workflow into existing sections when possible.
 - Add a new detail section only when no suitable section exists.
-- Keep references one level from `SKILL.md` when the entrypoint needs them.
+- Keep references one level from the resolved entrypoint when it needs them.
 - Do not create auxiliary docs such as README, changelog, installation guide, or quick reference files inside the target skill.
 
 ## Validation
@@ -135,6 +136,7 @@ After validation, inspect changed files for:
 - positive requirements or operation steps presented as guardrails,
 - accidental changes to trigger or output semantics,
 - missing, phrase-only, parent-redundant, stale, multi-sentence, or directly copied `When to Route Here` guidance for any direct subskill,
+- a parent-scoped child that lacks `SKILL-MAIN.md`, retains nested `SKILL.md`, or contains both entrypoint candidates,
 - skill or subskill entrypoints written with `()`, any subcommand component written without `()`, undeclared parent-to-child command edges, command chains that return to bare components, same-name subskill and subcommand routes that use the wrong component form, or subcommands that claim private bundled-resource roots,
 - AI response examples that expose hidden reasoning or thinking process without an explicit user request,
 - AI response examples that omit the example-content warning when the skill includes user/AI chat examples.

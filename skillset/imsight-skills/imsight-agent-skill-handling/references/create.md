@@ -2,14 +2,14 @@
 
 ## Workflow
 
-Use this reference to create a new skill from a user request. Because `imsight-agent-skill-handling` is manually invoked, respect the user's intent: do not force a failing baseline or a post-creation verification run. Capture what the user wants, choose the right shape for the skill, write a minimal and format-compliant `SKILL.md`, validate its structure, and return a brief summary. Leave pressure testing to the explicit `test` subcommand.
+Use this reference to create a new skill from a user request. Because `imsight-agent-skill-handling` is manually invoked, respect the user's intent: do not force a failing baseline or a post-creation verification run. Capture what the user wants, choose the right shape for the skill, write a minimal and format-compliant role-canonical entrypoint, validate its structure, and return a brief summary. Leave pressure testing to the explicit `test` subcommand.
 
 1. **Confirm the task and locate the skill home**. See **Skill Home**.
 2. **Capture intent** from the user's request and conversation history. See **Intent Capture**.
 3. **Classify the skill type** based on what it must do. See **Skill Type**.
 4. **Choose the subcommand structure flavor** if the skill needs subcommands. See **Subcommand Structure**.
 5. **Initialize the standard skill layout** in the skill home. See **Skill Layout**. Create only the directories and files the skill's shape requires; skip anything that already exists and never overwrite existing files.
-6. **Author a minimal `SKILL.md`** that captures the requested behavior and is already format-compliant. See **Authoring the Skill**.
+6. **Author a minimal role-canonical entrypoint** that captures the requested behavior and is already format-compliant. Use `SKILL.md` for the top-level skill and `SKILL-MAIN.md` for each bundled subskill. See **Authoring the Skill**.
 7. **Validate** the skill frontmatter and structure. See **Validation**.
 8. **Return a brief in-chat summary** that lists the files written and the validation result.
 
@@ -66,27 +66,27 @@ A subcommand may own child subcommands when it represents a command object with 
 
 Use resource ownership as the subcommand-versus-subskill decision. Keep a capability as a direct or nested subcommand when it can use resources owned by its containing skill or subskill. Make it a bundled subskill under `subskills/<subskill-name>/` when it needs its own private `scripts/`, `references/`, `commands/`, `assets/`, templates, runtime metadata, or other resource tree. Private means scoped ownership, not secrecy. See **Skill Layout** and [skill-layout.md](skill-layout.md).
 
-When the shape includes subskills, capture the decisive trigger for each child and write one parent-oriented `When to Route Here` sentence in the parent's subskill inventory. Use the child frontmatter, agent summary, and `## When to Use` guidance as evidence, but remove context already established by the parent and do not copy those source descriptions verbatim. Keep the child's complete trigger boundaries and workflow in its own `SKILL.md`; the parent sentence only supports route selection.
+When the shape includes subskills, capture the decisive trigger for each child and write one parent-oriented `When to Route Here` sentence in the parent's subskill inventory. Use the child frontmatter, agent summary, and `## When to Use` guidance as evidence, but remove context already established by the parent and do not copy those source descriptions verbatim. Keep the child's complete trigger boundaries and workflow in its own `SKILL-MAIN.md`; the parent sentence only supports route selection.
 
 ## Skill Layout
 
-A skill folder follows the OpenAI skill-creator layout: a required `SKILL.md`, a recommended `agents/openai.yaml`, and optional bundled resource directories (`scripts/`, `references/`, `assets/`). See [skill-layout.md](skill-layout.md) for the full layout, including the Imsight `commands/` convention for subcommand detail pages and the Imsight `subskills/` convention for bundled nested skills.
+A host-discoverable skill folder follows the OpenAI skill-creator layout: a required `SKILL.md`, a recommended `agents/openai.yaml`, and optional bundled resource directories (`scripts/`, `references/`, `assets/`). A parent-scoped subskill follows the same resource layout but uses `SKILL-MAIN.md` so recursive exact-`SKILL.md` scanners do not register it independently. See [skill-layout.md](skill-layout.md) for the full layout, including the Imsight `commands/` convention for subcommand detail pages and the Imsight `subskills/` convention for bundled nested skills.
 
 When initializing a skill:
 
-- Always create `SKILL.md`.
+- Create `SKILL.md` for the top-level skill root.
 - Create `agents/openai.yaml` unless it already exists. Generate it from the skill content.
 - Create `scripts/` only when the skill bundles executable code.
 - Create `references/` only when the skill has detail pages, style guides, schemas, or other reference material.
 - Create `assets/` only when the skill bundles static resources used in output.
 - Create `commands/` only when the skill has subcommand detail pages.
-- Create `subskills/` only when a nested capability needs its own private bundled-resource boundary. Each subskill is a self-contained skill folder with its own `SKILL.md` and follows this same layout recursively.
+- Create `subskills/` only when a nested capability needs its own private bundled-resource boundary. Each subskill is a self-contained skill folder with its own `SKILL-MAIN.md` and follows the resource layout recursively; if that subskill owns children, those children also use `SKILL-MAIN.md`.
 - Do not create empty directories purely for symmetry.
-- If the target skill home already exists, do not overwrite or remove any existing files or directories. If a required file such as `SKILL.md` already exists and conflicts with the new skill, stop and report the conflict.
+- If the target skill home already exists, do not overwrite or remove any existing files or directories. If the role-canonical entrypoint already exists and conflicts with the new skill, stop and report the conflict. If both `SKILL.md` and `SKILL-MAIN.md` exist, report ambiguous scope and do not choose one silently.
 
 ## Authoring the Skill
 
-Write a minimal `SKILL.md` that captures the user's request. Write it in format-compliant form from the start; do not rely on a later `format` pass to fix structure or description.
+Write a minimal role-canonical entrypoint that captures the user's request: `SKILL.md` for the top-level skill and `SKILL-MAIN.md` for each parent-scoped subskill. Write it in format-compliant form from the start; do not rely on a later `format` pass to fix structure or description.
 
 ### Required Frontmatter
 
@@ -129,7 +129,7 @@ Write the workflow as numbered steps. Keep each step concise and point to a deta
 
 When the skill has subcommands, apply **Subcommand Structure** before writing the `## Subcommands` section. Do not use the three-type split for a simple collection of unordered routines.
 
-When the skill bundles subskills, list them in the `## Subcommands` table or a dedicated `## Subskills` section of `SKILL.md` so the entrypoint can route invocation designators. Include one `When to Route Here` sentence for every direct subskill, written from the parent entrypoint's context and distinct from the child's frontmatter description or agent short description. Write skill and subskill entrypoints as bare paths such as `X->Y`. Write every subcommand component with `()`, including intermediate object generators in chains such as `X->parent()->child()`, and never use `X()` or `X->Y()` for an entrypoint. Once a command chain begins, do not append a bare skill or subskill component. A direct subskill and direct subcommand may share a name because their component forms distinguish them. When any page uses these object-style invocation designators, declare the notation in that page's YAML frontmatter with the `skill_invocation_notation` key; use the standard value from `references/imsight-skill-style-guide.md`.
+When the skill bundles subskills, list them in the `## Subcommands` table or a dedicated `## Subskills` section of the parent's role-canonical entrypoint so it can route invocation designators. Include one `When to Route Here` sentence for every direct subskill, written from the parent entrypoint's context and distinct from the child's frontmatter description or agent short description. Tell the parent to load only the selected child's `SKILL-MAIN.md` and required local resources. Write skill and subskill entrypoints as bare paths such as `X->Y`. Write every subcommand component with `()`, including intermediate object generators in chains such as `X->parent()->child()`, and never use `X()` or `X->Y()` for an entrypoint. Once a command chain begins, do not append a bare skill or subskill component. A direct subskill and direct subcommand may share a name because their component forms distinguish them. When any page uses these object-style invocation designators, declare the notation in that page's YAML frontmatter with the `skill_invocation_notation` key; use the standard value from `references/imsight-skill-style-guide.md`.
 
 For discipline-enforcing skills, also include:
 
@@ -165,14 +165,14 @@ When the user asks for a skill-based use case, or when a new skill includes use-
 
 Validate the skill before finishing:
 
-1. Confirm `SKILL.md` exists and has valid YAML frontmatter with `name` and `description`.
+1. Confirm the top-level `SKILL.md` exists and has valid YAML frontmatter with `name` and `description`.
 2. Confirm `name` matches the directory name for project-scoped skills.
 3. Confirm the description starts with "Use when...", is in third person, and does not summarize the workflow.
 4. Confirm the overview, when-to-use, and workflow/core-pattern sections exist. Confirm a guardrails section exists, every guardrail starts with "DO NOT ...", and the section contains no positive requirements or operation steps.
 5. Confirm the workflow is a concise numbered list with a freeform fallback.
 6. Confirm long detail has been moved out of the workflow into dedicated sections or reference pages.
 7. If subcommands exist, confirm the selected subcommand structure flavor matches the skill functionality.
-8. If the skill bundles subskills, confirm each `subskills/<subskill-name>/SKILL.md` exists with valid frontmatter and follows this same checklist, confirm the parent `SKILL.md` lists every direct subskill in its `## Subcommands` table or a `## Subskills` section, and confirm every row has one context-aware `When to Route Here` sentence that distinguishes sibling routes without copying child metadata.
+8. If the skill bundles subskills, confirm each `subskills/<subskill-name>/SKILL-MAIN.md` exists with valid frontmatter, no sibling `SKILL.md`, and follows this same checklist; confirm the parent's role-canonical entrypoint lists every direct subskill in its `## Subcommands` table or a `## Subskills` section, explicitly loads the selected child's `SKILL-MAIN.md`, and gives every row one context-aware `When to Route Here` sentence that distinguishes sibling routes without copying child metadata.
 9. If a subcommand owns children, confirm its page declares each direct child in `## Subcommands`, links the child detail page, defines terminal behavior for invoking the parent without a child, and keeps all child support resources within the containing skill or subskill's resource boundary.
 10. If any page uses object-style invocation designators such as `X->Y`, `X->Y->cmd()`, or `X->parent()->child()`, confirm that page declares the `skill_invocation_notation` key in its YAML frontmatter.
 11. Confirm every skill or subskill entrypoint designator is a bare object path, every subcommand component has `()`, every intermediate command resolves to the immediate child it declares, and no command chain returns to a bare skill or subskill component.

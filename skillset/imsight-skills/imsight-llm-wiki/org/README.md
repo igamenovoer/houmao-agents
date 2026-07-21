@@ -6,7 +6,7 @@ This directory preserves the source skill `llm-wiki-all-in-one` as it existed be
 
 All files from `extern/orphan/tool-skills/misc/llm-wiki-all-in-one/` were copied into `org/src/` with relative paths preserved:
 
-- `SKILL.md` — original entrypoint.
+- `SKILL-SOURCE.md` — original entrypoint preserved under a non-discoverable provenance filename.
 - `subskills/viewer-deploy.md` — viewer deployment subskill.
 - `references/schema-guide.md` — README.md schema guide.
 - `references/article-guide.md` — wiki article writing guide.

@@ -4,12 +4,12 @@
 
 Use this reference to analyze a given agent skill from the skill files themselves and produce a Markdown report set under `<output-dir>`.
 
-1. **Locate the skill folder**. Resolve the target folder from the user's request, then confirm it contains `SKILL.md`.
+1. **Locate the skill folder and entrypoint**. Resolve the target folder from the user's request, then resolve its role-canonical runtime entrypoint: `SKILL.md` for a standalone skill or `SKILL-MAIN.md` for a parent-scoped subskill. Accept nested `SKILL.md` only as legacy input, and reject a folder that contains both candidates. When the user explicitly selects a provenance snapshot, read `SKILL-SOURCE.md` as source evidence rather than a runtime entrypoint.
 2. **Resolve `<output-dir>`** using **Output Contract**.
-3. **Read the entrypoint completely**. Read `SKILL.md` from start to finish.
+3. **Read the entrypoint completely**. Read the resolved entrypoint from start to finish.
 4. **Inspect runtime metadata**. Read `agents/openai.yaml` when present.
 5. **Map linked resources and inventory files**. Identify directly linked `references/`, `commands/`, `subskills/`, `scripts/`, `assets/`, and workflow pages, then produce a table that lists every file in the target skill directory with its relative path, category (entrypoint, reference, agent config, subcommand, subskill, script, asset, or other), resource owner, and a one-sentence explanation of its purpose. Treat the containing skill or subskill as the resource owner for every direct or nested subcommand. Include this inventory table in the entrypoint report.
-6. **Choose report units**. Always create an entrypoint report for `SKILL.md`. For multi-part skills, choose one report unit for each public direct or nested subcommand, mode, workflow, or primitive page that has distinct workflow logic.
+6. **Choose report units**. Always create an entrypoint report for the resolved `SKILL.md` or `SKILL-MAIN.md`. For multi-part skills, choose one report unit for each public direct or nested subcommand, mode, workflow, or primitive page that has distinct workflow logic.
 7. **Load workflow-critical resources** for each report unit. Read the linked pages needed to reconstruct execution flow and output artifacts. Do not load unrelated references just because they exist.
 8. **Infer workflow logic**. Build a step model from frontmatter, invocation contract, workflow sections, subcommands, routing rules, guardrails, output contracts, and linked task pages.
 9. **Map skill routing**. Identify calls to subskills, direct and nested subcommands, modes, and external skills. Record the caller, callee, trigger condition, full invocation chain, immediate parent, resource owner, and whether the call is explicit (e.g., `$skill-name use <subskill>` or an object-style designator such as `X->parent()->child()`) or implicit (e.g., routed by task type or mode table). For a nested chain, distinguish intermediate object-generator commands from the terminal invoked command and do not infer that an intermediate command's standalone action runs. Include skill-owned references and linked workflow pages only when they are invoked as runtime routing targets, not when they are merely read for context.
@@ -33,14 +33,14 @@ Resolve `<output-dir>` in this order:
 
 Write reports using these names:
 
-- Primary `SKILL.md` entrypoint report: `<output-dir>/ENTRYPOINT.md`.
+- Primary resolved-entrypoint report: `<output-dir>/ENTRYPOINT.md`.
 - Multi-part skill reports: `<output-dir>/<scoped-part-name>.md` for each public subcommand, mode, workflow, or primitive page that deserves its own analysis. For a nested subcommand, derive the scoped part name from its command chain, such as `parent-child.md` for `parent()->child()`.
 
-Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary `SKILL.md` report. Prefer the public subcommand name over the source file stem when they differ.
+Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary resolved-entrypoint report. Prefer the public subcommand name over the source file stem when they differ.
 
 ## Evidence Rules
 
-- Treat `SKILL.md` as authoritative for trigger behavior and top-level workflow.
+- Treat the resolved `SKILL.md` or `SKILL-MAIN.md` as authoritative for trigger behavior and top-level workflow.
 - Treat linked reference, subcommand, workflow, mode, and primitive files as authoritative for their owned steps.
 - Treat a skill or subskill as the resource owner for its direct and nested subcommands. A subcommand may own child routes but does not introduce a private bundled-resource root.
 - Use `agents/openai.yaml` for UI metadata and implicit-invocation policy only.
@@ -54,12 +54,12 @@ Write these files under `<output-dir>`:
 
 | Report Unit | File Name |
 | --- | --- |
-| Primary `SKILL.md` entrypoint | `ENTRYPOINT.md` |
+| Primary resolved entrypoint | `ENTRYPOINT.md` |
 | Public subcommand | `<subcommand-name>.md` |
 | Nested public subcommand | `<parent-command>-<child-command>.md`, extended with each additional ancestor |
 | Public mode, workflow, or primitive page | `<public-name>.md` |
 
-Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary `SKILL.md` report. Prefer public names from the subcommand table, mode table, or invocation contract over source file stems. Preserve the full ancestor chain in nested-subcommand report names. If two other report units normalize to the same file name, add a short disambiguating suffix from the parent folder, such as `deploy-workflow.md` or `deploy-mode.md`.
+Normalize non-entrypoint report file names to lowercase hyphen-case. `ENTRYPOINT.md` is the fixed uppercase filename for the primary resolved-entrypoint report. Prefer public names from the subcommand table, mode table, or invocation contract over source file stems. Preserve the full ancestor chain in nested-subcommand report names. If two other report units normalize to the same file name, add a short disambiguating suffix from the parent folder, such as `deploy-workflow.md` or `deploy-mode.md`.
 
 For single-part skills, write only `ENTRYPOINT.md` unless the user requests deeper resource-level analysis.
 
@@ -163,7 +163,7 @@ Keep the callgraph focused on runtime routing relationships. Do not include file
 After the diagram, list each major step with a short introduction:
 
 ```md
-1. **Resolve target skill**: Finds the skill folder and verifies `SKILL.md` exists.
+1. **Resolve target skill**: Finds the skill folder and resolves one unambiguous `SKILL.md` or `SKILL-MAIN.md` runtime entrypoint.
 2. **Read entrypoint**: Loads the top-level contract and workflow.
 ```
 
@@ -177,7 +177,7 @@ Use this table:
 
 | Artifact | Path or Destination | Triggering Step | Evidence | Certainty |
 | --- | --- | --- | --- | --- |
-| Chat report | Chat session | Final response | `SKILL.md` output contract | Explicit |
+| Chat report | Chat session | Final response | Resolved entrypoint output contract | Explicit |
 
 Include non-file artifacts such as chat reports, mailbox messages, branches, worktrees, PRs, service units, downloaded source packs, or generated commands when the analyzed skill would produce them. If a skill only modifies existing files, list those as modified artifacts. If no generated artifacts are described, say so directly.
 

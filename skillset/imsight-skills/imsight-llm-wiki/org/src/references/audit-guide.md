@@ -94,7 +94,7 @@ This algorithm lives in the packaged `audit-shared/src/anchor.ts` library copies
 
 ## Processing workflow (the `audit` op)
 
-See `SKILL.md` → "The five operations" → `audit` for the canonical version. In short:
+See `SKILL-SOURCE.md` → "The five operations" → `audit` for the canonical source version. In short:
 
 1. `python3 scripts/audit_review.py <wiki-root> --open` → get a grouped list.
 2. For each open audit:

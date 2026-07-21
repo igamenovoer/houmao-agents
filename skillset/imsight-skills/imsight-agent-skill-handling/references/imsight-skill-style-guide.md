@@ -101,16 +101,18 @@ A subcommand may define child subcommands. Treat such a parent subcommand as an 
 
 ## Subskills
 
-A skill may bundle nested skills under `subskills/<subskill-name>/`. Each subskill is a self-contained skill folder with its own required `SKILL.md` and, when needed, the same optional bundled resource directories (`agents/`, `references/`, `commands/`, `scripts/`, `assets/`) as a top-level skill.
+A skill may bundle nested skills under `subskills/<subskill-name>/`. Each subskill is a self-contained skill folder with its own required `SKILL-MAIN.md` and, when needed, the same optional bundled resource directories (`agents/`, `references/`, `commands/`, `scripts/`, `assets/`) as a top-level skill. Standalone and host-discoverable roots use `SKILL.md`; the distinct nested filename prevents exact-`SKILL.md` scanners from registering the subskill independently.
 
-Read the structure with object semantics: the main skill is an object, its `SKILL.md` is the object's entrypoint, and a subskill is an inner object of the main skill. A subskill is scoped to and owned by its parent skill; it is not independently installed or discovered.
+Read the structure with object semantics: the main skill is an object, its role-canonical entrypoint is the object's entrypoint, and a subskill is an inner object of the main skill. A subskill is scoped to and owned by its parent skill; it is not independently installed or discovered.
 
 - Use a subskill when a capability needs its own private resource boundary, such as dedicated `scripts/`, `references/`, `commands/`, `assets/`, templates, or runtime metadata, while remaining meaningful only as part of the parent skill. Private means scoped ownership here, not secrecy or access control.
 - Use a subcommand, including a nested subcommand, when the procedure can operate with resources owned by its containing skill or subskill. A subcommand may have an executable detail page and child subcommands, but it does not own an independent bundled-resource tree.
 - Promote a subcommand to a subskill when it acquires resources that should be maintained, loaded, validated, or distributed as its own bundle. Size or workflow complexity alone does not require promotion.
-- List bundled subskills in the parent `SKILL.md`, either in the `## Subcommands` table or in a dedicated `## Subskills` section, so the entrypoint can route invocation designators.
-- Give every direct subskill one `When to Route Here` sentence in that parent table. Synthesize the sentence from the child's frontmatter description and `## When to Use` guidance, omit context already established by the parent, retain the condition that distinguishes sibling routes, and do not copy the child description or agent short description verbatim. The sentence is routing guidance, not a replacement for loading the selected child `SKILL.md`.
-- Every rule in this guide applies to each subskill's `SKILL.md` and subcommand-like pages as well.
+- List bundled subskills in the parent's role-canonical entrypoint, either in the `## Subcommands` table or in a dedicated `## Subskills` section, so the entrypoint can route invocation designators.
+- Give every direct subskill one `When to Route Here` sentence in that parent table. Synthesize the sentence from the child's frontmatter description and `## When to Use` guidance, omit context already established by the parent, retain the condition that distinguishes sibling routes, and do not copy the child description or agent short description verbatim. The sentence is routing guidance, not a replacement for explicitly loading the selected child's `SKILL-MAIN.md`.
+- Every rule in this guide applies to each subskill's `SKILL-MAIN.md` and subcommand-like pages as well.
+- Inspection and migration may read a nested `SKILL.md` only as legacy input when `SKILL-MAIN.md` is absent. Creation and formatting normalize it to `SKILL-MAIN.md` without leaving a compatibility copy, and a folder containing both candidates is invalid.
+- Preserve an upstream entrypoint under `org/src/` as `SKILL-SOURCE.md`; provenance is not a runtime entrypoint.
 
 ## Skill Invocation Notations
 
@@ -123,7 +125,7 @@ invocation := skill-path | skill-path "->" subcommand-chain
 relative-subcommand-invocation := subcommand-chain
 ```
 
-- Skill and subskill entrypoint invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". A bare object path invokes the named skill or terminal subskill entrypoint (its `SKILL.md`). Never append `()` to a skill or subskill entrypoint.
+- Skill and subskill entrypoint invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". A bare object path invokes the named entrypoint: top-level `SKILL.md` for `X`, or parent-loaded `SKILL-MAIN.md` for a terminal subskill. Never append `()` to a skill or subskill entrypoint.
 - Skill-to-subcommand invocation: write "invoke skill subcommand `X->cmd()`" for a direct subcommand of skill `X`, "invoke skill subcommand `X->Y->cmd()`" for a direct subcommand of subskill `Y`, and "invoke subcommand `cmd()`" for a direct subcommand of the current skill or command context.
 - Nested-subcommand invocation: write `X->parent()->child()` for child subcommand `child` owned by parent subcommand `parent`, and continue the parenthesized chain for deeper descendants. Every subcommand component includes `()`, including intermediate object generators.
 - Same-name routing: a direct subskill and direct subcommand may share a name because the component syntax remains authoritative. For example, `X->Y` invokes subskill `Y`, while `X->Y()` invokes subcommand `Y` of skill `X`.
@@ -134,6 +136,9 @@ Any skill or subcommand page that uses these designators must declare the notati
 
 ```yaml
 skill_invocation_notation: >
+  Top-level skill entrypoints use SKILL.md. Parent-scoped subskill entrypoints use
+  SKILL-MAIN.md and are loaded explicitly through their parent; nested SKILL.md is
+  accepted only as legacy input when SKILL-MAIN.md is absent.
   Skill and subskill entrypoints use bare object paths: `X` invokes skill X and
   `X->Y->Z` invokes subskill Z. Subcommands use parenthesized components:
   `X->cmd()` invokes a direct subcommand, `X->Y->cmd()` invokes a subcommand of

@@ -151,7 +151,7 @@ flowchart TD
 
 Copied under `org/src/` with paths preserved:
 
-- `SKILL.md` — entrypoint
+- `SKILL-SOURCE.md` — source entrypoint preserved as provenance
 - `subskills/viewer-deploy.md` — viewer deployment workflow
 - `references/{schema-guide,article-guide,audit-guide,log-guide,tooling-tips,vault-root-link-resolver}.md`
 - `scripts/{scaffold,lint_wiki,audit_review,deploy_viewer}.py`
@@ -160,7 +160,7 @@ Copied under `org/src/` with paths preserved:
 
 ## Notes for Migration
 
-- The source is a single large `SKILL.md` with inline operations. The Imsight target should split operations into subcommands with detail pages.
+- The source is a single large entrypoint preserved as `SKILL-SOURCE.md` with inline operations. The Imsight target should split operations into subcommands with detail pages.
 - The source's trigger description is long; Imsight style requires a concise "Use when..." description.
 - Viewer deployment should become a subcommand (`deploy-viewer`) with `subskills/viewer-deploy.md` rewritten as `commands/deploy-viewer.md` or `references/viewer-deploy.md`.
 - Reference pages are mostly style/instructional and map well to `references/` in the target.

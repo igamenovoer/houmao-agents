@@ -24,7 +24,7 @@ If the user's task does not map cleanly to these steps, use your native planning
 
 ## Source and Target Resolution
 
-Use explicit user-provided paths whenever possible. A source or target skill directory must contain `SKILL.md`.
+Use explicit user-provided paths whenever possible. A source or target runtime skill directory must contain exactly one applicable entrypoint: `SKILL.md` for a standalone skill or `SKILL-MAIN.md` for a parent-scoped subskill. Accept nested `SKILL.md` as legacy source input, but stop when a directory contains both candidates.
 
 Supported forms:
 
@@ -34,7 +34,7 @@ Supported forms:
 
 For a normal migration, `<source-skill-dir>` and `<target-skill-dir>` are different directories. The source owns the behavior to preserve; the target owns the final name, metadata, local style, and installed runtime shape.
 
-For self-migration, set `<source-skill-dir>` and `<target-skill-dir>` to the same directory, snapshot the current target files into `<target-skill-dir>/org/src/`, inspect the snapshot, then rewrite the runtime files in place. Treat files under `org/src/` as the source of truth for the pre-refactor behavior.
+For self-migration, set `<source-skill-dir>` and `<target-skill-dir>` to the same directory, snapshot the current target files into `<target-skill-dir>/org/src/`, inspect the explicit `<target-skill-dir>/org/src/SKILL-SOURCE.md` snapshot, then rewrite the runtime files in place. Treat files under `org/src/` as the source of truth for the pre-refactor behavior.
 
 If the user provides only one path and asks to "refactor", "clean up", "migrate into itself", or "make this native", use self-migration. If the user provides only one path and asks to migrate from another skill, stop and ask for the missing source path.
 
@@ -57,7 +57,7 @@ Do not edit files under `<target-skill-dir>/org/src/` after copying them. They a
 
 Inspect the source and target before editing, and preserve unrelated user changes in the target. Inventory every file in `<source-skill-dir>/`, including entrypoints, agent metadata, references, commands, subskills, scripts, templates, assets, and examples.
 
-Copy every source file into `<target-skill-dir>/org/src/` while preserving paths relative to `<source-skill-dir>/`. The original source entrypoint remains at `<target-skill-dir>/org/src/SKILL.md`.
+Copy every source file into `<target-skill-dir>/org/src/` while preserving paths relative to `<source-skill-dir>/`, except for the source entrypoint filename. Preserve its bytes at `<target-skill-dir>/org/src/SKILL-SOURCE.md` so provenance remains readable without creating a recursively discoverable runtime skill.
 
 Do not copy the source entrypoint or source `agents/openai.yaml` directly over the target runtime files. The target entrypoint and metadata must be rewritten from the migration plan so the target keeps its selected name, description, routing posture, and local style.
 
@@ -65,11 +65,11 @@ Copy source support files into the target runtime tree only when they should rem
 
 ## Source Analysis
 
-Invoke `$imsight-agent-skill-handling deep-inspect` on the source behavior before planning or rewriting. For self-migration, deep-inspect `<target-skill-dir>/org/src/`, not the mutable target runtime tree.
+Invoke `$imsight-agent-skill-handling deep-inspect` on the source behavior before planning or rewriting. For self-migration, explicitly deep-inspect `<target-skill-dir>/org/src/SKILL-SOURCE.md`, not the mutable target runtime tree. The snapshot filename signals provenance and does not make `org/src/` a runtime skill.
 
 The inspection must cover:
 
-- `SKILL.md`.
+- The resolved source `SKILL.md` or `SKILL-MAIN.md`, copied into provenance as `SKILL-SOURCE.md`.
 - `agents/openai.yaml` when it affects routing or invocation posture.
 - Every directly linked page that defines a public direct or nested subcommand, mode, workflow, primitive, routing behavior, or executable procedure.
 - Any additional source page that represents runtime behavior even if it is not linked cleanly from the entrypoint.
@@ -118,7 +118,7 @@ Rewrite target runtime files so they read like Imsight skills, not lightly edite
 
 The rewritten target should:
 
-- Keep `SKILL.md` concise, with YAML frontmatter, `## Overview`, `## Workflow`, `## Subcommands` when needed, and a short common-mistake or maintenance section when useful.
+- Keep the target's role-canonical entrypoint concise: `SKILL.md` for a standalone target or `SKILL-MAIN.md` for a parent-scoped target. Include YAML frontmatter, `## Overview`, `## Workflow`, `## Subcommands` when needed, and a short common-mistake or maintenance section when useful.
 - Keep long executable detail in `references/<name>.md` or the target's established detail-page directory.
 - Use the target's subcommand structure flavor from `references/imsight-skill-style-guide.md`.
 - Preserve nested subcommand ownership and full parenthesized chains. Treat intermediate parent commands as object generators, keep their descendants inside the containing skill or subskill's resource boundary, and make any capability that needs a private bundled-resource tree a subskill.
@@ -198,9 +198,9 @@ If `Quality Gates` exists, include both `Metrics` and `Checks`. If the source ha
 Before finishing, validate both structure and semantic preservation.
 
 1. Confirm `<target-skill-dir>/org/src/`, `<target-skill-dir>/org/analysis/analysis-of-<source-skill-name>.md`, `<target-skill-dir>/org/README.md`, and `<target-skill-dir>/migrate/migration-plan.md` exist.
-2. Confirm every source file was copied under `<target-skill-dir>/org/src/` with paths preserved.
+2. Confirm every source file was copied under `<target-skill-dir>/org/src/` with paths preserved except that the source entrypoint is named `SKILL-SOURCE.md`.
 3. Confirm every runtime source file omitted from the target runtime tree has a reason in the migration plan.
-4. Confirm the rewritten `SKILL.md` and rewritten runtime pages match the source process analysis, not merely the source wording.
+4. Confirm the rewritten role-canonical target entrypoint and rewritten runtime pages match the source process analysis, not merely the source wording.
 5. Confirm every main workflow step references the support section or support page that carries its extracted guidance, preferences, constraints, quality gates, stop conditions, and output requirements.
 6. Confirm extracted step support uses the standard support block shapes when those support types are present.
 7. Confirm substitutions in the migration plan are reflected in rewritten pages.
@@ -228,7 +228,7 @@ Return a concise chat summary with:
 - DO NOT treat refactor migration as a cosmetic rewrite that changes or drops source behavior.
 - DO NOT rewrite from intuition or without grounding the target in deep-inspection output.
 - DO NOT inspect mutable runtime files during self-migration or treat them as source evidence.
-- DO NOT overwrite the target `SKILL.md` or `agents/openai.yaml` with source files.
+- DO NOT overwrite the target runtime entrypoint or `agents/openai.yaml` with source files.
 - DO NOT edit files under `org/src/` after copying them.
 - DO NOT drop source gates, blockers, evidence handoffs, assumptions, inputs, or outputs because they do not fit the target's first draft.
 - DO NOT bind unresolved storage, tools, routes, or environment assumptions to guessed concrete values.

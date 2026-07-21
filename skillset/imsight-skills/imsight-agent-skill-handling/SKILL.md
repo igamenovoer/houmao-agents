@@ -46,8 +46,16 @@ If the user's task does not map cleanly to these steps, use your native planning
 Use the skill folder explicitly provided by the user. If none is provided:
 
 1. If the prompt names a skill, search the current project and known skill homes for an exact folder or frontmatter `name` match.
-2. Otherwise, use the current working directory if it contains `SKILL.md`.
+2. Otherwise, use the current working directory if it contains one runtime entrypoint candidate: `SKILL.md` or `SKILL-MAIN.md`.
 3. If multiple candidates remain, ask the user which skill to target.
+
+Resolve the target entrypoint by role:
+
+- A standalone or host-discoverable skill root uses `SKILL.md`.
+- A parent-scoped skill below `subskills/<subskill-name>/` uses `SKILL-MAIN.md`; its parent must load that file explicitly. Inspection and migration may read a nested `SKILL.md` only as a legacy input, while creation and formatting normalize it to `SKILL-MAIN.md` without leaving a compatibility copy.
+- A preserved upstream entrypoint below `org/src/` uses `SKILL-SOURCE.md` and is provenance, not a runtime entrypoint.
+- `analyze`, `deep-inspect`, and the source side of `refactor-migrate` may read an explicitly selected `SKILL-SOURCE.md`; mutation-oriented target workflows must not treat it as the target runtime entrypoint.
+- If a target folder contains both `SKILL.md` and `SKILL-MAIN.md`, stop and report the ambiguous scope contract rather than choosing one silently.
 
 ## Guardrails
 

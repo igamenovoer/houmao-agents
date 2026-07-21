@@ -4,7 +4,7 @@ This page documents the standard skill directory layout, based on the OpenAI ski
 
 ## Standard Layout
 
-A skill is a self-contained folder. At minimum it must contain a `SKILL.md` file. Everything else is optional and should only be created when the skill actually needs it.
+A skill is a self-contained folder. A standalone or host-discoverable skill root must contain `SKILL.md`. A parent-scoped subskill must contain `SKILL-MAIN.md` instead. Everything else is optional and should only be created when the skill actually needs it.
 
 ```text
 <skill-name>/
@@ -17,7 +17,7 @@ A skill is a self-contained folder. At minimum it must contain a `SKILL.md` file
     └── assets/       # Files used in output (templates, icons, fonts, etc.)
 ```
 
-### `SKILL.md` (required)
+### `SKILL.md` (required for a top-level skill)
 
 - **Frontmatter** (YAML): `name` and `description`. These are the only fields Codex reads to decide whether to trigger the skill. Imsight skills may add optional keys such as `skill_invocation_notation`; see **Skill Invocation Notation** under **Imsight Local Conventions**.
 - **Body** (Markdown): Instructions and guidance. Loaded only after the skill triggers.
@@ -52,7 +52,7 @@ Only create this directory when the skill actually bundles executable code.
 
 Documentation intended to be loaded into context as needed. Examples: schemas, API docs, policies, detailed workflow guides.
 
-Keep `SKILL.md` lean by moving detailed reference material here. Avoid duplication: information should live in either `SKILL.md` or a references file, not both.
+Keep the role-canonical entrypoint lean by moving detailed reference material here. Avoid duplication: information should live in either the entrypoint or a references file, not both.
 
 ### `assets/` (optional)
 
@@ -75,7 +75,7 @@ In addition to the standard layout, Imsight skills in this repository organize s
 
 - `commands/`
 
-Link these pages from the `## Subcommands` table in `SKILL.md`.
+Link these pages from the `## Subcommands` table in the containing skill's role-canonical entrypoint.
 
 A subcommand page may define its own `## Subcommands` table. That page becomes the immediate routing owner and object generator for its child subcommands. Link each child detail page from the parent command page; command ownership comes from the declared routing table and full invocation chain, not from an inferred filesystem shape. A repository may use flat or nested detail-page paths as long as every parent-to-child route is explicit and unambiguous.
 
@@ -83,20 +83,22 @@ Subcommands do not create resource-ownership roots. Their detail pages, child pa
 
 ### `subskills/` (optional)
 
-Imsight skills add one more hierarchy level to the standard layout: a skill may bundle nested skills under `subskills/`. Each subskill is a self-contained skill folder with its own required `SKILL.md` and the same optional bundled resources (`agents/`, `references/`, `commands/`, `scripts/`, `assets/`).
+Imsight skills add one more hierarchy level to the standard layout: a skill may bundle nested skills under `subskills/`. Each subskill is a self-contained skill folder with its own required `SKILL-MAIN.md` and the same optional bundled resources (`agents/`, `references/`, `commands/`, `scripts/`, `assets/`). The distinct filename prevents recursive exact-`SKILL.md` scanners from registering the child as an independent top-level skill.
 
 ```text
 <skill-name>/
 ├── SKILL.md
 └── subskills/
     └── <subskill-name>/
-        ├── SKILL.md          # Required. The subskill's own entrypoint.
+        ├── SKILL-MAIN.md     # Required. The parent-scoped subskill entrypoint.
         └── ...               # Optional. Same bundled resources as a top-level skill.
 ```
 
-Read the structure with object semantics: treat the main skill as an object and its `SKILL.md` as the object's entrypoint. A subskill is an inner object of the main skill: a member capability scoped to and owned by the parent skill, not independently installed or discovered. Use a subskill when a capability needs its own private bundled-resource boundary while remaining meaningful as part of the parent. Private means scoped ownership, not secrecy. Keep procedures that use the containing skill's resources as direct or nested subcommands on `commands/` or `references/` detail pages.
+Read the structure with object semantics: treat the main skill as an object and its role-canonical entrypoint as the object's entrypoint. A subskill is an inner object of the main skill: a member capability scoped to and owned by the parent skill, not independently installed or discovered. Use a subskill when a capability needs its own private bundled-resource boundary while remaining meaningful as part of the parent. Private means scoped ownership, not secrecy. Keep procedures that use the containing skill's resources as direct or nested subcommands on `commands/` or `references/` detail pages.
 
-The parent skill owns routing to its subskills. List bundled subskills in the `## Subcommands` table or a dedicated `## Subskills` section of the parent `SKILL.md` so the entrypoint can resolve invocation designators. Give every direct subskill one `When to Route Here` sentence that lets the parent distinguish it before loading the child. Derive the sentence from the child's trigger metadata and `## When to Use` guidance, remove context already supplied by the parent, and do not copy the child description or agent short description verbatim. Apply the rule recursively when a subskill owns further subskills.
+The parent skill owns routing to its subskills. List bundled subskills in the `## Subcommands` table or a dedicated `## Subskills` section of the parent's role-canonical entrypoint so it can resolve invocation designators. Give every direct subskill one `When to Route Here` sentence that lets the parent distinguish it before explicitly loading only the selected child's `SKILL-MAIN.md` and required local resources. Derive the sentence from the child's trigger metadata and `## When to Use` guidance, remove context already supplied by the parent, and do not copy the child description or agent short description verbatim. Apply the rule recursively when a subskill owns further subskills.
+
+For legacy input, inspection and migration may read a nested `SKILL.md` when `SKILL-MAIN.md` is absent. New creation and formatting normalize the child to `SKILL-MAIN.md` without leaving a compatibility copy. A folder containing both files is invalid. Preserve an upstream entrypoint under `org/src/` as `SKILL-SOURCE.md`, not `SKILL.md`.
 
 ### Skill Invocation Notation
 
@@ -109,7 +111,7 @@ invocation := skill-path | skill-path "->" subcommand-chain
 relative-subcommand-invocation := subcommand-chain
 ```
 
-- Skill and subskill entrypoint invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". Never write `X()` or `X->Y()` for an entrypoint.
+- Skill and subskill entrypoint invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". The former resolves top-level `SKILL.md`; a terminal child resolves `SKILL-MAIN.md` through its parent. Never write `X()` or `X->Y()` for an entrypoint.
 - Skill-to-subcommand invocation: write "invoke skill subcommand `X->cmd()`" for a direct subcommand of skill `X`, "invoke skill subcommand `X->Y->cmd()`" for a direct subcommand of subskill `Y`, and "invoke subcommand `cmd()`" for a direct subcommand of the current skill or command context.
 - Nested-subcommand invocation: write `X->parent()->child()` for child subcommand `child` defined by parent subcommand `parent`. Every command component includes `()`, and each intermediate command acts as an object generator for its declared children.
 - Same-name routing: a direct subskill and direct subcommand may share a name because the bare or parenthesized component form determines the capability kind.

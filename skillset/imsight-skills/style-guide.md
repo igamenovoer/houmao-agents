@@ -89,20 +89,21 @@ Misc subcommands are public support commands and shortcuts that do not represent
 
 ## Subskills
 
-A skill may bundle nested skills under `subskills/<subskill-name>/`. Each subskill is a self-contained skill folder with its own required `SKILL.md` and, when needed, the same optional bundled resource directories (`agents/`, `references/`, `commands/`, `scripts/`, `assets/`) as a top-level skill.
+A skill may bundle nested skills under `subskills/<subskill-name>/`. Each subskill is a self-contained skill folder with its own required `SKILL-MAIN.md` and, when needed, the same optional bundled resource directories (`agents/`, `references/`, `commands/`, `scripts/`, `assets/`) as a top-level skill. Standalone and host-discoverable roots use `SKILL.md`.
 
-Read the structure with object semantics: the main skill is an object, its `SKILL.md` is the object's `()` operator, and a subskill is an inner object of the main skill. A subskill is scoped to and owned by its parent skill; it is not independently installed or discovered.
+Read the structure with object semantics: the main skill is an object, its role-canonical entrypoint is the object's `()` operator, and a subskill is an inner object of the main skill. A subskill is scoped to and owned by its parent skill; it is not independently installed or discovered.
 
 - Use a subskill when a capability is large or self-contained enough to be a full skill but only meaningful as part of the parent skill.
 - Keep ordinary subcommand procedures on `commands/` or `references/` detail pages; do not promote every subcommand to a subskill.
-- List bundled subskills in the parent `SKILL.md`, either in the `## Subcommands` table or in a dedicated `## Subskills` section, so the entrypoint can route invocation designators.
-- Every rule in this guide applies to each subskill's `SKILL.md` and subcommand-like pages as well.
+- List bundled subskills in the parent's role-canonical entrypoint, either in the `## Subcommands` table or in a dedicated `## Subskills` section, so it can route invocation designators and explicitly load only the selected child's `SKILL-MAIN.md`.
+- Every rule in this guide applies to each subskill's `SKILL-MAIN.md` and subcommand-like pages as well.
+- Inspection and migration may read nested `SKILL.md` only as legacy input when `SKILL-MAIN.md` is absent; creation and formatting normalize it without leaving a compatibility copy. Preserve upstream entrypoint snapshots as `SKILL-SOURCE.md`.
 
 ## Skill Invocation Notations
 
 Skills designate skill and subskill invocations with object-style notation. The notation extends the plain convention other writers already use, so prefer the plain form whenever context makes the target clear.
 
-- Skill-to-skill invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". The bare path invokes the named skill or subskill entrypoint (its `SKILL.md`). This is the public convention; the explicit `()` forms below are a well-defined calling syntax with the same meaning.
+- Skill-to-skill invocation: write "invoke skill `X`" or "invoke skill `X->Y->Z`". The bare path invokes top-level `SKILL.md` or the terminal subskill's parent-loaded `SKILL-MAIN.md`. This is the public convention; the explicit `()` forms below are a well-defined calling syntax with the same meaning.
 - Skill-to-subcommand invocation: write "invoke skill subcommand `X->cmd()`" for a subcommand of skill `X`, "invoke skill subcommand `X->Y->cmd()`" for a subcommand of subskill `Y` inside skill `X`, and "invoke subcommand `cmd()`" for a subcommand of the current skill. Prefer keeping the `()` on the subcommand symbol; omit it only when context already makes clear which symbol is the subcommand.
 - Explicit forms: when a symbol appears without enough context to tell a skill from a subcommand, prefer the explicit form, such as `X()` or `X->Y()` for a skill or subskill entrypoint and `X->cmd()` or `X->Y->cmd()` for a subcommand.
 
@@ -110,8 +111,11 @@ Any skill or subcommand page that uses these designators must declare the notati
 
 ```yaml
 skill_invocation_notation: >
-  Skill and subskill invocations use object-style notation: `X` or `X->Y->Z`
-  invokes the named skill or subskill entrypoint (its SKILL.md), `X->cmd()`
+  Top-level skill entrypoints use SKILL.md. Parent-scoped subskill entrypoints use
+  SKILL-MAIN.md and are loaded explicitly through their parent; nested SKILL.md is
+  accepted only as legacy input when SKILL-MAIN.md is absent. Skill and subskill
+  invocations use object-style notation: `X` or `X->Y->Z` invokes the named
+  skill or subskill entrypoint, `X->cmd()`
   and `X->Y->cmd()` invoke subcommand `cmd` of skill `X` or of subskill `Y`
   inside skill `X`, and bare `cmd()` invokes a subcommand of the current
   skill. The explicit forms `X()` and `X->Y()` are equivalent to the bare
